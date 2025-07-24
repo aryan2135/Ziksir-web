@@ -70,12 +70,19 @@ const ZIKSIRweb = () => {
             <Button onClick={toggleTheme} variant="outline" size="sm">
               <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
             </Button>
+            <Button onClick={() => window.location.href = '/auth'} variant="default" size="sm">
+              <i className="fas fa-sign-in-alt mr-2"></i>
+              Login
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
             <Button onClick={toggleTheme} variant="outline" size="sm">
               <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+            </Button>
+            <Button onClick={() => window.location.href = '/auth'} variant="default" size="sm">
+              <i className="fas fa-sign-in-alt"></i>
             </Button>
             <Button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -102,6 +109,10 @@ const ZIKSIRweb = () => {
               </button>
               <button onClick={() => scrollToSection('contact')} className="block text-foreground hover:text-accent transition-colors">
                 Contact
+              </button>
+              <button onClick={() => window.location.href = '/auth'} className="block text-foreground hover:text-accent transition-colors">
+                <i className="fas fa-sign-in-alt mr-2"></i>
+                Login
               </button>
             </div>
           </div>
