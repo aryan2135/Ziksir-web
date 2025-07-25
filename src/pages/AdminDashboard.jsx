@@ -50,6 +50,15 @@ const AdminDashboard = () => {
     };
     
     loadBookings();
+    
+    // Refresh bookings every 5 seconds when on bookings page
+    const interval = setInterval(() => {
+      if (activeSection === 'bookings') {
+        loadBookings();
+      }
+    }, 5000);
+    
+    return () => clearInterval(interval);
   }, [navigate]);
 
   const toggleTheme = () => {
