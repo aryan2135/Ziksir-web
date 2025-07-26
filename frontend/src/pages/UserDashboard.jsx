@@ -758,6 +758,253 @@ const UserDashboard = () => {
           </div>
         );
 
+      case 'browse':
+        return (
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-foreground">Browse Equipment</h2>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  name: 'High-Resolution Microscope',
+                  category: 'Imaging',
+                  location: 'Lab A-201',
+                  availability: 'Available',
+                  image: 'fas fa-microscope',
+                  description: 'Advanced confocal microscope with high-resolution imaging capabilities. Perfect for cellular and molecular imaging studies with sub-micrometer resolution.',
+                  specifications: ['Resolution: 0.1 μm', 'Magnification: 1000x-100000x', 'Wavelength: 405-633 nm']
+                },
+                {
+                  name: 'PCR Machine',
+                  category: 'Molecular Biology',
+                  location: 'Lab B-105',
+                  availability: 'In Use',
+                  image: 'fas fa-dna',
+                  description: 'Thermal cycler for polymerase chain reaction (PCR) amplification. Supports gradient PCR and real-time quantitative PCR applications.',
+                  specifications: ['96-well capacity', 'Temperature range: 4-99°C', 'Ramp rate: 5°C/sec']
+                },
+                {
+                  name: 'Centrifuge',
+                  category: 'Sample Preparation',
+                  location: 'Lab A-203',
+                  availability: 'Maintenance',
+                  image: 'fas fa-circle-notch',
+                  description: 'High-speed centrifuge for sample separation and purification. Variable speed control with safety interlocks and automatic rotor recognition.',
+                  specifications: ['Max speed: 15,000 RPM', 'Capacity: 24 tubes', 'Temperature: -10°C to 40°C']
+                },
+                {
+                  name: 'Spectrophotometer',
+                  category: 'Analysis',
+                  location: 'Lab C-301',
+                  availability: 'Available',
+                  image: 'fas fa-chart-line',
+                  description: 'UV-Vis spectrophotometer for quantitative analysis of biological samples. Ideal for protein quantification and enzyme assays.',
+                  specifications: ['Wavelength: 190-1100 nm', 'Bandwidth: 1.5 nm', 'Accuracy: ±0.3 nm']
+                },
+                {
+                  name: 'Flow Cytometer',
+                  category: 'Cell Analysis',
+                  location: 'Lab B-107',
+                  availability: 'Available',
+                  image: 'fas fa-stream',
+                  description: 'Multi-parameter flow cytometer for cell counting, sorting, and biomarker detection. Supports fluorescent and non-fluorescent analysis.',
+                  specifications: ['4-color detection', 'Sample rate: 10,000 events/sec', 'Detection limit: 0.1% positive cells']
+                },
+                {
+                  name: 'Mass Spectrometer',
+                  category: 'Chemical Analysis',
+                  location: 'Lab C-305',
+                  availability: 'Available',
+                  image: 'fas fa-atom',
+                  description: 'High-resolution mass spectrometer for molecular identification and quantification. LC-MS/MS capabilities for complex sample analysis.',
+                  specifications: ['Mass range: 50-2000 m/z', 'Resolution: 100,000 FWHM', 'Sensitivity: fg level']
+                }
+              ].map((equipment, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
+                        <i className={`${equipment.image} text-xl text-accent-foreground`}></i>
+                      </div>
+                      <div>
+                        <CardTitle className="text-lg">{equipment.name}</CardTitle>
+                        <CardDescription>{equipment.category} • {equipment.location}</CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        {equipment.description}
+                      </p>
+                      
+                      <div>
+                        <h5 className="font-semibold text-foreground mb-2">Key Specifications:</h5>
+                        <ul className="text-sm text-muted-foreground space-y-1">
+                          {equipment.specifications.map((spec, specIndex) => (
+                            <li key={specIndex} className="flex items-center">
+                              <i className="fas fa-check text-green-500 mr-2"></i>
+                              {spec}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          equipment.availability === 'Available' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                          equipment.availability === 'In Use' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+                          'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                        }`}>
+                          {equipment.availability}
+                        </span>
+                        <Button 
+                          size="sm" 
+                          disabled={equipment.availability !== 'Available'}
+                          onClick={() => setActiveSection('book-slots')}
+                        >
+                          <i className="fas fa-calendar-plus mr-2"></i>
+                          Book Now
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'profile':
+        return (
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-foreground">User Profile</h2>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className="md:col-span-1">
+                <CardHeader>
+                  <CardTitle>Profile Picture</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <div className="w-32 h-32 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i className="fas fa-user text-6xl text-accent-foreground"></i>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    <i className="fas fa-camera mr-2"></i>
+                    Change Photo
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="md:col-span-2">
+                <CardHeader>
+                  <CardTitle>Personal Information</CardTitle>
+                  <CardDescription>Manage your account details</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-foreground mb-2 block">Full Name</label>
+                      <Input value="Dr. Sarah Johnson" readOnly className="bg-muted" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-foreground mb-2 block">Email Address</label>
+                      <Input value="sarah.johnson@university.edu" readOnly className="bg-muted" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-foreground mb-2 block">Phone Number</label>
+                      <Input value="+1 (555) 123-4567" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-foreground mb-2 block">Organization</label>
+                      <Input value="Stanford University" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-foreground mb-2 block">Department</label>
+                      <Input value="Biology Department" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-foreground mb-2 block">Research Area</label>
+                      <Input value="Molecular Biology" />
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <Button>
+                      <i className="fas fa-save mr-2"></i>
+                      Update Profile
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="md:col-span-3">
+                <CardHeader>
+                  <CardTitle>Account Statistics</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-4 gap-6">
+                    {[
+                      { label: 'Total Bookings', value: '23', icon: 'fas fa-calendar-check', color: 'text-blue-500' },
+                      { label: 'Completed Sessions', value: '18', icon: 'fas fa-check-circle', color: 'text-green-500' },
+                      { label: 'Pending Requests', value: '2', icon: 'fas fa-clock', color: 'text-yellow-500' },
+                      { label: 'Member Since', value: 'Jan 2024', icon: 'fas fa-user-clock', color: 'text-purple-500' }
+                    ].map((stat, index) => (
+                      <div key={index} className="text-center p-4 bg-secondary rounded-lg">
+                        <div className={`w-12 h-12 ${stat.color} mx-auto mb-2 flex items-center justify-center`}>
+                          <i className={`${stat.icon} text-2xl`}></i>
+                        </div>
+                        <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+                        <p className="text-sm text-muted-foreground">{stat.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="md:col-span-3">
+                <CardHeader>
+                  <CardTitle>Security Settings</CardTitle>
+                  <CardDescription>Manage your account security</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                      <div>
+                        <h4 className="font-semibold text-foreground">Change Password</h4>
+                        <p className="text-sm text-muted-foreground">Update your account password</p>
+                      </div>
+                      <Button variant="outline">
+                        <i className="fas fa-key mr-2"></i>
+                        Change
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                      <div>
+                        <h4 className="font-semibold text-foreground">Two-Factor Authentication</h4>
+                        <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
+                      </div>
+                      <Button variant="outline">
+                        <i className="fas fa-shield-alt mr-2"></i>
+                        Enable
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                      <div>
+                        <h4 className="font-semibold text-foreground">Login History</h4>
+                        <p className="text-sm text-muted-foreground">View recent login activity</p>
+                      </div>
+                      <Button variant="outline">
+                        <i className="fas fa-history mr-2"></i>
+                        View
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        );
+
       default:
         return (
           <div className="text-center py-16">

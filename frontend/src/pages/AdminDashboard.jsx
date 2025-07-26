@@ -127,7 +127,6 @@ const AdminDashboard = () => {
     { id: 'equipment', icon: 'fas fa-cogs', label: 'Equipment Management' },
     { id: 'bookings', icon: 'fas fa-calendar-check', label: 'Booking Requests' },
     { id: 'users', icon: 'fas fa-users', label: 'User Management' },
-    { id: 'analytics', icon: 'fas fa-analytics', label: 'Analytics' },
     { id: 'settings', icon: 'fas fa-cog', label: 'Settings' }
   ];
 
@@ -484,6 +483,232 @@ const AdminDashboard = () => {
           </div>
         );
       
+      case 'users':
+        return (
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-foreground">User Management</h2>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>Registered Users</CardTitle>
+                <CardDescription>Manage user accounts and view user details</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {[
+                    { 
+                      name: 'Dr. Sarah Johnson', 
+                      email: 'sarah.johnson@university.edu', 
+                      contact: '+1 (555) 123-4567',
+                      organization: 'Stanford University',
+                      joinDate: '2024-01-15',
+                      status: 'Active'
+                    },
+                    { 
+                      name: 'Prof. Michael Chen', 
+                      email: 'michael.chen@research.org', 
+                      contact: '+1 (555) 987-6543',
+                      organization: 'Research Institute of Technology',
+                      joinDate: '2024-02-20',
+                      status: 'Active'
+                    },
+                    { 
+                      name: 'Dr. Emily Rodriguez', 
+                      email: 'emily.rodriguez@biotech.com', 
+                      contact: '+1 (555) 456-7890',
+                      organization: 'BioTech Solutions Ltd.',
+                      joinDate: '2024-03-10',
+                      status: 'Inactive'
+                    },
+                    { 
+                      name: 'Dr. David Wilson', 
+                      email: 'david.wilson@lab.gov', 
+                      contact: '+1 (555) 321-0987',
+                      organization: 'National Research Laboratory',
+                      joinDate: '2024-03-25',
+                      status: 'Active'
+                    }
+                  ].map((user, index) => (
+                    <div key={index} className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center">
+                          <i className="fas fa-user text-accent-foreground"></i>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-foreground">{user.name}</h4>
+                          <p className="text-sm text-muted-foreground">{user.email}</p>
+                          <p className="text-sm text-muted-foreground">{user.contact}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-foreground">{user.organization}</p>
+                        <p className="text-xs text-muted-foreground">Joined: {user.joinDate}</p>
+                        <span className={`inline-block px-2 py-1 text-xs rounded-full mt-1 ${
+                          user.status === 'Active' 
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+                            : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+                        }`}>
+                          {user.status}
+                        </span>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm">
+                          <i className="fas fa-edit"></i>
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <i className="fas fa-ban"></i>
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        );
+
+      case 'settings':
+        return (
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-foreground">Admin Settings</h2>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>System Configuration</CardTitle>
+                  <CardDescription>Manage system-wide settings</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Maintenance Mode</h4>
+                      <p className="text-sm text-muted-foreground">Enable/disable system maintenance</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-toggle-off mr-2"></i>
+                      Disabled
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Auto-backup</h4>
+                      <p className="text-sm text-muted-foreground">Automatic daily data backup</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-toggle-on mr-2 text-green-500"></i>
+                      Enabled
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Email Notifications</h4>
+                      <p className="text-sm text-muted-foreground">System email notifications</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-toggle-on mr-2 text-green-500"></i>
+                      Enabled
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Equipment Management</CardTitle>
+                  <CardDescription>Configure equipment settings</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Booking Window</h4>
+                      <p className="text-sm text-muted-foreground">Days in advance users can book</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      30 Days
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Auto-approval</h4>
+                      <p className="text-sm text-muted-foreground">Automatically approve bookings</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-toggle-off mr-2"></i>
+                      Disabled
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Cancellation Window</h4>
+                      <p className="text-sm text-muted-foreground">Hours before booking to cancel</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      24 Hours
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>User Permissions</CardTitle>
+                  <CardDescription>Configure user access levels</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Self Registration</h4>
+                      <p className="text-sm text-muted-foreground">Allow user self-registration</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-toggle-on mr-2 text-green-500"></i>
+                      Enabled
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Guest Access</h4>
+                      <p className="text-sm text-muted-foreground">Allow guest browsing</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-toggle-on mr-2 text-green-500"></i>
+                      Enabled
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Security Settings</CardTitle>
+                  <CardDescription>Configure security parameters</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Two-Factor Auth</h4>
+                      <p className="text-sm text-muted-foreground">Require 2FA for admin access</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <i className="fas fa-toggle-on mr-2 text-green-500"></i>
+                      Enabled
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-foreground">Session Timeout</h4>
+                      <p className="text-sm text-muted-foreground">Auto logout after inactivity</p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      60 Minutes
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        );
+
       default:
         return (
           <div className="text-center py-16">
