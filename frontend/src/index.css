@@ -5,13 +5,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ZIKSIRweb Design System - Navy, Neon Green, Dark Theme */
+/* ZIKSIR Design System - Navy, Neon Green, Dark Theme */
 
 @layer base {
   :root {
     /* Light theme (fallback) */
     --background: 210 20% 98%;
-    --foreground: 220 39% 11%;
+    --foreground: 220 39% 50%;
 
     --card: 0 0% 100%;
     --card-foreground: 220 39% 11%;
@@ -28,7 +28,7 @@
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 142 76% 36%; /* Neon Green */
+    --accent: 217 91% 70%; /* Neon Blue */
     --accent-foreground: 220 39% 11%;
 
     --destructive: 0 84% 60%;
@@ -36,15 +36,15 @@
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 142 76% 36%;
+    --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
     /* ZIKSIRweb specific colors */
     --navy: 220 39% 11%;
     --navy-light: 220 26% 20%;
-    --neon-green: 142 76% 36%;
-    --neon-green-light: 142 76% 46%;
+    --neon-blue: 217 91% 60%;
+    --neon-blue-light: 217 91% 70%; /* Changed from green to blue */
     --slate: 215 25% 27%;
     --slate-light: 215 25% 37%;
   }
@@ -60,7 +60,7 @@
     --popover: 220 26% 14%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 142 76% 36%; /* Neon Green primary */
+    --primary: 217 91% 60%; /* Neon blue primary */
     --primary-foreground: 220 39% 11%;
 
     --secondary: 220 26% 18%;
@@ -69,7 +69,7 @@
     --muted: 220 26% 18%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 142 76% 46%; /* Brighter neon green for accents */
+    --accent: 217 91% 60%; /* Brighter neon blue for accents */
     --accent-foreground: 220 39% 11%;
 
     --destructive: 0 63% 31%;
@@ -77,17 +77,17 @@
 
     --border: 220 26% 18%;
     --input: 220 26% 18%;
-    --ring: 142 76% 36%;
+    --ring: 217 91% 60%;
 
     /* Sidebar colors */
     --sidebar-background: 220 39% 11%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 142 76% 36%;
+    --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 220 39% 11%;
     --sidebar-accent: 220 26% 18%;
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 220 26% 18%;
-    --sidebar-ring: 142 76% 36%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   /* Set dark mode as default */

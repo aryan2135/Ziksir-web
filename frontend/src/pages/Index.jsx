@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-const ZIKSIRweb = () => {
+const ziksir = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    // Set dark mode as default
-    document.documentElement.classList.add('dark');
-    
-    // Check localStorage for theme preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setDarkMode(savedTheme === 'dark');
-      if (savedTheme === 'light') {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Set dark mode as default
+  //   document.documentElement.classList.add('dark');
+
+  //   // Check localStorage for theme preference
+  //   const savedTheme = localStorage.getItem('theme');
+  //   if (savedTheme) {
+  //     setDarkMode(savedTheme === 'dark');
+  //     if (savedTheme === 'light') {
+  //       document.documentElement.classList.remove('dark');
+  //     }
+  //   }
+  // }, []);
 
   const toggleTheme = () => {
     const newTheme = !darkMode;
     setDarkMode(newTheme);
     localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-    
+
     if (newTheme) {
       document.documentElement.classList.add('dark');
     } else {
@@ -49,10 +50,10 @@ const ZIKSIRweb = () => {
       {/* Fixed Header */}
       <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold text-primary">
-            ZIKSI<span className="text-accent">Rweb</span>
+          <div className=" ml-4 font-sans transition-blue text-4xl font-bold text-primary text-accent font-open-sans">
+            ziksir
           </div>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <button onClick={() => scrollToSection('features')} className="text-foreground hover:text-accent transition-colors">
@@ -67,9 +68,9 @@ const ZIKSIRweb = () => {
             <button onClick={() => scrollToSection('contact')} className="text-foreground hover:text-accent transition-colors">
               Contact
             </button>
-            <Button onClick={toggleTheme} variant="outline" size="sm">
+            {/* <Button onClick={toggleTheme} variant="outline" size="sm">
               <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
-            </Button>
+            </Button> */}
             <Button onClick={() => window.location.href = '/auth'} variant="default" size="sm">
               <i className="fas fa-sign-in-alt mr-2"></i>
               Login
@@ -78,9 +79,9 @@ const ZIKSIRweb = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
-            <Button onClick={toggleTheme} variant="outline" size="sm">
+            {/* <Button onClick={toggleTheme} variant="outline" size="sm">
               <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
-            </Button>
+            </Button> */}
             <Button onClick={() => window.location.href = '/auth'} variant="default" size="sm">
               <i className="fas fa-sign-in-alt"></i>
             </Button>
@@ -120,17 +121,18 @@ const ZIKSIRweb = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-16 px-4">
+      <section className="pt-24 pb-10 px-4">
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Research Infrastructure Made Simple
+            <h1 className="text-5xl font-sans md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              World class services & equipment on demand
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 font-open-sans">
-              Discover, book, and manage lab equipment and research facilities with our centralized platform. 
-              Connect researchers with the tools they need.
+              Access thousands of instruments and services from renowned scientific organizations.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
               <Button size="lg" className="text-lg px-8 py-3">
                 <i className="fas fa-calendar-alt mr-2"></i>
                 Book a Demo
@@ -144,16 +146,32 @@ const ZIKSIRweb = () => {
         </div>
       </section>
 
+      {/* Institution Logos Section */}
+      <section className="bg-gray-900 text-white py-20 px-4">
+        <div className="container mx-auto text-center">
+          <p className="text-sm mb-20 opacity-80 tracking-wide">
+            Trusted by leading institutions worldwide
+          </p>
+          <div className="flex justify-center items-center gap-8 flex-wrap">
+            <img src="https://d1aeya7jd2fyco.cloudfront.net/logo/IIT_Kharagpur_logo.webp" alt="Oxford" className="h-10 opacity-80 hover:opacity-100 transition" />
+            <img src="https://admission.caluniv-ucsta.net/themes/landing/images/logo-letter-1.png" alt="Harvard" className="h-10 opacity-80 hover:opacity-100 transition" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Stanford_University_seal_2003.svg" alt="Stanford" className="h-10 opacity-80 hover:opacity-100 transition" />
+            <img src="https://static.mygov.in/static/s3fs-public/mygov_158325903360948201.png" alt="JU" className="h-10 opacity-80 hover:opacity-100 transition " />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/University_of_Cambridge_coat_of_arms.svg" alt="Cambridge" className="h-10 opacity-80 hover:opacity-100 transition" />
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section id="features" className="py-16 px-4">
-        <div className="container mx-auto">
+        <div className="container mx-auto" >
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-foreground">Powerful Features</h2>
-            <p className="text-xl text-muted-foreground font-open-sans">
+            <h2 className="text-4xl font-bold mb-4 text-foreground"> Search thousands of scientific services and instruments </h2>
+            {/* <p className="text-xl text-muted-foreground font-open-sans">
               Everything you need to manage research infrastructure efficiently
-            </p>
+            </p> */}
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
@@ -209,28 +227,25 @@ const ZIKSIRweb = () => {
       <section id="process" className="py-16 px-4 bg-secondary/50">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-foreground">How ZIKSIRweb Works</h2>
+            <h2 className="text-4xl font-bold mb-4 text-foreground">How ziksir Works</h2>
             <p className="text-xl text-muted-foreground font-open-sans">
               Three simple steps to access world-class research infrastructure
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                step: "01",
                 title: "Discover",
                 description: "Browse our comprehensive database of research equipment and facilities. Use filters to find exactly what you need.",
                 icon: "fas fa-search"
               },
               {
-                step: "02",
                 title: "Book",
                 description: "Select your preferred time slots and submit booking requests. Get instant confirmation or quick approval.",
                 icon: "fas fa-calendar-plus"
               },
               {
-                step: "03",
                 title: "Research",
                 description: "Access your booked resources, collaborate with your team, and focus on what matters most - your research.",
                 icon: "fas fa-microscope"
@@ -240,9 +255,6 @@ const ZIKSIRweb = () => {
                 <div className="relative">
                   <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
                     <i className={`${step.icon} text-2xl text-accent-foreground`}></i>
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">
-                    {step.step}
                   </div>
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-foreground">{step.title}</h3>
@@ -262,11 +274,11 @@ const ZIKSIRweb = () => {
               Trusted by leading research institutions worldwide
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                quote: "ZIKSIRweb has revolutionized how we manage our lab equipment. The booking system is intuitive and saves us hours every week.",
+                quote: "ziksir has revolutionized how we manage our lab equipment. The booking system is intuitive and saves us hours every week.",
                 author: "Dr. Sarah Chen",
                 role: "Principal Investigator, Stanford University",
                 avatar: "fas fa-user-circle"
@@ -319,7 +331,7 @@ const ZIKSIRweb = () => {
               Flexible pricing for research teams of all sizes
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               {
@@ -417,55 +429,65 @@ const ZIKSIRweb = () => {
               Ready to transform your research infrastructure management?
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Send us a message</CardTitle>
-                <CardDescription>We'll get back to you within 24 hours</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Name</label>
-                    <input 
-                      type="text" 
-                      className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
-                      placeholder="Your full name"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Email</label>
-                    <input 
-                      type="email" 
-                      className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
-                      placeholder="your.email@institution.edu"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Institution</label>
-                    <input 
-                      type="text" 
-                      className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
-                      placeholder="Your institution name"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Message</label>
-                    <textarea 
-                      rows="4"
-                      className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
-                      placeholder="Tell us about your research infrastructure needs..."
-                    ></textarea>
-                  </div>
-                  <Button type="submit" className="w-full">
-                    <i className="fas fa-paper-plane mr-2"></i>
-                    Send Message
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+<Card>
+  <CardHeader>
+    <CardTitle>Send us a message</CardTitle>
+    <CardDescription>We'll get back to you within 24 hours</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <form
+      className="space-y-4"
+      onSubmit={(e) => {
+        e.preventDefault(); // Prevent page reload
+        alert("Message sent!");
+      }}
+    >
+      <div>
+        <label className="block text-sm font-medium mb-2">Name</label>
+        <input
+          type="text"
+          className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+          placeholder="Your full name"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-2">Email</label>
+        <input
+          type="email"
+          className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+          placeholder="your.email@institution.edu"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-2">Institution</label>
+        <input
+          type="text"
+          className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+          placeholder="Your institution name"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-2">Message</label>
+        <textarea
+          rows="4"
+          className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+          placeholder="Tell us about your research infrastructure needs..."
+          required
+        ></textarea>
+      </div>
+      <Button type="submit" className="w-full">
+        <i className="fas fa-paper-plane mr-2"></i>
+        Send Message
+      </Button>
+    </form>
+  </CardContent>
+</Card>
+
 
             {/* Contact Info & Calendly */}
             <div className="space-y-8">
@@ -478,7 +500,7 @@ const ZIKSIRweb = () => {
                   <div className="bg-secondary rounded-lg p-4 text-center">
                     <i className="fas fa-calendar-alt text-3xl text-accent mb-4"></i>
                     <p className="text-muted-foreground mb-4 font-open-sans">
-                      See ZIKSIRweb in action with a live demo tailored to your needs
+                      See ziksir in action with a live demo tailored to your needs
                     </p>
                     <Button className="w-full">
                       <i className="fas fa-video mr-2"></i>
@@ -500,7 +522,7 @@ const ZIKSIRweb = () => {
                       </div>
                       <div>
                         <div className="font-semibold">Email</div>
-                        <div className="text-muted-foreground">hello@ziksirweb.com</div>
+                        <div className="text-muted-foreground">hello@ziksir.com</div>
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -534,8 +556,8 @@ const ZIKSIRweb = () => {
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="text-2xl font-bold text-primary mb-4">
-                ZIKSI<span className="text-accent">Rweb</span>
+              <div className="font-sans text-3xl font-bold text-primary mb-4">
+                ziksir
               </div>
               <p className="text-muted-foreground font-open-sans">
                 Connecting researchers with the infrastructure they need to advance science.
@@ -570,7 +592,7 @@ const ZIKSIRweb = () => {
             </div>
           </div>
           <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground font-open-sans">
-            <p>&copy; 2024 ZIKSIRweb. All rights reserved.</p>
+            <p>&copy; 2024 ziksir. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -587,4 +609,4 @@ const ZIKSIRweb = () => {
   );
 };
 
-export default ZIKSIRweb;
+export default ziksir;
