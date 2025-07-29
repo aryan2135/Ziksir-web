@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { equipmentService } from "../services/Equipment.service";
+import { equipmentService } from "../services/equipment.service";
 
 class EquipmentController {
     async createEquipment(req: Request, res: Response): Promise<void> {

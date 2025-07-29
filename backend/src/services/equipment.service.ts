@@ -1,5 +1,5 @@
 import { Equipment } from "../models/Equipment.model";
-import { Equipment as EquipmentInterface } from "../interfaces/Equipment.interface";
+import { Equipment as EquipmentInterface } from "../interfaces/equipment.interface";
 
 class EquipmentService {
     async createEquipment(data: EquipmentInterface): Promise<EquipmentInterface> {

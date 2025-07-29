@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { Equipment as EquipmentInterface } from "../interfaces/Equipment.interface";
+import { Equipment as EquipmentInterface } from "../interfaces/equipment.interface";
 
 const EquipmentSchema = new Schema<EquipmentInterface>({
     name: { type: String, required: true },

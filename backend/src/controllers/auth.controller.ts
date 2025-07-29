@@ -1,25 +1,25 @@
-import { Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
-import { User } from '../models/User';
-import { generateToken } from '../utils/jwt';
+import { Request, Response } from "express";
+import { authService } from "../services/auth.service";
 
-export const register = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-  const userExists = await User.findOne({ email });
-  if (userExists) return res.status(400).json({ message: 'User already exists' });
+class AuthController {
+    async signup(req: Request, res: Response): Promise<void> {
+        try {
+            const user = await authService.signup(req.body);
+            res.status(201).json({ message: "User registered successfully", user });
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 
-  const hash = await bcrypt.hash(password, 10);
-  const user = await User.create({ name, email, password: hash });
-  res.status(201).json({ token: generateToken(user.id) });
-};
+    async login(req: Request, res: Response): Promise<void> {
+        try {
+            const { email, password } = req.body;
+            const { token, user } = await authService.login(email, password);
+            res.status(200).json({ message: "Login successful", token, user });
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+}
 
-export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) return res.status(401).json({ message: 'Invalid credentials' });
-
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.status(401).json({ message: 'Invalid credentials' });
-
-  res.json({ token: generateToken(user.id) });
-};
+export const authController = new AuthController();
