@@ -1,0 +1,74 @@
+backend/
+├── src/
+│   ├── config/                    # All app-level configuration
+│   │   ├── db.ts                  # MongoDB connection
+│   │   └── env.ts                 # Environment variable loader
+│
+│   ├── constants/                 # Constant values (roles, status codes, etc.)
+│   │   └── roles.ts
+│
+│   ├── controllers/              # Route logic handlers
+│   │   ├── auth.controller.ts
+│   │   ├── user.controller.ts
+│   │   ├── equipment.controller.ts
+│   │   ├── booking.controller.ts
+│   │   ├── notification.controller.ts
+│   │   ├── admin.controller.ts
+│   │   └── upload.controller.ts
+│
+│   ├── services/                 # Business logic layer
+│   │   ├── auth.service.ts
+│   │   ├── user.service.ts
+│   │   ├── equipment.service.ts
+│   │   ├── booking.service.ts
+│   │   ├── notification.service.ts
+│   │   ├── admin.service.ts
+│   │   └── fileUpload.service.ts
+│
+│   ├── models/                   # Mongoose schemas
+│   │   ├── User.ts
+│   │   ├── Equipment.ts
+│   │   ├── Booking.ts
+│   │   └── Notification.ts
+│
+│   ├── routes/                   # Route definitions
+│   │   ├── auth.routes.ts
+│   │   ├── user.routes.ts
+│   │   ├── equipment.routes.ts
+│   │   ├── booking.routes.ts
+│   │   ├── notification.routes.ts
+│   │   ├── admin.routes.ts
+│   │   └── upload.routes.ts
+│
+│   ├── middlewares/             # Reusable middleware functions
+│   │   ├── authMiddleware.ts
+│   │   ├── roleMiddleware.ts
+│   │   ├── errorHandler.ts
+│   │   ├── validateRequest.ts
+│   │   └── rateLimiter.ts
+│
+│   ├── utils/                    # Utility/helper functions
+│   │   ├── jwt.ts
+│   │   ├── mailer.ts
+│   │   ├── fileUpload.ts
+│   │   ├── timeUtils.ts
+│   │   └── generateSlotAvailability.ts
+│
+│   ├── jobs/                     # Cron and background jobs
+│   │   ├── cleanupBookings.ts
+│   │   └── notifyAdmins.ts
+│
+│   ├── types/                    # Custom TS types/interfaces
+│   │   ├── express/index.d.ts    # Express type augmentation (e.g. req.user)
+│   │   └── global.d.ts
+│
+│   ├── app.ts                    # Main Express app
+│   └── server.ts                 # Entry point
+│
+├── .env                          # Environment variables
+├── .env.example                  # Sample env
+├── .gitignore
+├── package.json
+├── tsconfig.json
+├── README.md
+└── yarn.lock / package-lock.json
