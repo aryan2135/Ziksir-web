@@ -282,8 +282,8 @@ const ziksir = () => {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground">What Researchers Say</h2>
-            <p className="text-xl text-muted-foreground font-open-sans">
-              Trusted by leading research institutions worldwide
+            <p className="text-xl text-muted-foreground font-open-sans font-semibold">
+              Trusted by leading research institutions throughout the country. 
             </p>
           </div>
 
@@ -315,7 +315,7 @@ const ziksir = () => {
                       <i key={i} className="fas fa-star text-accent text-sm"></i>
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-6 font-open-sans italic">
+                  <p className="text-muted-foreground mb-6 font-open-sans italic font-medium">
                     "{testimonial.quote}"
                   </p>
                   <div className="flex items-center">
@@ -323,7 +323,7 @@ const ziksir = () => {
                       <i className={`${testimonial.avatar} text-accent-foreground`}></i>
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground">{testimonial.author}</div>
+                      <div className="font-semibold text-foreground font-bold">{testimonial.author}</div>
                       <div className="text-sm text-muted-foreground">{testimonial.role}</div>
                     </div>
                   </div>
