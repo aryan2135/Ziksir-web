@@ -10,4 +10,6 @@ export interface Equipment extends Document {
         key: string;
         value: any;
     }>;
+    quantity: number;
+    available: number;
 }

@@ -1,12 +1,63 @@
-import { Request, Response } from 'express';
-import { Booking } from '../models/Booking';
+import { Request, Response } from "express";
+import { bookingService } from "../services/booking.service";
 
-export const createBooking = async (req: Request, res: Response) => {
-  const { equipment, date } = req.body;
-  const booking = await Booking.create({
-    userId: req.user._id,
-    equipment,
-    date,
-  });
-  res.status(201).json(booking);
-};
+class BookingController {
+    async createBooking(req: Request, res: Response): Promise<void> {
+        try {
+            const booking = await bookingService.createBooking(req.body);
+            res.status(201).json(booking);
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    async getAllBookings(req: Request, res: Response): Promise<void> {
+        try {
+            const bookings = await bookingService.getAllBookings();
+            res.status(200).json(bookings);
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    async getBookingById(req: Request, res: Response): Promise<void> {
+        try {
+            const booking = await bookingService.getBookingById(req.params.id);
+            if (!booking) {
+                res.status(404).json({ message: "Booking not found" });
+                return;
+            }
+            res.status(200).json(booking);
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    async updateBooking(req: Request, res: Response): Promise<void> {
+        try {
+            const booking = await bookingService.updateBooking(req.params.id, req.body);
+            if (!booking) {
+                res.status(404).json({ message: "Booking not found" });
+                return;
+            }
+            res.status(200).json(booking);
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    async deleteBooking(req: Request, res: Response): Promise<void> {
+        try {
+            const booking = await bookingService.deleteBooking(req.params.id);
+            if (!booking) {
+                res.status(404).json({ message: "Booking not found" });
+                return;
+            }
+            res.status(200).json({ message: "Booking deleted successfully" });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+}
+
+export const bookingController = new BookingController();

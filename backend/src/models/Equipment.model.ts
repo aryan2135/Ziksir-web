@@ -19,6 +19,8 @@ const EquipmentSchema = new Schema<EquipmentInterface>({
         value: { type: Schema.Types.Mixed, required: true },
         },
     ],
+    quantity: {type: Number, default: 1},
+    available: {type: Number, default: 1},
 });
 
 export const Equipment = mongoose.model<EquipmentInterface>('Equipment', EquipmentSchema);
