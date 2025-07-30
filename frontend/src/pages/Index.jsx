@@ -152,12 +152,24 @@ const ziksir = () => {
           <p className="text-sm mb-20 opacity-80 tracking-wide">
             Trusted by leading institutions worldwide
           </p>
-          <div className="flex justify-center items-center gap-8 flex-wrap">
-            <img src="https://d1aeya7jd2fyco.cloudfront.net/logo/IIT_Kharagpur_logo.webp" alt="Oxford" className="h-10 opacity-80 hover:opacity-100 transition" />
-            <img src="https://admission.caluniv-ucsta.net/themes/landing/images/logo-letter-1.png" alt="Harvard" className="h-10 opacity-80 hover:opacity-100 transition" />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Stanford_University_seal_2003.svg" alt="Stanford" className="h-10 opacity-80 hover:opacity-100 transition" />
-            <img src="https://static.mygov.in/static/s3fs-public/mygov_158325903360948201.png" alt="JU" className="h-10 opacity-80 hover:opacity-100 transition " />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/University_of_Cambridge_coat_of_arms.svg" alt="Cambridge" className="h-10 opacity-80 hover:opacity-100 transition" />
+          <div className="relative w-full">
+            <div className="flex min-w-full animate-marquee gap-8">
+              <img src="logo-iitkgp.png" alt="IIT Kharagpur" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-cu.png" alt="Calcutta University" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-durgapur.png" alt="NIT Durgapur" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-jadavpur.png" alt="Jadavpur University" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-shibpur.png" alt="IIEST Shibpur" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-heritage.png" alt="Heritage College" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-bangalore.png" alt="IISc Bangalore" className="h-20 opacity-80 hover:opacity-100 transition" />
+
+              <img src="logo-iitkgp.png" alt="IIT Kharagpur" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-cu.png" alt="Calcutta University" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-durgapur.png" alt="NIT Durgapur" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-jadavpur.png" alt="Jadavpur University" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-shibpur.png" alt="IIEST Shibpur" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-heritage.png" alt="Heritage College" className="h-20 opacity-80 hover:opacity-100 transition" />
+              <img src="logo-bangalore.png" alt="IISc Bangalore" className="h-20 opacity-80 hover:opacity-100 transition" />
+            </div>
           </div>
         </div>
       </section>
