@@ -184,7 +184,7 @@ const ziksir = () => {
             </p> */}
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:px-20">
             {[
               {
                 icon: "fas fa-search",
@@ -217,15 +217,15 @@ const ziksir = () => {
                 description: "Connect with existing lab management systems and research workflows seamlessly."
               }
             ].map((feature, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-                <CardHeader>
+              <Card key={index} className="hover:shadow-lg hover:scale-105 transition-all duration-300">
+                <CardHeader className="pb-2">
                   <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mb-4">
                     <i className={`${feature.icon} text-xl text-accent-foreground`}></i>
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <CardTitle className="text-xl font-bold">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="font-open-sans">
+                  <CardDescription className="font-open-sans font-semibold">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
