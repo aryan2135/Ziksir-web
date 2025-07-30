@@ -8,6 +8,9 @@ const ziksir = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const [equipmentList, setEquipmentList] = useState([]);
+  
+
   // useEffect(() => {
   //   // Set dark mode as default
   //   document.documentElement.classList.add('dark');
@@ -153,24 +156,12 @@ const ziksir = () => {
           <p className="text-lg mb-20 opacity-80 tracking-wide">
             Trusted by leading institutions accross the country.
           </p>
-          <div className="relative w-full overflow-hidden">
-            <div className="flex min-w-full animate-marquee gap-8">
-              <img src="logo-iitkgp.png" alt="IIT Kharagpur" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-cu.png" alt="Calcutta University" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-durgapur.png" alt="NIT Durgapur" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-jadavpur.png" alt="Jadavpur University" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-shibpur.png" alt="IIEST Shibpur" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-heritage.png" alt="Heritage College" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-bangalore.png" alt="IISc Bangalore" className="h-20 opacity-80 hover:opacity-100 transition" />
-
-              <img src="logo-iitkgp.png" alt="IIT Kharagpur" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-cu.png" alt="Calcutta University" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-durgapur.png" alt="NIT Durgapur" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-jadavpur.png" alt="Jadavpur University" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-shibpur.png" alt="IIEST Shibpur" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-heritage.png" alt="Heritage College" className="h-20 opacity-80 hover:opacity-100 transition" />
-              <img src="logo-bangalore.png" alt="IISc Bangalore" className="h-20 opacity-80 hover:opacity-100 transition" />
-            </div>
+          <div className="flex justify-center items-center gap-8 flex-wrap">
+            <img src="https://d1aeya7jd2fyco.cloudfront.net/logo/IIT_Kharagpur_logo.webp" alt="IIT-KGP" className="h-10 opacity-80 hover:opacity-100 transition" />
+            <img src="https://admission.caluniv-ucsta.net/themes/landing/images/logo-letter-1.png" alt="CU" className="h-10 opacity-80 hover:opacity-100 transition" />
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCKP37dIn2KZGvcMbrUI0UCgJP6BHqh4Ud4vqwSUbI92ieVZ3bSe63wFv7b08tHz38Uno&usqp=CAU" alt="Stanford" className="h-10 opacity-80 hover:opacity-100 transition size-10px " />
+            <img src="https://static.mygov.in/static/s3fs-public/mygov_158325903360948201.png" alt="JU" className="h-10 opacity-80 hover:opacity-100 transition " />
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm7y8MFUss9YP5eouTNU67WBvh_c6yZAfWeg&s" alt="IISc" className="h-10 opacity-80 hover:opacity-100 transition" />
           </div>
         </div>
       </section>
