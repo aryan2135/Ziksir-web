@@ -147,12 +147,12 @@ const ziksir = () => {
       </section>
 
       {/* Institution Logos Section */}
-      <section className="bg-gray-900 text-white py-20 px-4">
-        <div className="container mx-auto text-center">
-          <p className="text-sm mb-20 opacity-80 tracking-wide">
-            Trusted by leading institutions worldwide
+      <section className="bg-gray-900 text-white py-20">
+        <div className="text-center">
+          <p className="text-lg mb-20 opacity-80 tracking-wide">
+            Trusted by leading institutions accross the country.
           </p>
-          <div className="relative w-full">
+          <div className="relative w-full overflow-hidden">
             <div className="flex min-w-full animate-marquee gap-8">
               <img src="logo-iitkgp.png" alt="IIT Kharagpur" className="h-20 opacity-80 hover:opacity-100 transition" />
               <img src="logo-cu.png" alt="Calcutta University" className="h-20 opacity-80 hover:opacity-100 transition" />
@@ -308,7 +308,7 @@ const ziksir = () => {
                 avatar: "fas fa-user-circle"
               }
             ].map((testimonial, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
+              <Card key={index} className="hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out">
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
                     {[...Array(5)].map((_, i) => (

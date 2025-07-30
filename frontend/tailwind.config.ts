@@ -98,7 +98,7 @@ export default {
 				},
 				'marquee': {
 					'0%': { transform: 'translateX(0)'},
-					'100%': {transform: 'translateX(-147%)'},
+					'100%': {transform: 'translateX(-2225px)'},
 				}
 			},
 			animation: {
