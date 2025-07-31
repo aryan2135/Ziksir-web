@@ -176,7 +176,7 @@ const ziksir = () => {
 
       {/* Features Section */}
       <section id="features" className="py-16 px-4">
-        <div className="container mx-auto" >
+        <div className="container mx-auto animate-slidein [--slidein-delay:300ms] opacity-0" >
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground"> Search thousands of scientific services and instruments </h2>
             {/* <p className="text-xl text-muted-foreground font-open-sans">
