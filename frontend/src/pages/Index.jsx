@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import SlideInSection from '@/components/ui/slidein';
 
 const ziksir = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -176,7 +177,8 @@ const ziksir = () => {
 
       {/* Features Section */}
       <section id="features" className="py-16 px-4">
-        <div className="container mx-auto animate-slidein [--slidein-delay:300ms] opacity-0" >
+        <SlideInSection className="container mx-auto">
+        <div className="container mx-auto" >
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground"> Search thousands of scientific services and instruments </h2>
             {/* <p className="text-xl text-muted-foreground font-open-sans">
@@ -233,10 +235,12 @@ const ziksir = () => {
             ))}
           </div>
         </div>
+        </SlideInSection>
       </section>
 
       {/* Process Section */}
       <section id="process" className="py-16 px-4 bg-secondary/50">
+        <SlideInSection delay="200ms" className="container mx-auto opacity-0">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground">How ziksir Works</h2>
@@ -275,10 +279,12 @@ const ziksir = () => {
             ))}
           </div>
         </div>
+        </SlideInSection>
       </section>
 
       {/* Testimonials Section */}
       <section className="py-16 px-4">
+        <SlideInSection className="container mx-auto">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground">What Researchers Say</h2>
@@ -332,10 +338,12 @@ const ziksir = () => {
             ))}
           </div>
         </div>
+        </SlideInSection>
       </section>
 
       {/* Pricing Section */}
       <section id="pricing" className="py-16 px-4 bg-secondary/50">
+        <SlideInSection className="container mx-auto">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground">Choose Your Plan</h2>
@@ -430,10 +438,12 @@ const ziksir = () => {
             ))}
           </div>
         </div>
+        </SlideInSection>
       </section>
 
       {/* Contact Section */}
       <section id="contact" className="py-16 px-4">
+        <SlideInSection className="container mx-auto">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground">Get In Touch</h2>
@@ -561,6 +571,7 @@ const ziksir = () => {
             </div>
           </div>
         </div>
+          </SlideInSection> 
       </section>
 
       {/* Footer */}

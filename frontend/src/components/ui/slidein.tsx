@@ -24,7 +24,7 @@ export default function SlideInSection({ children, delay = '0ms', className = ''
       className={`transition-opacity duration-1000 ${
         isVisible ? 'animate-slidein opacity-100' : 'opacity-0'
       } ${className}`}
-      style={{ '--slidein-delay': "0ms"}}
+      style={{ '--slidein-delay': "0ms" }}
     >
       {children}
     </div>

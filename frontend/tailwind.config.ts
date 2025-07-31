@@ -103,7 +103,7 @@ export default {
 				'slidein': {
 					from: {
 						opacity: "0",
-						transform: "translateY(40px)",
+						transform: "translateY(80px)",
 					},
 					to: {
 						opacity: "100",
@@ -115,7 +115,7 @@ export default {
 				'a ccordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'marquee': 'marquee 20s linear infinite',
-				'slidein': 'slidein 1s ease var(--slidein-delay, 0) forwards'
+				'slidein': 'slidein 2s ease var(--slidein-delay, 0) forwards'
 			}
 		}
 	},
