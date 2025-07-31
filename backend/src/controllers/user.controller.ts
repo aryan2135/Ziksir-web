@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { authService } from "../services/auth.service";
+import { authService } from "../services/user.service";
 
 class AuthController {
     async signup(req: Request, res: Response): Promise<void> {
@@ -18,6 +18,15 @@ class AuthController {
             res.status(200).json({ message: "Login successful", token, user });
         } catch (error: any) {
             res.status(400).json({ error: error.message });
+        }
+    }
+
+    async getTotalUserCount(req: Request, res: Response): Promise<void> {
+        try {
+            const totalUsers = await authService.getTotalUserCount();
+            res.status(200).json({ totalUsers });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
         }
     }
 }

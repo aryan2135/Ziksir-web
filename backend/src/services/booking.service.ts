@@ -1,5 +1,5 @@
-import { Booking } from "../models/Booking.model";
-import { Equipment } from "../models/Equipment.model";
+import { Booking } from "../models/booking.model";
+import { Equipment } from "../models/equipment.model";
 import { Booking as BookingInterface } from "../interfaces/booking.interface";
 
 class BookingService {
@@ -75,6 +75,22 @@ class BookingService {
 
     async getBookingsByEquipmentId(equipmentId: string): Promise<BookingInterface[]> {
         return await Booking.find({ equipmentId }).populate("userId");
+    }
+
+    async getBookingCounts(): Promise<{ totalBookings: number; pendingBookings: number; approvedBookings: number; completedBookings: number; cancelledBookings: number }> {
+        const totalBookings = await Booking.countDocuments();
+        const pendingBookings = await Booking.countDocuments({ status: 'pending' });
+        const approvedBookings = await Booking.countDocuments({ status: 'approved' });
+        const completedBookings = await Booking.countDocuments({ status: 'completed' });
+        const cancelledBookings = await Booking.countDocuments({ status: 'cancelled' });
+
+        return {
+            totalBookings,
+            pendingBookings,
+            approvedBookings,
+            completedBookings,
+            cancelledBookings,
+        };
     }
 }
 

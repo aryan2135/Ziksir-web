@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import authRoutes from './routes/auth.routes';
+import authRoutes from './routes/user.routes';
 import bookingRoutes from './routes/booking.routes';
 import equipmentRoutes from './routes/equipment.routes';
 

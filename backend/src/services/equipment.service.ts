@@ -1,4 +1,4 @@
-import { Equipment } from "../models/Equipment.model";
+import { Equipment } from "../models/equipment.model";
 import { Equipment as EquipmentInterface } from "../interfaces/equipment.interface";
 
 class EquipmentService {
@@ -9,6 +9,10 @@ class EquipmentService {
 
     async getAllEquipment(): Promise<EquipmentInterface[]> {
         return await Equipment.find();
+    }
+
+    async getTotalEquipmentCount(): Promise<number> {
+        return await Equipment.countDocuments();
     }
 
     async getEquipmentById(id: string): Promise<EquipmentInterface | null> {

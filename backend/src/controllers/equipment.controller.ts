@@ -20,6 +20,15 @@ class EquipmentController {
         }
     }
 
+    async getTotalEquipmentCount(req: Request, res: Response): Promise<void> {
+        try{
+            const totalEquipments = await equipmentService.getTotalEquipmentCount();
+            res.status(200).json({ totalEquipments});
+        } catch (error: any) {
+            res.status(500).json({error: error.message});
+        }
+    }
+
     async getEquipmentById(req: Request, res: Response): Promise<void> {
         try {
             const equipment = await equipmentService.getEquipmentById(req.params.id);

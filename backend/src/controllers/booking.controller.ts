@@ -58,6 +58,21 @@ class BookingController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    async getBookingCounts(req: Request, res: Response): Promise<void> {
+        try {
+            const { totalBookings, approvedBookings, pendingBookings, completedBookings, cancelledBookings } = await bookingService.getBookingCounts();
+            res.status(200).json({
+                totalBookings,
+                approvedBookings,
+                pendingBookings,
+                completedBookings,
+                cancelledBookings
+            });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 }
 
 export const bookingController = new BookingController();

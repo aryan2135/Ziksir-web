@@ -9,6 +9,7 @@ router.get('/test', (req, res) => {
 
 router.get("/", (req, res) => equipmentController.getAllEquipment(req, res));
 router.post("/", (req, res) => equipmentController.createEquipment(req, res));
+router.get('/count', (req, res) => equipmentController.getTotalEquipmentCount(req, res));
 router.get("/:id", (req, res) => equipmentController.getEquipmentById(req, res));
 router.put("/:id", (req, res) => equipmentController.updateEquipment(req, res));
 router.delete("/:id", (req, res) => equipmentController.deleteEquipment(req, res));

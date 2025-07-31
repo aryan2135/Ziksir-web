@@ -1,5 +1,5 @@
-import { User as UserInterface, UserData } from "../interfaces/auth.interface";
-import { User } from "../models/User";
+import { User as UserInterface, UserData } from "../interfaces/user.interface";
+import { User } from "../models/user.model";
 
 import { model } from "mongoose";
 import bcrypt from "bcrypt";
@@ -42,6 +42,10 @@ class AuthService {
         );
 
         return { token, user };
+    }
+
+    async getTotalUserCount(): Promise<number> {
+        return await User.countDocuments();
     }
 }
 
