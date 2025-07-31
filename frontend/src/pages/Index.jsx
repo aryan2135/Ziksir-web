@@ -217,7 +217,7 @@ const ziksir = () => {
                 description: "Connect with existing lab management systems and research workflows seamlessly."
               }
             ].map((feature, index) => (
-              <Card key={index} className="hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Card key={index} className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
                 <CardHeader className="pb-2">
                   <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mb-4">
                     <i className={`${feature.icon} text-xl text-accent-foreground`}></i>
@@ -308,7 +308,7 @@ const ziksir = () => {
                 avatar: "fas fa-user-circle"
               }
             ].map((testimonial, index) => (
-              <Card key={index} className="hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out">
+              <Card key={index} className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out">
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
                     {[...Array(5)].map((_, i) => (
@@ -394,7 +394,7 @@ const ziksir = () => {
                 popular: false
               }
             ].map((plan, index) => (
-              <Card key={index} className={`relative hover:shadow-xl transition-all duration-300 ${plan.popular ? 'ring-2 ring-accent scale-105' : ''}`}>
+              <Card key={index} className={`relative shadow hover:shadow-xl hover:scale-105 transition-all duration-300 ${plan.popular ? 'shadow-lg hover:shadow-2xl hover:scale-110 ring-2 ring-accent scale-105' : ''}`}>
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-semibold">
@@ -564,11 +564,11 @@ const ziksir = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-secondary py-12 px-4">
+      <footer className="bg-navy py-12 px-4">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="font-sans text-3xl font-bold text-primary mb-4">
+              <div className="font-sans text-3xl font-bold text-secondary mb-4">
                 ziksir
               </div>
               <p className="text-muted-foreground font-open-sans">
@@ -576,7 +576,7 @@ const ziksir = () => {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-foreground">Product</h4>
+              <h4 className="font-semibold mb-4 text-secondary">Product</h4>
               <ul className="space-y-2 text-muted-foreground font-open-sans">
                 <li><a href="#" className="hover:text-accent transition-colors">Features</a></li>
                 <li><a href="#" className="hover:text-accent transition-colors">Pricing</a></li>
@@ -585,7 +585,7 @@ const ziksir = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-foreground">Company</h4>
+              <h4 className="font-semibold mb-4 text-secondary">Company</h4>
               <ul className="space-y-2 text-muted-foreground font-open-sans">
                 <li><a href="#" className="hover:text-accent transition-colors">About</a></li>
                 <li><a href="#" className="hover:text-accent transition-colors">Blog</a></li>
@@ -594,7 +594,7 @@ const ziksir = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-foreground">Support</h4>
+              <h4 className="font-semibold mb-4 text-secondary">Support</h4>
               <ul className="space-y-2 text-muted-foreground font-open-sans">
                 <li><a href="#" className="hover:text-accent transition-colors">Help Center</a></li>
                 <li><a href="#" className="hover:text-accent transition-colors">Documentation</a></li>
@@ -603,7 +603,7 @@ const ziksir = () => {
               </ul>
             </div>
           </div>
-          <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground font-open-sans">
+          <div className="mt-8 pt-8 text-center text-muted-foreground font-open-sans">
             <p>&copy; 2024 ziksir. All rights reserved.</p>
           </div>
         </div>
