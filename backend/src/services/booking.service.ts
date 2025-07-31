@@ -92,6 +92,28 @@ class BookingService {
             cancelledBookings,
         };
     }
+
+    async getBookingCountByUserId(userId: string): Promise<{
+        totalBookings: number;
+        pendingBookings: number;
+        approvedBookings: number;
+        completedBookings: number;
+        cancelledBookings: number;
+    }> {
+        const totalBookings = await Booking.countDocuments({ userId });
+        const pendingBookings = await Booking.countDocuments({ userId, status: "pending" });
+        const approvedBookings = await Booking.countDocuments({ userId, status: "approved" });
+        const completedBookings = await Booking.countDocuments({ userId, status: "completed" });
+        const cancelledBookings = await Booking.countDocuments({ userId, status: "cancelled" });
+
+        return {
+            totalBookings,
+            pendingBookings,
+            approvedBookings,
+            completedBookings,
+            cancelledBookings,
+        };
+    }
 }
 
 export const bookingService = new BookingService();

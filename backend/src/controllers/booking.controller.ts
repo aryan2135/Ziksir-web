@@ -73,6 +73,16 @@ class BookingController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    async getBookingCountByUserId(req: Request, res: Response): Promise<void> {
+        try {
+            const userId = req.params.id;
+            const bookings = await bookingService.getBookingCountByUserId(userId);
+            res.status(200).json(bookings);
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 }
 
 export const bookingController = new BookingController();
