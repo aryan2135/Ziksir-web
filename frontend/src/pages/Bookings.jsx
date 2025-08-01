@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "@/api/axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -11,38 +12,51 @@ import interactionPlugin from "@fullcalendar/interaction";
 const Bookings = () => {
   const [open, setOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [bookings, setBookings] = useState([]);
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
   const calendarRef = useRef(null);
 
-  const bookings = [
-    { title: "Microscope Booking", user: "Alice", date: "2025-07-28", status: "Confirmed" },
-    { title: "PCR Machine", user: "Bob", date: "2025-07-29", status: "Pending" },
-    { title: "Spectrophotometer", user: "Charlie", date: "2025-08-01", status: "Cancelled" },
-  ];
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/booking")
+      .then((res) => {
+        setBookings(res.data);
+      })
+      .catch((err) => {
+        console.error("Error fetching bookings:", err);
+      });
+  }, []);
 
   const getEventColor = (status) => {
     switch (status) {
-      case "Confirmed": return "#3B82F6"; // Blue
-      case "Pending": return "#F59E0B"; // Yellow
-      case "Cancelled": return "#EF4444"; // Red
-      default: return "#6B7280"; // Gray
+      case "Confirmed": return "#3B82F6";
+      case "Pending": return "#F59E0B";
+      case "Cancelled": return "#EF4444";
+      default: return "#6B7280";
     }
   };
 
   const handleEventClick = (info) => {
     setSelectedEvent(info.event);
-    setStartDateTime(info.event.start.toISOString().slice(0, 16));
-    setEndDateTime(info.event.end ? info.event.end.toISOString().slice(0, 16) : info.event.start.toISOString().slice(0, 16));
+    setStartDateTime(info.event.start?.toISOString().slice(0, 16));
+    setEndDateTime(info.event.end?.toISOString().slice(0, 16));
     setEditOpen(true);
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (selectedEvent) {
       selectedEvent.setStart(startDateTime);
       selectedEvent.setEnd(endDateTime);
+      try {
+        await axios.put(`http://localhost:5000/api/booking/${selectedEvent.extendedProps._id}`, {
+          startTime: startDateTime,
+          endTime: endDateTime,
+        });
+      } catch (err) {
+        console.error("Error updating booking:", err);
+      }
     }
     setEditOpen(false);
   };
@@ -50,18 +64,14 @@ const Bookings = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-foreground">Booking Management</h2>
-        <Button
-          variant="outline"
-          onClick={() => setCalendarOpen(true)}
-          className="flex items-center space-x-2"
-        >
+        <h2 className="text-3xl font-bold text-foreground">Booking Requests</h2>
+        <Button variant="outline" onClick={() => setCalendarOpen(true)}>
           <i className="fas fa-calendar-alt"></i>
-          <span>View Calendar</span>
+          <span className="ml-2">View Calendar</span>
         </Button>
       </div>
 
-      {/* Recent Bookings */}
+      {/* Recent Bookings List */}
       <Card>
         <CardHeader>
           <CardTitle>Recent Bookings</CardTitle>
@@ -69,30 +79,23 @@ const Bookings = () => {
         <CardContent>
           <div className="space-y-4">
             {bookings.map((booking, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between p-4 bg-secondary rounded-lg"
-              >
+              <div key={index} className="flex items-center justify-between p-4 bg-secondary rounded-lg">
                 <div>
                   <h4 className="font-semibold text-foreground">{booking.title}</h4>
                   <p className="text-sm text-muted-foreground">
-                    {booking.user} • {booking.date}
+                    {booking.user?.name || "Unknown"} • {new Date(booking.slotDate).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="flex space-x-2">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${booking.status === "Confirmed"
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    booking.status === "Confirmed"
                       ? "bg-blue-100 text-blue-800"
                       : booking.status === "Pending"
                         ? "bg-yellow-100 text-yellow-800"
                         : "bg-red-100 text-red-800"
-                      }`}
-                  >
+                  }`}>
                     {booking.status}
                   </span>
-                  <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
-                    <i className="fas fa-edit"></i>
-                  </Button>
                 </div>
               </div>
             ))}
@@ -100,37 +103,12 @@ const Bookings = () => {
         </CardContent>
       </Card>
 
-      {/* Reschedule Dialog */}
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Reschedule Booking</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <Input type="date" className="w-full" />
-            <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-              <Button>Save Changes</Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
       {/* Calendar Modal */}
       <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
-        <DialogContent
-          className="max-w-5xl w-full max-h-[90vh] overflow-auto relative animate-modal"
-          style={{
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            position: "fixed",
-          }}
-        >
+        <DialogContent className="max-w-5xl w-full max-h-[90vh] overflow-auto animate-modal">
           <DialogHeader className="w-full flex justify-between items-center">
             <DialogTitle className="text-2xl font-bold">Bookings Calendar</DialogTitle>
           </DialogHeader>
-
           <div className="p-4 w-full">
             <FullCalendar
               ref={calendarRef}
@@ -138,10 +116,11 @@ const Bookings = () => {
               initialView="timeGridWeek"
               events={bookings.map((b) => ({
                 title: b.title,
-                start: b.date,
+                start: b.startTime,
+                end: b.endTime || b.startTime,
                 color: getEventColor(b.status),
+                _id: b._id,
               }))}
-              height="auto"
               eventClick={handleEventClick}
               headerToolbar={{
                 start: "prevYear,prev,next,nextYear today",
@@ -151,17 +130,11 @@ const Bookings = () => {
               customButtons={{
                 prevYear: {
                   text: "«",
-                  click: function () {
-                    const calendarApi = calendarRef.current.getApi();
-                    calendarApi.prevYear();
-                  },
+                  click: () => calendarRef.current.getApi().prevYear(),
                 },
                 nextYear: {
                   text: "»",
-                  click: function () {
-                    const calendarApi = calendarRef.current.getApi();
-                    calendarApi.nextYear();
-                  },
+                  click: () => calendarRef.current.getApi().nextYear(),
                 },
               }}
               buttonText={{
@@ -176,7 +149,7 @@ const Bookings = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Event Edit Modal */}
+      {/* Edit Booking Dialog */}
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent>
           <DialogHeader>
@@ -186,19 +159,11 @@ const Bookings = () => {
             <p className="font-semibold">{selectedEvent?.title}</p>
             <div>
               <label className="block text-sm font-medium mb-1">Start Date & Time</label>
-              <Input
-                type="datetime-local"
-                value={startDateTime}
-                onChange={(e) => setStartDateTime(e.target.value)}
-              />
+              <Input type="datetime-local" value={startDateTime} onChange={(e) => setStartDateTime(e.target.value)} />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">End Date & Time</label>
-              <Input
-                type="datetime-local"
-                value={endDateTime}
-                onChange={(e) => setEndDateTime(e.target.value)}
-              />
+              <Input type="datetime-local" value={endDateTime} onChange={(e) => setEndDateTime(e.target.value)} />
             </div>
             <div className="flex justify-end space-x-2">
               <Button variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
@@ -208,7 +173,7 @@ const Bookings = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Animation CSS */}
+      {/* Animations */}
       <style>
         {`
           .animate-modal {

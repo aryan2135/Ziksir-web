@@ -12,6 +12,8 @@ const AdminDas = () => {
     const userType = localStorage.getItem("userType");
 
     if (!isAuthenticated || userType !== "admin") {
+      console.log('auth value: ', isAuthenticated);
+      console.log('userType value: ', userType);
       navigate("/auth");
       return;
     }

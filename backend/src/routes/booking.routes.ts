@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/test', (req, res) => {
     res.json({ message: 'Booking route is working!' });
 })
-router.post('/', (req, res) => bookingController.createBooking(req, res));
+router.post('/',(req, res) => bookingController.createBooking(req, res));
 router.get('/', (req, res) => bookingController.getAllBookings(req, res));
 router.get('/:id', (req, res) => bookingController.getBookingById(req, res));
 router.put('/:id', (req, res) => bookingController.updateBooking(req, res));

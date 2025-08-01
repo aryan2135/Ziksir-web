@@ -1,91 +1,87 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Added navigation
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function MyBookings() {
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
+  const [userBookings, setUserBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [userBookings] = useState([
-    {
-      id: 1,
-      equipmentName: "Confocal Microscope",
-      bookingDate: "2025-07-20",
-      timeSlot: "09:00-10:00 AM",
-      status: "approved",
-      organizationAddress: "ABC Research Institute",
-      noOfSamples: 3,
-      organizationCategory: "Academic",
-      emailId: "john.doe@example.com",
-      contactNo: "+91 9876543210",
-      submittedAt: "2025-07-18",
-      sampleDescription: "Microscopy analysis for protein visualization."
-    },
-    {
-      id: 2,
-      equipmentName: "PCR Machine",
-      bookingDate: "2025-07-18",
-      timeSlot: "10:00-11:00 AM",
-      status: "completed",
-      organizationAddress: "XYZ Labs",
-      noOfSamples: 5,
-      organizationCategory: "Industry",
-      emailId: "lab@example.com",
-      contactNo: "+91 9876500000",
-      submittedAt: "2025-07-15",
-      sampleDescription: "DNA amplification testing."
+  const fetchBookings = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/api/bookings/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUserBookings(response.data);
+    } catch (error) {
+      console.error("Failed to fetch bookings", error);
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold text-poppins">My Bookings</h2>
         <Button
           className="bg-accent hover:bg-accent/90"
-          onClick={() => navigate("/user/book-slots")} // Navigate to booking page
+          onClick={() => navigate("/user/book-slots")}
         >
           <i className="fas fa-plus mr-2"></i>
           New Booking
         </Button>
       </div>
 
-      {/* Bookings List */}
-      <div className="grid gap-6">
-        {userBookings.length === 0 ? (
-          // Empty State
-          <Card>
-            <CardContent className="p-12 text-center">
-              <i className="fas fa-calendar-times text-6xl text-muted-foreground mb-4"></i>
-              <h3 className="text-xl font-semibold text-foreground mb-2">No Bookings Yet</h3>
-              <p className="text-muted-foreground mb-4">
-                You haven't made any equipment bookings yet.
-              </p>
-              <Button
-                className="bg-accent hover:bg-accent/90"
-                onClick={() => navigate("/book-slots")} // Navigate to booking page
-              >
-                <i className="fas fa-plus mr-2"></i>
-                Book Your First Slot
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          userBookings.map((booking) => (
-            <Card key={booking.id} className="hover:shadow-lg transition-shadow">
+      {loading ? (
+        <p className="text-muted-foreground text-center">Loading bookings...</p>
+      ) : userBookings.length === 0 ? (
+        <Card>
+          <CardContent className="p-12 text-center">
+            <i className="fas fa-calendar-times text-6xl text-muted-foreground mb-4"></i>
+            <h3 className="text-xl font-semibold text-foreground mb-2">No Bookings Yet</h3>
+            <p className="text-muted-foreground mb-4">
+              You haven't made any equipment bookings yet.
+            </p>
+            <Button
+              className="bg-accent hover:bg-accent/90"
+              onClick={() => navigate("/user/book-slots")}
+            >
+              <i className="fas fa-plus mr-2"></i>
+              Book Your First Slot
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-6">
+          {userBookings.map((booking) => (
+            <Card key={booking._id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
                     <CardTitle className="flex items-center space-x-2">
-                      <i className="fas fa-microscope text-accent"></i>
-                      <span>{booking.equipmentName}</span>
+                      <i className="fas fa-microscope text-accent" />
+                      <span>{booking.equipmentId?.name || "Unknown Equipment"}</span>
                     </CardTitle>
                     <CardDescription>
-                      {booking.bookingDate} • {booking.timeSlot}
+                      {booking.slotDate?.slice(0, 10)} • {booking.timeSlot}
                     </CardDescription>
                   </div>
-                  {/* Status Badge */}
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
                       booking.status === "pending"
@@ -103,7 +99,6 @@ export default function MyBookings() {
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
-                  {/* Booking Details */}
                   <div>
                     <h4 className="font-semibold text-foreground mb-2">Booking Details</h4>
                     <div className="space-y-1 text-sm">
@@ -122,25 +117,25 @@ export default function MyBookings() {
                     </div>
                   </div>
 
-                  {/* Contact Info */}
                   <div>
                     <h4 className="font-semibold text-foreground mb-2">Contact Info</h4>
                     <div className="space-y-1 text-sm">
                       <p>
-                        <span className="text-muted-foreground">Email:</span> {booking.emailId}
+                        <span className="text-muted-foreground">Email:</span>{" "}
+                        {booking.emailId}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">Phone:</span> {booking.contactNo}
+                        <span className="text-muted-foreground">Phone:</span>{" "}
+                        {booking.contactNo}
                       </p>
                       <p>
                         <span className="text-muted-foreground">Submitted:</span>{" "}
-                        {new Date(booking.submittedAt).toLocaleDateString()}
+                        {new Date(booking.bookingDate).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Sample Description */}
                 {booking.sampleDescription && (
                   <div className="mt-4">
                     <h4 className="font-semibold text-foreground mb-2">Sample Description</h4>
@@ -151,9 +146,9 @@ export default function MyBookings() {
                 )}
               </CardContent>
             </Card>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
