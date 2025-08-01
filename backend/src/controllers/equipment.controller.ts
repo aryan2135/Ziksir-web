@@ -16,6 +16,7 @@ class EquipmentController {
             const equipment = await equipmentService.getAllEquipment();
             res.status(200).json(equipment);
         } catch (error: any) {
+            console.error("Create Equipment Error:", error); 
             res.status(500).json({ error: error.message });
         }
     }
