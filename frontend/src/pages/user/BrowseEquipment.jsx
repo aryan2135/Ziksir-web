@@ -64,7 +64,7 @@ export default function BrowseEquipment() {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredEquipments.length > 0 ? (
           filteredEquipments.map((equipment, index) => (
-            <Card key={index} className="hover:shadow-xl transition-shadow border rounded-lg">
+            <Card key={index} className="shadow-lg hover:shadow-xl hover:scale-105 transition-all border rounded-lg">
               <CardHeader>
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
