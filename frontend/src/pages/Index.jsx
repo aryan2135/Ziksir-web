@@ -553,7 +553,7 @@ const ziksir = () => {
                       </div>
                       <div>
                         <div className="font-semibold">Office</div>
-                        <div className="text-muted-foreground">San Francisco, CA</div>
+                        <div className="text-muted-foreground">India</div>
                       </div>
                     </div>
                   </div>
