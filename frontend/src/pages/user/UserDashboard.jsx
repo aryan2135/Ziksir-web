@@ -21,7 +21,7 @@ export default function UserDashboard() {
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow flex flex-col">
-        <div className="p-6 font-Lucida Sana font-bold text-3xl text-black-500 t">ziksir</div>
+        <div className="p-6 font-Lucida Sana font-bold text-4xl text-black">ziksir</div>
         <nav className="flex-1 px-4">
           <ul className="space-y-4">
             {menuItems.map((item) => (
