@@ -22,15 +22,15 @@ const Auth = () => {
   const [darkMode, setDarkMode] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setDarkMode(savedTheme === 'dark');
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
+  //useEffect(() => {
+    //const savedTheme = localStorage.getItem('theme');
+    //if (savedTheme) {
+      //setDarkMode(savedTheme === 'dark');
+      //document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    //} else {
+      //document.documentElement.classList.add('dark');
+    //}
+  //}, []);
 
   const handleInputChange = (e) => {
     setFormData({
