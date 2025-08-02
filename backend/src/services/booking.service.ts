@@ -21,8 +21,8 @@ class BookingService {
         return await Booking.find().populate("userId").populate("equipmentId");
     }
 
-    async getBookingById(id: string): Promise<BookingInterface | null> {
-        return await Booking.findById(id).populate("userId").populate("equipmentId");
+    async getBookingById(id: string): Promise<BookingInterface[] | null> {
+        return await Booking.find({userId: id}).populate("userId").populate("equipmentId");
     }
 
     async updateBooking(id: string, data: Partial<BookingInterface>): Promise<BookingInterface | null> {
