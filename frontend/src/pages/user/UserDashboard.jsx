@@ -55,7 +55,9 @@ export default function UserDashboard() {
       <aside className="hidden w-64 bg-white shadow md:flex flex-col">
                 <button
           className="py-6 text-2xl font-Lucida Sana font-bold  text-3xl text-black focus:outline-none"
-          onClick={() => navigate("/user")}
+          onClick={() => {navigate("/user")
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         >
           ziksir
         </button>
@@ -99,6 +101,7 @@ export default function UserDashboard() {
           className="text-2xl font-bold text-black focus:outline-none"
           onClick={() => {
             navigate("/user");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setIsMobileSidebarOpen(false);
           }}
         >
@@ -156,7 +159,10 @@ export default function UserDashboard() {
         {/* Mobile Header */}
         <header className="flex md:hidden bg-white shadow p-4 justify-between items-center">
           <button
-            onClick={() => navigate("/user")}
+            onClick={() => {
+              navigate("/user")
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             className="text-2xl font-bold text-black"
           >
             ziksir
