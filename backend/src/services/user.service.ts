@@ -55,6 +55,27 @@ class AuthService {
     async getUserById(userId: string): Promise<UserInterface | null> {
         return await User.findById(userId).select("-password");
     }
+
+    async updateUser(userId: string, userData: Partial<UserData>): Promise<UserInterface | null> {
+        return await User.findByIdAndUpdate(
+            userId,
+            { $set: userData },
+            { new: true, runValidators: true }
+        ).select("-password");
+    }
+
+    async deleteUser(userId: string): Promise<UserInterface | null> {
+        return await User.findByIdAndDelete(userId);
+    }
+
+    async changePassword(userId: string, newPassword: string): Promise<UserInterface | null> {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        return await User.findByIdAndUpdate(
+            userId,
+            { password: hashedPassword },
+            { new: true, runValidators: true }
+        ).select("-password");
+    }
 }
 
 export const authService = new AuthService();
