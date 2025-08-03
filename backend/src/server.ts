@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import app from './app';
 import { connectDB } from './config/db';
-import authRoutes from './routes/auth.routes';
+import authRoutes from './routes/user.routes';
 import equipmentRoutes from "./routes/equipment.routes";
 import bookingRoutes from './routes/booking.routes';
 
