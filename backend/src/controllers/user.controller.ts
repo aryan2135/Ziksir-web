@@ -38,6 +38,15 @@ class AuthController {
             res.status(500).json({ error: error.message }); 
         }
     }
+
+    async getUserById(req: Request, res: Response): Promise<void> { 
+        try{
+            const user = await authService.getUserById(req.params.id);
+            res.status(200).json(user);
+        } catch(error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 }
 
 export const authController = new AuthController();

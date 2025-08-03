@@ -51,6 +51,10 @@ class AuthService {
     async getAllUsers(): Promise<UserInterface[]> {
         return await User.find().select("-password");
     }
+
+    async getUserById(userId: string): Promise<UserInterface | null> {
+        return await User.findById(userId).select("-password");
+    }
 }
 
 export const authService = new AuthService();
