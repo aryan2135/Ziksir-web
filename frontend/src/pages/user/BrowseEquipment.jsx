@@ -20,7 +20,7 @@ export default function BrowseEquipment() {
   useEffect(() => {
     const fetchEquipments = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/equipment");
+        const response = await axios.get(import.meta.env.VITE_API_URI + "/api/equipment");
         setEquipments(response.data);
       } catch (error) {
         console.error("Failed to fetch equipment data", error);

@@ -28,7 +28,7 @@ const Equipment = () => {
   const [dialogMode, setDialogMode] = useState("add");
   const [selectedId, setSelectedId] = useState(null);
 
-  const API_BASE = "http://localhost:5000/api/equipment";
+  const API_BASE = import.meta.env.VITE_API_URI + "/api/equipment";
 
   useEffect(() => {
     fetchEquipment();

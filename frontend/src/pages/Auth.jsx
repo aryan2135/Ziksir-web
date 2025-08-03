@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "@/api/axios";
 
-const ADMIN_EMAIL = "admin@gmail.com"; // Set your admin email here
+const ADMIN_EMAIL = "newadmin@gmail.com"; // Set your admin email here
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -45,7 +45,7 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const res = await axios.post("/api/auth/login", {
+        const res = await axios.post("/api/user/login", {
           email: formData.email,
           password: formData.password,
         });
@@ -71,7 +71,7 @@ const Auth = () => {
           return;
         }
 
-        const res = await axios.post("/api/auth/signup", {
+        const res = await axios.post("/api/user/signup", {
           name: formData.name,
           email: formData.email,
           password: formData.password,
