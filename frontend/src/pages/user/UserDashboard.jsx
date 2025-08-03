@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import axios from "@/api/axios";import React, { useState } from "react";
+import axios from "@/api/axios";
 
 
 export default function UserDashboard() {
