@@ -68,7 +68,7 @@ const AdminDas = () => {
           <div
             className="p-6 font-bold text-4xl font-sans text-primary mb-8 cursor-pointer"
             onClick={() => {
-              navigate("/");
+              navigate("/admin/overview");
               setSidebarOpen(false); // Close on mobile when navigating
             }}
           >

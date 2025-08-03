@@ -1,4 +1,4 @@
-import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
+import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 export default function UserDashboard() {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const menuItems = [
     { name: "Dashboard", path: "/user" },
     { name: "Book Slots", path: "/user/book-slots" },
@@ -24,7 +24,12 @@ export default function UserDashboard() {
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="hidden w-64 bg-white shadow md:flex flex-col">
-        <div className="p-6 font-Lucida Sana font-bold text-3xl text-black-500 t">ziksir</div>
+                <button
+          className="py-6 text-2xl font-Lucida Sana font-bold  text-3xl text-black focus:outline-none"
+          onClick={() => navigate("/user")}
+        >
+          ziksir
+        </button>
         <nav className="flex-1 px-4">
           <ul className="space-y-4">
             {menuItems.map((item) => (
@@ -46,58 +51,66 @@ export default function UserDashboard() {
       </aside>
 
       {/* Sidebar Mobile */}
-<div
-  className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${
-    isMobileSidebarOpen ? "opacity-100 pointer-events-auto bg-black bg-opacity-50" : "opacity-0 pointer-events-none"
-  }`}
-  onClick={() => setIsMobileSidebarOpen(false)}
->
-  {/* Slide-in Sidebar */}
-  <aside
-    className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md p-4 transition-transform duration-300 ease-in-out transform ${
-      isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
-    }`}
-    onClick={(e) => e.stopPropagation()} // Prevent close on sidebar click
-  >
-    {/* Sidebar Header */}
-    <div className="flex justify-between items-center mb-6">
-      <span className="text-2xl font-bold text-black">ziksir</span>
-      <button
-        onClick={() => setIsMobileSidebarOpen(false)}
-        className="text-xl"
+      <div
+       className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${
+        isMobileSidebarOpen ? "opacity-100 pointer-events-auto bg-black bg-opacity-50" : "opacity-0 pointer-events-none"
+        }`}
+       onClick={() => setIsMobileSidebarOpen(false)}
       >
-        <i className="fas fa-times"></i>
-      </button>
-    </div>
+      {/* Slide-in Sidebar */}
+      <aside
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md p-4 transition-transform duration-300 ease-in-out transform ${
+          isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        onClick={(e) => e.stopPropagation()} // Prevent close on sidebar click
+       >
+      {/* Sidebar Header */}
+      <div className="flex justify-between items-center mb-6">
+        <button
+          className="text-2xl font-bold text-black focus:outline-none"
+          onClick={() => {
+            navigate("/user");
+            setIsMobileSidebarOpen(false);
+          }}
+        >
+          ziksir
+        </button>
+        <button
+          onClick={() => setIsMobileSidebarOpen(false)}
+          className="text-xl"
+        >
+          <i className="fas fa-times"></i>
+        </button>
+      </div>
 
-    {/* Sidebar Menu */}
-    <nav>
-      <ul className="space-y-4">
-        {menuItems.map((item) => (
-          <li key={item.name}>
-            <Link
-              to={item.path}
-              className={`flex items-center space-x-2 p-2 rounded ${
-                location.pathname === item.path
-                  ? "bg-blue-800 text-white"
-                  : "hover:bg-blue-100"
-              }`}
-              onClick={() => setIsMobileSidebarOpen(false)}
-            >
-              <span>{item.name}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </aside>
-</div>
+      {/* Sidebar Menu */}
+      <nav>
+        <ul className="space-y-4">
+          {menuItems.map((item) => (
+            <li key={item.name}>
+              <Link
+                to={item.path}
+                className={`flex items-center space-x-2 p-2 rounded ${
+                  location.pathname === item.path
+                    ? "bg-blue-800 text-white"
+                    : "hover:bg-blue-100"
+                  }`}
+                onClick={() => setIsMobileSidebarOpen(false)}
+              >
+                <span>{item.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+   </div>
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-white shadow p-4 hidden md:flex justify-between items-center">
-          <div>
-            <h1 className="text-xl font-bold">Research Dashboard</h1>
+          <div> 
+            <h1 className=" text-xl font-bold">Research Dashboard</h1>
             <p className="text-gray-500 text-sm">
               Manage your research activities and bookings
             </p>
@@ -109,8 +122,13 @@ export default function UserDashboard() {
         </header>
         {/* Mobile Header */}
         <header className="flex md:hidden bg-white shadow p-4 justify-between items-center">
-         <h1 className="text-2xl font-bold text-black">ziksir</h1>
           <button
+            onClick={() => navigate("/user")}
+            className="text-2xl font-bold text-black"
+          >
+            ziksir
+          </button>
+          <button 
             onClick={() => setIsMobileSidebarOpen(true)}
            className="text-2xl focus:outline-none"
           >
