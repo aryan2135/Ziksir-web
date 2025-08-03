@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const AdminDas = () => {
   const [darkMode, setDarkMode] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // NEW
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,36 +13,34 @@ const AdminDas = () => {
     const userType = localStorage.getItem("userType");
 
     if (!isAuthenticated || userType !== "admin") {
-      console.log('auth value: ', isAuthenticated);
-      console.log('userType value: ', userType);
       navigate("/auth");
       return;
     }
 
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setDarkMode(savedTheme === "dark");
-      if (savedTheme === "light") {
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.add("dark");
-      }
-    } else {
-      document.documentElement.classList.add("dark");
-    }
+    //const savedTheme = localStorage.getItem("theme");
+    //if (savedTheme) {
+      //setDarkMode(savedTheme === "dark");
+      //if (savedTheme === "light") {
+        //document.documentElement.classList.remove("dark");
+      //} else {
+        //document.documentElement.classList.add("dark");
+      //}
+    //} else {
+      //document.documentElement.classList.add("dark");
+    //}
   }, [navigate]);
 
-  const toggleTheme = () => {
-    const newTheme = !darkMode;
-    setDarkMode(newTheme);
-    localStorage.setItem("theme", newTheme ? "dark" : "light");
+  //const toggleTheme = () => {
+    //const newTheme = !darkMode;
+    //setDarkMode(newTheme);
+    //localStorage.setItem("theme", newTheme ? "dark" : "light");
 
-    if (newTheme) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
+    //if (newTheme) {
+      //document.documentElement.classList.add("dark");
+    //} else {
+      //document.documentElement.classList.remove("dark");
+    //}
+  //};
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
@@ -58,12 +57,21 @@ const AdminDas = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background font-poppins flex">
+    <div className="min-h-screen bg-background font-poppins flex flex-col md:flex-row">
       {/* Sidebar */}
-      <div className="w-64 bg-card border-r border-border">
+      <div
+        className={`fixed z-40 inset-y-0 left-0 w-64 bg-card border-r border-border transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:flex-shrink-0`}
+      >
         <div className="p-6">
-          <div className="p-6 font-bold text-4xl font-sans text-primary mb-8 cursor-pointer"
-          onClick={() => navigate("/")}>
+          <div
+            className="p-6 font-bold text-4xl font-sans text-primary mb-8 cursor-pointer"
+            onClick={() => {
+              navigate("/");
+              setSidebarOpen(false); // Close on mobile when navigating
+            }}
+          >
             ziksir
           </div>
 
@@ -72,6 +80,7 @@ const AdminDas = () => {
               <NavLink
                 key={item.id}
                 to={item.path}
+                onClick={() => setSidebarOpen(false)} // NEW: Close sidebar on mobile click
                 className={({ isActive }) =>
                   `w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                     isActive
@@ -88,28 +97,42 @@ const AdminDas = () => {
         </div>
       </div>
 
+      {/* Backdrop for mobile sidebar */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="bg-card border-b border-border px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-semibold text-foreground">Admin Dashboard</h1>
-              <p className="text-sm text-muted-foreground font-open-sans">
-                Welcome back, Administrator
-              </p>
-            </div>
+        <header className="bg-card border-b border-border px-6 py-4 flex items-center justify-between">
+          {/* Mobile Hamburger */}
+          <button
+            className="md:hidden text-foreground focus:outline-none"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            <i className="fas fa-bars text-xl"></i>
+          </button>
 
-            <div className="flex items-center space-x-4">
-              {/* <Button onClick={toggleTheme} variant="outline" size="sm">
-                <i className={`fas ${darkMode ? "fa-sun" : "fa-moon"}`}></i>
-              </Button> */}
+          <div>
+            <h1 className="text-xl font-semibold text-foreground">Admin Dashboard</h1>
+            <p className="text-sm text-muted-foreground font-open-sans">
+              Welcome back, Administrator
+            </p>
+          </div>
 
-              <Button onClick={handleLogout} variant="outline">
-                <i className="fas fa-sign-out-alt mr-2"></i>
-                Logout
-              </Button>
-            </div>
+          <div className="flex items-center space-x-4">
+            {/* Uncomment if theme toggle is needed */}
+            {/* <Button onClick={toggleTheme} variant="outline" size="sm">
+              <i className={`fas ${darkMode ? "fa-sun" : "fa-moon"}`}></i>
+            </Button> */}
+            <Button onClick={handleLogout} variant="outline">
+              <i className="fas fa-sign-out-alt mr-2"></i>
+              Logout
+            </Button>
           </div>
         </header>
 
@@ -123,3 +146,4 @@ const AdminDas = () => {
 };
 
 export default AdminDas;
+
