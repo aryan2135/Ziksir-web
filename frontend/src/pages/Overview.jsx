@@ -1,20 +1,63 @@
-// src/pages/admin/Overview.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "@/api/axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Overview = () => {
+  const [stats, setStats] = useState({
+    totalEquipment: 0,
+    totalBookings: 0,
+    approvedBookings: 0,
+    pendingBookings: 0,
+    completedBookings: 0,
+    cancelledBookings: 0,
+    totalUsers: 0,
+  });
+
+  const fetchStats = async () => {
+    try {
+      const [equipmentRes, bookingRes, usersRes] = await Promise.all([
+        axios.get(import.meta.env.VITE_API_URI + "/api/equipment/count"),
+        axios.get(import.meta.env.VITE_API_URI + "/api/bookings/count"),
+        axios.get(import.meta.env.VITE_API_URI + "/api/user/count"),
+      ]);
+
+      setStats({
+      totalEquipment: equipmentRes.data.totalEquipments || 0,
+      totalBookings: bookingRes.data.totalBookings || 0,
+      approvedBookings: bookingRes.data.approved || 0,
+      pendingBookings: bookingRes.data.pending || 0,
+      completedBookings: bookingRes.data.completed || 0,
+      cancelledBookings: bookingRes.data.cancelled || 0,
+      totalUsers: usersRes.data.totalUsers || 0,
+    });
+    } catch (error) {
+      console.error("Failed to fetch dashboard stats:", error);
+    }
+  };
+
+  useEffect(() => {
+    const clientUrl = import.meta.env.VITE_API_URI;
+    console.log('client url: ', clientUrl);
+    fetchStats();
+  }, []);
+
+  const cards = [
+    { title: "Total Equipment", value: stats.totalEquipment, icon: "fas fa-microscope" },
+    { title: "Total Bookings", value: stats.totalBookings, icon: "fas fa-calendar" },
+    // { title: "Approved", value: stats.approvedBookings, icon: "fas fa-check-circle" },
+    // { title: "Pending", value: stats.pendingBookings, icon: "fas fa-clock" },
+    // { title: "Completed", value: stats.completedBookings, icon: "fas fa-tasks" },
+    // { title: "Cancelled", value: stats.cancelledBookings, icon: "fas fa-times-circle" },
+    { title: "Total Users", value: stats.totalUsers, icon: "fas fa-users" },
+  ];
+
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-foreground">Admin Dashboard Overview</h2>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { title: "Total Equipment", value: "156", icon: "fas fa-microscope" },
-          { title: "Active Bookings", value: "23", icon: "fas fa-calendar-check" },
-          { title: "Pending Requests", value: "8", icon: "fas fa-clock" },
-          { title: "Total Users", value: "342", icon: "fas fa-users" },
-        ].map((stat, index) => (
+        {cards.map((stat, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">

@@ -1,12 +1,48 @@
+<<<<<<< HEAD
 import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
+=======
+import { useEffect, useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+>>>>>>> 498d30dfbba6cc1dd0ce40c085894cfda6901dad
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import axios from "@/api/axios";
 
 
 export default function UserDashboard() {
   const location = useLocation();
+<<<<<<< HEAD
   const navigate = useNavigate();
+=======
+  
+  const [stats, setStats] = useState({
+    totalBookings: 0,
+    pendingBookings: 0,
+    completedBookings: 0,
+  });
+  
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const user = localStorage.getItem("currentUser");
+        const userId = JSON.parse(user)._id;
+        const res = await axios.get(import.meta.env.VITE_API_URI + `/api/bookings/count/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(res.data);
+        setStats(res.data);
+      } catch (err) {
+        console.error("Failed to fetch booking stats:", err);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+>>>>>>> 498d30dfbba6cc1dd0ce40c085894cfda6901dad
   const menuItems = [
     { name: "Dashboard", path: "/user" },
     { name: "Book Slots", path: "/user/book-slots" },
@@ -38,7 +74,7 @@ export default function UserDashboard() {
                   to={item.path}
                   className={`flex items-center space-x-2 p-2 rounded ${
                     location.pathname === item.path
-                      ? "bg-blue-800 text-white" 
+                      ? "bg-blue-800 text-white"
                       : "hover:bg-blue-100"
                   }`}
                 >
@@ -116,8 +152,12 @@ export default function UserDashboard() {
             </p>
           </div>
           <div className="flex space-x-4 items-center">
-            <button className="bg-pink-100 px-4 py-2 rounded hover:bg-blue-300 font-bold font-poppins "
-                    onClick={() => window.location.href = '/' } >Logout</button>
+            <button
+              className="bg-pink-100 px-4 py-2 rounded hover:bg-blue-300 font-bold font-poppins"
+              onClick={() => (window.location.href = "/")}
+            >
+              Logout
+            </button>
           </div>
         </header>
         {/* Mobile Header */}
@@ -149,17 +189,17 @@ export default function UserDashboard() {
                 {[
                   {
                     title: "My Bookings",
-                    value: "5",
+                    value: stats.totalBookings,
                     icon: "fas fa-calendar-check",
                   },
                   {
                     title: "Pending Requests",
-                    value: "2",
+                    value: stats.pendingBookings,
                     icon: "fas fa-clock",
                   },
                   {
                     title: "Completed Sessions",
-                    value: "18",
+                    value: stats.completedBookings,
                     icon: "fas fa-check-circle",
                   },
                 ].map((stat, index) => (

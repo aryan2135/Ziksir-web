@@ -4,148 +4,234 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 const Bookings = () => {
-  const [open, setOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
+  const [status, setStatus] = useState("pending");
   const calendarRef = useRef(null);
 
+  const fetchBookings = async () => {
+    try {
+      const res = await axios.get("/api/bookings");
+      setBookings(res.data);
+    } catch (err) {
+      console.error("Error fetching bookings:", err);
+    }
+  };
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/booking")
-      .then((res) => {
-        setBookings(res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching bookings:", err);
-      });
+    fetchBookings();
   }, []);
 
   const getEventColor = (status) => {
     switch (status) {
-      case "Confirmed": return "#3B82F6";
-      case "Pending": return "#F59E0B";
-      case "Cancelled": return "#EF4444";
-      default: return "#6B7280";
+      case "approved":
+        return "#3B82F6";
+      case "pending":
+        return "#F59E0B";
+      case "cancelled":
+        return "#EF4444";
+      default:
+        return "#6B7280";
     }
   };
 
   const handleEventClick = (info) => {
-    setSelectedEvent(info.event);
-    setStartDateTime(info.event.start?.toISOString().slice(0, 16));
-    setEndDateTime(info.event.end?.toISOString().slice(0, 16));
+    const event = info.event;
+    setSelectedEvent({
+      id: event.extendedProps._id,
+      title: event.title,
+      start: event.startStr,
+      end: event.endStr,
+      status: event.extendedProps.status,
+    });
+    setStartDateTime(event.startStr.slice(0, 16));
+    setEndDateTime(event.endStr?.slice(0, 16) || event.startStr.slice(0, 16));
+    setStatus(event.extendedProps.status || "pending");
     setEditOpen(true);
   };
 
   const handleSaveEdit = async () => {
-    if (selectedEvent) {
-      selectedEvent.setStart(startDateTime);
-      selectedEvent.setEnd(endDateTime);
-      try {
-        await axios.put(`http://localhost:5000/api/booking/${selectedEvent.extendedProps._id}`, {
-          startTime: startDateTime,
-          endTime: endDateTime,
-        });
-      } catch (err) {
-        console.error("Error updating booking:", err);
-      }
+    if (!selectedEvent?.id) return;
+    try {
+      await axios.put(`/api/bookings/${selectedEvent.id}`, {
+        startTime: new Date(startDateTime).toISOString(),
+        endTime: new Date(endDateTime).toISOString(),
+        status,
+      });
+      setEditOpen(false);
+      fetchBookings();
+    } catch (err) {
+      console.error("Error updating booking:", err);
     }
-    setEditOpen(false);
+  };
+
+  const handleEventDrop = async (info) => {
+    const { event } = info;
+    try {
+      await axios.put(`/api/bookings/${event.extendedProps._id}`, {
+        startTime: event.start.toISOString(),
+        endTime: event.end?.toISOString() || event.start.toISOString(),
+        status: event.extendedProps.status,
+      });
+      fetchBookings();
+    } catch (error) {
+      console.error("Error updating booking time:", error);
+      info.revert();
+    }
+  };
+
+  const handleEventResize = async (info) => {
+    const { event } = info;
+    try {
+      await axios.put(`/api/bookings/${event.extendedProps._id}`, {
+        startTime: event.start.toISOString(),
+        endTime: event.end?.toISOString(),
+        status: event.extendedProps.status,
+      });
+      fetchBookings();
+    } catch (error) {
+      console.error("Error resizing booking:", error);
+      info.revert();
+    }
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-foreground">Booking Requests</h2>
+        <h2 className="text-3xl font-bold">Booking Requests</h2>
         <Button variant="outline" onClick={() => setCalendarOpen(true)}>
-          <i className="fas fa-calendar-alt"></i>
-          <span className="ml-2">View Calendar</span>
+          View Calendar
         </Button>
       </div>
 
-      {/* Recent Bookings List */}
-      <Card>
+      <Card className="bg-white/90 backdrop-blur-lg shadow-xl rounded-xl p-6">
         <CardHeader>
           <CardTitle>Recent Bookings</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {bookings.map((booking, index) => (
-              <div key={index} className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                <div>
-                  <h4 className="font-semibold text-foreground">{booking.title}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {booking.user?.name || "Unknown"} • {new Date(booking.slotDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex space-x-2">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    booking.status === "Confirmed"
-                      ? "bg-blue-100 text-blue-800"
-                      : booking.status === "Pending"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-red-100 text-red-800"
-                  }`}>
-                    {booking.status}
-                  </span>
-                </div>
-              </div>
-            ))}
+  {bookings.length === 0 ? (
+    <p className="text-muted-foreground">No bookings yet.</p>
+  ) : (
+    <div className="space-y-4">
+      {bookings.map((b) => (
+        <div
+          key={b._id}
+          className="group flex justify-between items-center p-4 bg-white border border-gray-200 rounded-lg shadow-md transition-shadow duration-200 hover:shadow-lg"
+        >
+          {/* Booking details */}
+          <div>
+            <h4 className="font-semibold text-lg">{b.equipmentId?.name || "Unknown Equipment"}</h4>
+            <p className="text-sm text-gray-500">
+              {b.userId?.name || "Unknown User"} • {new Date(b.slotDate).toLocaleDateString()}
+            </p>
           </div>
-        </CardContent>
+
+          {/* Status badge or actions */}
+          <div className="relative flex items-center">
+            {/* Default status badge (hidden when hovering) */}
+            <span
+              className={`
+                px-3 py-1 text-sm font-semibold rounded-full transition-opacity duration-200
+                ${
+                  b.status === "approved"
+                    ? "bg-blue-100 text-blue-800"
+                    : b.status === "cancelled"
+                    ? "bg-red-100 text-red-800"
+                    : "bg-yellow-100 text-yellow-800"
+                }
+                ${b.status === "pending" ? "group-hover:opacity-0" : ""}
+              `}
+            >
+              {b.status}
+            </span>
+
+            {/* Hover buttons for pending bookings */}
+            {b.status === "pending" && (
+              <div className="absolute right-0 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <button
+                  onClick={async () => {
+                    await axios.put(`/api/bookings/${b._id}`, { status: "approved" });
+                    fetchBookings();
+                  }}
+                  className="bg-green-100 hover:bg-green-200 text-green-800 font-bold rounded-full px-2 py-1 text-sm"
+                  title="Approve"
+                >
+                  ✓
+                </button>
+                <button
+                  onClick={async () => {
+                    await axios.put(`/api/bookings/${b._id}`, { status: "cancelled" });
+                    fetchBookings();
+                  }}
+                  className="bg-red-100 hover:bg-red-200 text-red-800 font-bold rounded-full px-2 py-1 text-sm"
+                  title="Reject"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</CardContent>
+
       </Card>
 
-      {/* Calendar Modal */}
+      {/* Calendar Dialog */}
       <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
         <DialogContent className="max-w-5xl w-full max-h-[90vh] overflow-auto animate-modal">
-          <DialogHeader className="w-full flex justify-between items-center">
+          <DialogHeader>
             <DialogTitle className="text-2xl font-bold">Bookings Calendar</DialogTitle>
           </DialogHeader>
-          <div className="p-4 w-full">
-            <FullCalendar
-              ref={calendarRef}
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              initialView="timeGridWeek"
-              events={bookings.map((b) => ({
-                title: b.title,
-                start: b.startTime,
-                end: b.endTime || b.startTime,
-                color: getEventColor(b.status),
+          <FullCalendar
+            ref={calendarRef}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            editable={true}
+            events={bookings.map((b) => ({
+              title: b.equipmentId?.name || "Booking",
+              start: b.startTime,
+              end: b.endTime || b.startTime,
+              color: getEventColor(b.status),
+              extendedProps: {
                 _id: b._id,
-              }))}
-              eventClick={handleEventClick}
-              headerToolbar={{
-                start: "prevYear,prev,next,nextYear today",
-                center: "title",
-                end: "dayGridMonth,timeGridWeek,timeGridDay",
-              }}
-              customButtons={{
-                prevYear: {
-                  text: "«",
-                  click: () => calendarRef.current.getApi().prevYear(),
-                },
-                nextYear: {
-                  text: "»",
-                  click: () => calendarRef.current.getApi().nextYear(),
-                },
-              }}
-              buttonText={{
-                today: "Today",
-                month: "Month",
-                week: "Week",
-                day: "Day",
-              }}
-              dayHeaderClassNames="bg-blue-100 text-blue-700 font-medium"
-            />
-          </div>
+                status: b.status,
+              },
+            }))}
+            eventClick={handleEventClick}
+            eventDrop={handleEventDrop}
+            eventResize={handleEventResize}
+            headerToolbar={{
+              start: "prev,next today",
+              center: "title",
+              end: "dayGridMonth,timeGridWeek,timeGridDay",
+            }}
+            buttonText={{
+              today: "Today",
+              month: "Month",
+              week: "Week",
+              day: "Day",
+            }}
+          />
         </DialogContent>
       </Dialog>
 
@@ -156,43 +242,44 @@ const Bookings = () => {
             <DialogTitle>Edit Booking Slot</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <p className="font-semibold">{selectedEvent?.title}</p>
             <div>
               <label className="block text-sm font-medium mb-1">Start Date & Time</label>
-              <Input type="datetime-local" value={startDateTime} onChange={(e) => setStartDateTime(e.target.value)} />
+              <Input
+                type="datetime-local"
+                value={startDateTime}
+                onChange={(e) => setStartDateTime(e.target.value)}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">End Date & Time</label>
-              <Input type="datetime-local" value={endDateTime} onChange={(e) => setEndDateTime(e.target.value)} />
+              <Input
+                type="datetime-local"
+                value={endDateTime}
+                onChange={(e) => setEndDateTime(e.target.value)}
+              />
             </div>
-            <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
-              <Button onClick={handleSaveEdit}>Save Changes</Button>
+            <div>
+              <label className="block text-sm font-medium mb-1">Status</label>
+              <Select value={status} onValueChange={setStatus}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setEditOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleSaveEdit}>Save</Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Animations */}
-      <style>
-        {`
-          .animate-modal {
-            animation: fadeInScale 0.3s ease-out;
-          }
-          @keyframes fadeInScale {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-          }
-          .fc-event {
-            cursor: pointer !important;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-          }
-          .fc-event:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-          }
-        `}
-      </style>
     </div>
   );
 };

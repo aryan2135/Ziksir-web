@@ -1,3 +1,4 @@
+// BookSlots.jsx (Improved UX)
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,9 +21,10 @@ import axios from "@/api/axios";
 
 export default function BookSlots() {
   const navigate = useNavigate();
-  const user = localStorage.getItem("currentUser");
-  const userId = JSON.parse(user)._id;
-  console.log('userId: ', userId);
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const userId = user._id;
+
+  const [equipmentList, setEquipmentList] = useState([]);
 
   const [bookingForm, setBookingForm] = useState({
     equipmentId: "",
@@ -33,9 +35,19 @@ export default function BookSlots() {
     sampleDescription: "",
     analysisRequired: "",
     timeSlot: "",
+    name: "",
+    organizationAddress: "",
+    state: "",
+    country: "",
+    gstin: "",
+    gstinNo: "",
+    panNo: "",
+    pincode: "",
+    referenceNo: "",
+    remarks: "",
+    organizationCategory: "",
+    noOfSamples: "",
   });
-
-  const [equipmentList, setEquipmentList] = useState([]);
 
   useEffect(() => {
     axios
@@ -51,22 +63,11 @@ export default function BookSlots() {
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
 
-    if (!bookingForm.equipmentId) {
-      alert("Please select a valid equipment.");
-      return;
-    }
-
     const payload = {
-      userId, //change this to the actual user ID
-      equipmentId: bookingForm.equipmentId,
-      bookingDate: new Date().toISOString(),
+      userId,
+      ...bookingForm,
       slotDate: bookingForm.slotDate?.toISOString(),
-      status: bookingForm.status,
-      contactNo: bookingForm.contactNo,
-      emailId: bookingForm.emailId,
-      sampleDescription: bookingForm.sampleDescription,
-      analysisRequired: bookingForm.analysisRequired,
-      timeSlot: bookingForm.timeSlot,
+      bookingDate: new Date().toISOString(),
     };
 
     try {
@@ -91,162 +92,164 @@ export default function BookSlots() {
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-3xl font-bold text-foreground">Book Equipment Slots</h2>
+    <div className="space-y-6 max-w-6xl mx-auto p-6 ">
+      <h2 className="text-3xl font-bold text-foreground">Book Slots</h2>
 
-      <form onSubmit={handleBookingSubmit} className="space-y-8">
+      <form onSubmit={handleBookingSubmit} className="space-y-2">
+
+        {/* Booking Schedule Section */}
+
         <Card>
           <CardHeader>
-            <CardTitle className="text-accent">Booking Schedule</CardTitle>
+            <CardTitle className="text-lg text-muted-foreground">📅 Booking Schedule</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-sm font-medium mb-2 block">Equipment *</label>
-                <Select
-                  value={bookingForm.equipmentId}
-                  onValueChange={(value) =>
-                    handleBookingFormChange("equipmentId", value)
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select equipment" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {equipmentList.map((eq) => (
-                      <SelectItem key={eq._id} value={eq._id}>
-                        {eq.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+          <CardContent className="grid md:grid-cols-2 gap-6">
+            {/* Equipment */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">Equipment *</label>
+              <Select
+                value={bookingForm.equipmentId}
+                onValueChange={(value) => handleBookingFormChange("equipmentId", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select equipment" />
+                </SelectTrigger>
+                <SelectContent>
+                  {equipmentList.map((eq) => (
+                    <SelectItem key={eq._id} value={eq._id}>{eq.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-              <div>
-                <label className="text-sm font-medium mb-2 block">Booking Date *</label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !bookingForm.slotDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {bookingForm.slotDate
-                        ? format(bookingForm.slotDate, "PPP")
-                        : "Pick a date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={bookingForm.slotDate}
-                      onSelect={(date) => handleBookingFormChange("slotDate", date)}
-                      disabled={(date) => date < new Date()}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
+            {/* Total Equipment Charge */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">Total Equipment Charge *</label>
+              <Input
+                placeholder="Enter total charge"
+                value={bookingForm.totalCharge}
+                onChange={(e) => handleBookingFormChange("totalCharge", e.target.value)}
+                required
+              />
+            </div>
 
-              <div>
-                <label className="text-sm font-medium mb-2 block">Time Slot *</label>
-                <Select
-                  value={bookingForm.timeSlot}
-                  onValueChange={(value) =>
-                    handleBookingFormChange("timeSlot", value)
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select time slot" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="09:00-10:00">09:00 - 10:00 AM</SelectItem>
-                    <SelectItem value="10:00-11:00">10:00 - 11:00 AM</SelectItem>
-                    <SelectItem value="11:00-12:00">11:00 - 12:00 PM</SelectItem>
-                    <SelectItem value="14:00-15:00">02:00 - 03:00 PM</SelectItem>
-                    <SelectItem value="15:00-16:00">03:00 - 04:00 PM</SelectItem>
-                    <SelectItem value="16:00-17:00">04:00 - 05:00 PM</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            {/* Slot Date */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">Booking Date *</label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !bookingForm.slotDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {bookingForm.slotDate ? format(bookingForm.slotDate, "PPP") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={bookingForm.slotDate}
+                    onSelect={(date) => handleBookingFormChange("slotDate", date)}
+                    disabled={(date) => date < new Date()}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            {/* Time Slot */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">Time Slot *</label>
+              <Select
+                value={bookingForm.timeSlot}
+                onValueChange={(value) => handleBookingFormChange("timeSlot", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select time slot" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[
+                    "09:00-10:00",
+                    "10:00-11:00",
+                    "11:00-12:00",
+                    "14:00-15:00",
+                    "15:00-16:00",
+                    "16:00-17:00",
+                  ].map((slot) => (
+                    <SelectItem key={slot} value={slot}>
+                      {slot.replace("-", " - ")}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
 
+
+        {/* Customer Details Section */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-accent">Sample Details</CardTitle>
+            <CardTitle className="text-lg text-muted-foreground">👤 Customer / Party Details</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Sample Description *
-                </label>
-                <Textarea
-                  value={bookingForm.sampleDescription}
-                  onChange={(e) =>
-                    handleBookingFormChange("sampleDescription", e.target.value)
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Analysis Required *
-                </label>
-                <Textarea
-                  value={bookingForm.analysisRequired}
-                  onChange={(e) =>
-                    handleBookingFormChange("analysisRequired", e.target.value)
-                  }
-                  required
-                />
-              </div>
+          <CardContent className="grid md:grid-cols-3 gap-6">
+            <Input placeholder="Full Name *" value={bookingForm.name} onChange={(e) => handleBookingFormChange("name", e.target.value)} required />
+            <Input placeholder="Organization Address *" value={bookingForm.organizationAddress} onChange={(e) => handleBookingFormChange("organizationAddress", e.target.value)} required />
+            <Input placeholder="State *" value={bookingForm.state} onChange={(e) => handleBookingFormChange("state", e.target.value)} required />
+            <Input placeholder="Country *" value={bookingForm.country} onChange={(e) => handleBookingFormChange("country", e.target.value)} required />
+            <Select value={bookingForm.gstin} onValueChange={(v) => handleBookingFormChange("gstin", v)}>
+              <SelectTrigger><SelectValue placeholder="Customer/Party GSTIN?" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="yes">Yes</SelectItem>
+                <SelectItem value="no">No</SelectItem>
+              </SelectContent>
+            </Select>
+            <Input placeholder="GSTIN No" value={bookingForm.gstinNo} onChange={(e) => handleBookingFormChange("gstinNo", e.target.value)} />
+            <Input placeholder="PAN No" value={bookingForm.panNo} onChange={(e) => handleBookingFormChange("panNo", e.target.value)} />
+            <Input placeholder="Contact No *" value={bookingForm.contactNo} onChange={(e) => handleBookingFormChange("contactNo", e.target.value)} required />
+            <Input type="email" placeholder="Email ID *" value={bookingForm.emailId} onChange={(e) => handleBookingFormChange("emailId", e.target.value)} required />
+            <Input placeholder="Pincode *" value={bookingForm.pincode} onChange={(e) => handleBookingFormChange("pincode", e.target.value)} required />
+            <Input placeholder="Reference No" value={bookingForm.referenceNo} onChange={(e) => handleBookingFormChange("referenceNo", e.target.value)} />
+            <Input placeholder="Remarks" value={bookingForm.remarks} onChange={(e) => handleBookingFormChange("remarks", e.target.value)} />
+          </CardContent>
+        </Card>
+
+        {/* Research Details */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg text-muted-foreground">🔬 Research Equipment Details</CardTitle>
+          </CardHeader>
+          <CardContent className="grid md:grid-cols-3 gap-6">
+            <Select value={bookingForm.organizationCategory} onValueChange={(v) => handleBookingFormChange("organizationCategory", v)}>
+              <SelectTrigger><SelectValue placeholder="Organization Category *" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Academic">Academic</SelectItem>
+                <SelectItem value="Industry">Industry</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={bookingForm.noOfSamples} onValueChange={(v) => handleBookingFormChange("noOfSamples", v)}>
+              <SelectTrigger><SelectValue placeholder="No. of Samples *" /></SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <SelectItem key={n} value={String(n)}>{n}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {/* Future input: total charges, etc. */}
+            <div className="md:col-span-3 grid md:grid-cols-2 gap-6 mt-6">
+              <Textarea placeholder="Sample Description *" value={bookingForm.sampleDescription} onChange={(e) => handleBookingFormChange("sampleDescription", e.target.value)} required />
+              <Textarea placeholder="Analysis Required *" value={bookingForm.analysisRequired} onChange={(e) => handleBookingFormChange("analysisRequired", e.target.value)} required />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-accent">Contact Info</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-sm font-medium mb-2 block">Contact No *</label>
-                <Input
-                  value={bookingForm.contactNo}
-                  onChange={(e) =>
-                    handleBookingFormChange("contactNo", e.target.value)
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-2 block">Email *</label>
-                <Input
-                  type="email"
-                  value={bookingForm.emailId}
-                  onChange={(e) =>
-                    handleBookingFormChange("emailId", e.target.value)
-                  }
-                  required
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-end space-x-4">
-          <Button type="button" variant="outline" onClick={() => navigate("/user")}>
-            Cancel
-          </Button>
-          <Button type="submit" className="bg-blue-500 text-white hover:bg-blue-600">
-            Submit Booking Request
-          </Button>
+        {/* Buttons */}
+        <div className="flex justify-end space-x-4 pt-4">
+          <Button type="button" variant="outline" onClick={() => navigate("/user")}>Cancel</Button>
+          <Button type="submit" className="bg-primary text-white hover:bg-primary/90">Submit Booking Request</Button>
         </div>
       </form>
     </div>

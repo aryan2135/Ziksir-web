@@ -6,7 +6,7 @@ import userRoutes from './routes/user.routes';
 import equipmentRoutes from "./routes/equipment.routes";
 import bookingRoutes from './routes/booking.routes';
 
-app.use('/api/auth', userRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/equipment', equipmentRoutes);
 app.use('/api/bookings', bookingRoutes);
 

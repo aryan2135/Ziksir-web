@@ -1,22 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
 
-  // Load registered users from localStorage
+  // Fetch total user count from backend
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
-    setUsers(storedUsers);
-  }, []);
+    const fetchUserCount = async () => {
+      try {
+        const response = await axios.get(import.meta.env.VITE_API_URI + "/api/user/count");
+        setTotalUsers(response.data.totalUsers);
+      } catch (error) {
+        console.error("Error fetching user count:", error);
+      }
+    };
 
-  // Delete user from list
-  const handleDelete = (username) => {
-    const updatedUsers = users.filter((user) => user.username !== username);
-    setUsers(updatedUsers);
-    localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
-  };
+    // Optional: Fetch all users if endpoint exists (e.g., /api/user)
+    const fetchAllUsers = async () => {
+      try {
+        const response = await axios.get(import.meta.env.VITE_API_URI + "/api/user"); // only if route exists
+        setUsers(response.data.users || []);
+      } catch (error) {
+        console.warn("Users list endpoint not available. Showing count only.");
+        setUsers([]); // fallback
+      }
+    };
+
+    fetchUserCount();
+    fetchAllUsers();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -27,8 +42,12 @@ const Users = () => {
           <CardTitle>User Details</CardTitle>
         </CardHeader>
         <CardContent>
+          <p className="text-lg font-medium text-foreground mb-4">
+            Total Registered Users: {totalUsers}
+          </p>
+
           {users.length === 0 ? (
-            <p className="text-muted-foreground">No users have signed up yet.</p>
+            <p className="text-muted-foreground">No detailed user data available.</p>
           ) : (
             <div className="space-y-4">
               {users.map((user, index) => (
@@ -37,16 +56,12 @@ const Users = () => {
                   className="flex items-center justify-between p-4 bg-secondary rounded-lg"
                 >
                   <div>
-                    <h4 className="font-semibold text-foreground">{user.fullName}</h4>
+                    <h4 className="font-semibold text-foreground">{user.name}</h4>
                     <p className="text-sm text-muted-foreground">
-                      {user.username} • {user.email}
+                      {user.email} • {user.role}
                     </p>
                   </div>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(user.username)}
-                  >
+                  <Button variant="destructive" size="sm">
                     <i className="fas fa-trash mr-1"></i> Delete
                   </Button>
                 </div>
