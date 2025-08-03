@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import authRoutes from './routes/user.routes';
+import userRoutes from './routes/user.routes';
 import bookingRoutes from './routes/booking.routes';
 import equipmentRoutes from './routes/equipment.routes';
 
@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', userRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/equipment', equipmentRoutes);
 
