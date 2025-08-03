@@ -243,7 +243,7 @@ const ziksir = () => {
         <SlideInSection>
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-accent">How ziksir Works</h2>
+            <h2 className="text-4xl font-bold mb-4 text-gray-300">How ziksir Works</h2>
             <p className="text-xl text-gray-400 font-open-sans font-semibold">
               Three simple steps to access world-class research infrastructure
             </p>
@@ -346,7 +346,7 @@ const ziksir = () => {
         <SlideInSection>
         <div className="container">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-accent">Choose Your Plan</h2>
+            <h2 className="text-4xl font-bold mb-4 text-gray-300">Choose Your Plan</h2>
             <p className="text-xl text-gray-400 font-open-sans">
               Flexible pricing for research teams of all sizes
             </p>
