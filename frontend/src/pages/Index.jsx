@@ -177,7 +177,7 @@ const ziksir = () => {
 
       {/* Features Section */}
       <section id="features" className="py-16 px-4">
-        <SlideInSection className="container mx-auto">
+        <SlideInSection>
         <div className="container mx-auto" >
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground"> Search thousands of scientific services and instruments </h2>
@@ -240,11 +240,11 @@ const ziksir = () => {
 
       {/* Process Section */}
       <section id="process" className="py-16 px-4 bg-gray-900">
-        <SlideInSection delay="200ms" className="container mx-auto opacity-0">
+        <SlideInSection>
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-white">How ziksir Works</h2>
-            <p className="text-xl text-white font-open-sans font-semibold">
+            <h2 className="text-4xl font-bold mb-4 text-accent">How ziksir Works</h2>
+            <p className="text-xl text-gray-400 font-open-sans font-semibold">
               Three simple steps to access world-class research infrastructure
             </p>
           </div>
@@ -274,7 +274,7 @@ const ziksir = () => {
                   </div>
                 <h3 className="text-2xl font-bold mx-auto mb-4 ml-2 text-accent">{step.title}</h3>
                 </div>
-                <p className="text-white font-open-sans font-semibold">{step.description}</p>
+                <p className="text-gray-300 font-open-sans font-semibold">{step.description}</p>
               </div>
             ))}
           </div>
@@ -284,7 +284,7 @@ const ziksir = () => {
 
       {/* Testimonials Section */}
       <section className="py-16 px-4">
-        <SlideInSection className="container mx-auto">
+        <SlideInSection>
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground">What Researchers Say</h2>
@@ -343,11 +343,11 @@ const ziksir = () => {
 
       {/* Pricing Section */}
       <section id="pricing" className="py-16 px-4 bg-gray-900">
-        <SlideInSection className="container mx-auto">
+        <SlideInSection>
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-accent">Choose Your Plan</h2>
-            <p className="text-xl text-muted-foreground font-open-sans">
+            <p className="text-xl text-gray-400 font-open-sans">
               Flexible pricing for research teams of all sizes
             </p>
           </div>
@@ -443,7 +443,7 @@ const ziksir = () => {
 
       {/* Contact Section */}
       <section id="contact" className="py-16 px-4">
-        <SlideInSection className="container mx-auto">
+        <SlideInSection>
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground">Get In Touch</h2>
