@@ -45,7 +45,7 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const res = await axios.post("/api/user/login", {
+        const res = await axios.post(import.meta.env.VITE_API_URI + "/api/user/login", {
           email: formData.email,
           password: formData.password,
         });
@@ -71,7 +71,7 @@ const Auth = () => {
           return;
         }
 
-        const res = await axios.post("/api/user/signup", {
+        const res = await axios.post(import.meta.env.VITE_API_URI + "/api/user/signup", {
           name: formData.name,
           email: formData.email,
           password: formData.password,
