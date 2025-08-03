@@ -29,6 +29,51 @@ class AuthController {
             res.status(500).json({ error: error.message });
         }
     }
+
+    async getAllUsers(req: Request, res: Response): Promise<void> {
+        try{
+            const users = await authService.getAllUsers();
+            res.status(200).json(users);
+        } catch (error: any) {
+            res.status(500).json({ error: error.message }); 
+        }
+    }
+
+    async getUserById(req: Request, res: Response): Promise<void> { 
+        try{
+            const user = await authService.getUserById(req.params.id);
+            res.status(200).json(user);
+        } catch(error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    async updateUser(req: Request, res: Response): Promise<void> {
+        try {
+            const updatedUser = await authService.updateUser(req.params.id, req.body);
+            res.status(200).json({ message: "User updated successfully", user: updatedUser });
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+    async deleteUser(req: Request, res: Response): Promise<void> {
+        try {
+            const deletedUser = await authService.deleteUser(req.params.id);
+            res.status(200).json({ message: "User deleted successfully", user: deletedUser });
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+    async changePassword(req: Request, res: Response): Promise<void> {
+        try {
+            const updatedUser = await authService.changePassword(req.params.id, req.body.newPassword);
+            res.status(200).json({ message: "Password changed successfully", user: updatedUser });
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 }
 
 export const authController = new AuthController();
