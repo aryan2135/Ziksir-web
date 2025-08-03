@@ -13,8 +13,6 @@ const Users = () => {
       try {
         const response = await axios.get(import.meta.env.VITE_API_URI + "/api/user/count");
         setTotalUsers(response.data.totalUsers);
-
-     const fetchtotalUsers = async () =>    
       } catch (error) {
         console.error("Error fetching user count:", error);
       }

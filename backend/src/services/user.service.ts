@@ -47,7 +47,6 @@ class AuthService {
     async getTotalUserCount(): Promise<number> {
         return await User.countDocuments();
     }
-
     async getAllUsers(): Promise<UserInterface[]> {
         return await User.find().select("-password");
     }
