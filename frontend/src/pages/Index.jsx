@@ -176,9 +176,9 @@ const ziksir = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-16 px-4">
+      <section id="features" className="py-16">
         <SlideInSection>
-        <div className="container mx-auto" >
+        <div className="container" >
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-foreground"> Search thousands of scientific services and instruments </h2>
             {/* <p className="text-xl text-muted-foreground font-open-sans">
@@ -186,7 +186,7 @@ const ziksir = () => {
             </p> */}
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:px-20">
+          <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:px-20 overflow-x-scroll md:overflow-visible flex md:block space-x-4 md:space-x-0">
             {[
               {
                 icon: "fas fa-search",
@@ -219,7 +219,7 @@ const ziksir = () => {
                 description: "Connect with existing lab management systems and research workflows seamlessly."
               }
             ].map((feature, index) => (
-              <Card key={index} className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+              <Card key={index} className="min-w-[65%] sm:min-w-[300px] sm:min-h-[110%] md:min-w-0 lg:shadow-lg lg:hover:shadow-xl lg:hover:scale-105 transition-all duration-300">
                 <CardHeader className="pb-2">
                   <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mb-4">
                     <i className={`${feature.icon} text-xl text-accent-foreground`}></i>
@@ -342,9 +342,9 @@ const ziksir = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-16 px-4 bg-gray-900">
+      <section id="pricing" className="py-16 bg-gray-900">
         <SlideInSection>
-        <div className="container mx-auto">
+        <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4 text-accent">Choose Your Plan</h2>
             <p className="text-xl text-gray-400 font-open-sans">
@@ -352,7 +352,7 @@ const ziksir = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="flex md:grid md:grid-cols-3 gap-8 overflow-x-scroll overflow-y-hidden md:overflow-visible px-4 md:px-0 py-8 md:py-0 space-x-4 md:space-x-0">
             {[
               {
                 name: "Researcher",
@@ -402,7 +402,14 @@ const ziksir = () => {
                 popular: false
               }
             ].map((plan, index) => (
-              <Card key={index} className={`relative shadow hover:shadow-xl hover:scale-105 transition-all duration-300 ${plan.popular ? 'shadow-lg hover:shadow-2xl hover:scale-110 ring-2 ring-accent scale-105' : ''}`}>
+              <Card
+                 key={index}
+                className={`relative min-w-[85%] sm:min-w-[300px] py-[30px] md:min-w-0 shadow hover:shadow-xl hover:scale-105 transition-all duration-300 ${
+                 plan.popular
+                    ? 'shadow-lg hover:shadow-2xl hover:scale-110 ring-2 ring-accent scale-105 py-0'
+                    : ''
+                }`}
+              >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-semibold">
