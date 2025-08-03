@@ -155,9 +155,9 @@ const ziksir = () => {
       </section>
 
       {/* Institution Logos Section */}
-      <section className="bg-gray-900 text-white py-20">
+      <section className="bg-gray-900 text-white lg:py-20 py-10">
         <div className="text-center">
-          <p className="text-lg mb-20 opacity-80 tracking-wide">
+          <p className="text-lg lg:mb-20 mb-10 opacity-80 tracking-wide">
             Trusted by leading institutions across the country.
           </p>
           <div className="relative w-full overflow-hidden">
