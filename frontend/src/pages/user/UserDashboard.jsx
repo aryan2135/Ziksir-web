@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
-=======
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
->>>>>>> 498d30dfbba6cc1dd0ce40c085894cfda6901dad
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import axios from "@/api/axios";
@@ -11,9 +7,7 @@ import axios from "@/api/axios";
 
 export default function UserDashboard() {
   const location = useLocation();
-<<<<<<< HEAD
   const navigate = useNavigate();
-=======
   
   const [stats, setStats] = useState({
     totalBookings: 0,
@@ -42,7 +36,6 @@ export default function UserDashboard() {
     fetchStats();
   }, []);
 
->>>>>>> 498d30dfbba6cc1dd0ce40c085894cfda6901dad
   const menuItems = [
     { name: "Dashboard", path: "/user" },
     { name: "Book Slots", path: "/user/book-slots" },
