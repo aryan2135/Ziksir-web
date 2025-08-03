@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import SlideInSection from '@/components/ui/slidein';
+import { Outlet, useNavigate, NavLink } from "react-router-dom";
 
 const ziksir = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   // useEffect(() => {
   //   // Set dark mode as default
   //   document.documentElement.classList.add('dark');
@@ -51,9 +52,15 @@ const ziksir = () => {
       {/* Fixed Header */}
       <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className=" ml-4 font-sans transition-blue text-4xl font-bold text-primary text-accent font-open-sans">
+          <button
+            onClick={() => {
+              navigate("/");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className=" ml-4 font-sans transition-blue text-4xl font-bold text-primary text-accent font-open-sans"
+          >
             ziksir
-          </div>
+          </button>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -151,7 +158,7 @@ const ziksir = () => {
       <section className="bg-gray-900 text-white py-20">
         <div className="text-center">
           <p className="text-lg mb-20 opacity-80 tracking-wide">
-            Trusted by leading institutions accross the country.
+            Trusted by leading institutions across the country.
           </p>
           <div className="relative w-full overflow-hidden">
             <div className="flex min-w-full animate-marquee gap-8">
