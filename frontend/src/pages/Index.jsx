@@ -309,9 +309,9 @@ const ziksir = () => {
                 avatar: "fas fa-user-circle"
               },
               {
-                quote: "The platform made it easy to find specialized equipment across our entire campus. It's like having a research concierge.",
-                author: "Prof. Michael Rodriguez",
-                role: "Department Head, MIT",
+                quote: "A quick and easy, streamilened platform of laboratory equipment will benefit the whole research community at large.",
+                author: "Dr. Atul Jain",
+                role: "Professor, IIT Kharagpur",
                 avatar: "fas fa-user-circle"
               },
               {
@@ -320,12 +320,20 @@ const ziksir = () => {
                 role: "Facility Manager, Harvard Medical School",
                 avatar: "fas fa-user-circle"
               }
-            ].map((testimonial, index) => (
+            ].map((testimonial, index) => {
+              const starCounts = [4, 5, 4];
+              const stars = starCounts[index];
+              const starCountsInv = [1, 0, 1];
+              const starsInv = starCountsInv[index];
+              return (
               <Card key={index} className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out">
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
-                    {[...Array(5)].map((_, i) => (
+                    {[...Array(stars)].map((_, i) => (
                       <i key={i} className="fas fa-star text-accent text-sm"></i>
+                    ))}
+                    {[...Array(starsInv)].map((_, i) => (
+                      <i key={i} className="fas fa-star text-gray-400 text-sm"></i>
                     ))}
                   </div>
                   <p className="text-muted-foreground mb-6 font-open-sans italic font-medium">
@@ -342,7 +350,8 @@ const ziksir = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+              );
+            })}
           </div>
         </div>
         </SlideInSection>
