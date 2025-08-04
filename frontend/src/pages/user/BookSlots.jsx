@@ -51,7 +51,7 @@ export default function BookSlots() {
 
   useEffect(() => {
     axios
-      .get("/api/equipment")
+      .get(`${import.meta.env.VITE_API_URI}/api/equipment`)
       .then((res) => setEquipmentList(res.data))
       .catch((err) => console.error("Error fetching equipment list:", err));
   }, []);
