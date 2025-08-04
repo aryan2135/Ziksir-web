@@ -149,7 +149,7 @@ export default function UserDashboard() {
           </div>
           <div className="flex space-x-4 items-center">
             <button
-              className="bg-pink-100 px-4 py-2 rounded hover:bg-blue-300 font-bold font-poppins"
+              className="bg-white px-4 py-2 rounded hover:bg-blue-300 font-bold font-poppins"
               onClick={() => (window.location.href = "/")}
             >
               Logout

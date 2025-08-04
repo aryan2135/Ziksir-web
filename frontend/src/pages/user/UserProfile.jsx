@@ -14,7 +14,7 @@ export default function UserProfile() {
   const [profile, setProfile] = useState({
     name: savedProfile.name || currentUser.fullName || "Your Full Name",
     email: savedProfile.email || currentUser.email || "your.email@example.com",
-    phone: savedProfile.phone || "+91 98123-40567",
+    phone: savedProfile.phone || "Your Phone Number",
     organization: savedProfile.organization || "Your Organization",
     department: savedProfile.department || "Your Department",
     researchArea: savedProfile.researchArea || "Your Research Area"
