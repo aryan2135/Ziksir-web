@@ -11,8 +11,10 @@ import equipmentRoutes from './routes/equipment.routes';
 dotenv.config();
 const app = express();
 
+console.log('client url: ', process.env.CLIENT_URL);
+
 app.use(cors({
-    origin: true,
+    origin: process.env.CLIENT_URL,
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 }));
 app.use(express.json());
