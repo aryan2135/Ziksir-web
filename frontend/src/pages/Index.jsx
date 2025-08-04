@@ -303,21 +303,21 @@ const ziksir = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                quote: "ziksir has revolutionized how we manage our lab equipment. The booking system is intuitive and saves us hours every week.",
-                author: "Dr. Sarah Chen",
-                role: "Principal Investigator, Stanford University",
+                quote: "Easy to use platform which helps me find the equipment I require just in a few clicks. Its a real gamechanger from the tedious process before.",
+                author: "Dr. Sandeep Kumar Lehri",
+                role: "Professor, NIT Durgapur",
                 avatar: "fas fa-user-circle"
               },
               {
-                quote: "A quick and easy, streamilened platform of laboratory equipment will benefit the whole research community at large.",
+                quote: "A quick and easy, streamlined platform of laboratory equipment will benefit the whole research community at large.",
                 author: "Dr. Atul Jain",
                 role: "Professor, IIT Kharagpur",
                 avatar: "fas fa-user-circle"
               },
               {
                 quote: "Finally, a solution that understands the unique needs of research facilities. The analytics help us optimize our resources.",
-                author: "Dr. Emily Watson",
-                role: "Facility Manager, Harvard Medical School",
+                author: "Gautam R. Desiraju",
+                role: "Professor, IISc Bangalore",
                 avatar: "fas fa-user-circle"
               }
             ].map((testimonial, index) => {
@@ -372,7 +372,7 @@ const ziksir = () => {
             {[
               {
                 name: "Researcher",
-                price: "$29",
+                price: "₹999",
                 period: "/month",
                 description: "Perfect for individual researchers and small teams",
                 features: [
@@ -387,7 +387,7 @@ const ziksir = () => {
               },
               {
                 name: "Institution",
-                price: "$99",
+                price: "₹1999",
                 period: "/month",
                 description: "Ideal for departments and research institutions",
                 features: [
@@ -428,7 +428,7 @@ const ziksir = () => {
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-semibold">
+                    <span className="bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-semibold whitespace-nowrap">
                       Most Popular
                     </span>
                   </div>
@@ -567,7 +567,7 @@ const ziksir = () => {
                       </div>
                       <div>
                         <div className="font-semibold">Email</div>
-                        <div className="text-muted-foreground">hello@ziksir.com</div>
+                        <div className="text-muted-foreground">suyashkankane@kgpian.iitkgp.ac.in</div>
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -576,7 +576,7 @@ const ziksir = () => {
                       </div>
                       <div>
                         <div className="font-semibold">Phone</div>
-                        <div className="text-muted-foreground">+1 (555) 123-4567</div>
+                        <div className="text-muted-foreground">+91 917 964 3101</div>
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -585,7 +585,7 @@ const ziksir = () => {
                       </div>
                       <div>
                         <div className="font-semibold">Office</div>
-                        <div className="text-muted-foreground">San Francisco, CA</div>
+                        <div className="text-muted-foreground">IIT Kharagpur</div>
                       </div>
                     </div>
                   </div>
