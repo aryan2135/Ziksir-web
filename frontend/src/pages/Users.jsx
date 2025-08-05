@@ -7,28 +7,45 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
 
-  // Fetch total user count from backend
+  // Fetch total users
+  const fetchUserCount = async () => {
+    try {
+      const response = await axios.get(import.meta.env.VITE_API_URI + "/api/user/count");
+      setTotalUsers(response.data.totalUsers);
+    } catch (error) {
+      console.error("Error fetching user count:", error);
+    }
+  };
+
+  // Fetch all users
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get(import.meta.env.VITE_API_URI + "/api/user");
+      setUsers(response.data || []);
+    } catch (error) {
+      console.warn("Users list endpoint not available.");
+      setUsers([]);
+    }
+  };
+
+  // DELETE user by ID
+  const handleDelete = async (userId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URI}/api/user/${userId}`);
+      // Remove user from state
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+      // Update count
+      fetchUserCount();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete user. Check console for details.");
+    }
+  };
+
   useEffect(() => {
-    const fetchUserCount = async () => {
-      try {
-        const response = await axios.get(import.meta.env.VITE_API_URI + "/api/user/count");
-        setTotalUsers(response.data.totalUsers);
-      } catch (error) {
-        console.error("Error fetching user count:", error);
-      }
-    };
-
-    // Optional: Fetch all users if endpoint exists (e.g., /api/user)
-    const fetchAllUsers = async () => {
-      try {
-        const response = await axios.get(import.meta.env.VITE_API_URI + "/api/user"); // only if route exists
-        setUsers(response.data.users || []);
-      } catch (error) {
-        console.warn("Users list endpoint not available. Showing count only.");
-        setUsers([]); // fallback
-      }
-    };
-
     fetchUserCount();
     fetchAllUsers();
   }, []);
@@ -47,12 +64,12 @@ const Users = () => {
           </p>
 
           {users.length === 0 ? (
-            <p className="text-muted-foreground">No detailed user data available.</p>
+            <p className="text-muted-foreground">No registered users found.</p>
           ) : (
             <div className="space-y-4">
               {users.map((user, index) => (
                 <div
-                  key={index}
+                  key={user._id}
                   className="flex items-center justify-between p-4 bg-secondary rounded-lg"
                 >
                   <div>
@@ -61,7 +78,7 @@ const Users = () => {
                       {user.email} • {user.role}
                     </p>
                   </div>
-                  <Button variant="destructive" size="sm">
+                  <Button variant="destructive" size="sm" onClick={() => handleDelete(user._id)}>
                     <i className="fas fa-trash mr-1"></i> Delete
                   </Button>
                 </div>

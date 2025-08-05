@@ -28,12 +28,20 @@ const Bookings = () => {
 
   const fetchBookings = async () => {
     try {
-      const res = await axios.get("/api/bookings");
+      const res = await axios.get(import.meta.env.VITE_API_URI + "/api/bookings");
       setBookings(res.data);
     } catch (err) {
       console.error("Error fetching bookings:", err);
     }
   };
+
+  // const userId = JSON.parse(localStorage.getItem("currentUser"))._id;
+
+  // const validStatusBookings = {
+  //   pending: ["cancelled", "approved"],
+  //   approved: ["completed", "cancelled"],
+  //   completed: [],
+  // }
 
   useEffect(() => {
     fetchBookings();
@@ -70,7 +78,7 @@ const Bookings = () => {
   const handleSaveEdit = async () => {
     if (!selectedEvent?.id) return;
     try {
-      await axios.put(`/api/bookings/${selectedEvent.id}`, {
+      await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${selectedEvent.id}`, {
         startTime: new Date(startDateTime).toISOString(),
         endTime: new Date(endDateTime).toISOString(),
         status,
@@ -85,7 +93,7 @@ const Bookings = () => {
   const handleEventDrop = async (info) => {
     const { event } = info;
     try {
-      await axios.put(`/api/bookings/${event.extendedProps._id}`, {
+      await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${event.extendedProps._id}`, {
         startTime: event.start.toISOString(),
         endTime: event.end?.toISOString() || event.start.toISOString(),
         status: event.extendedProps.status,
@@ -100,7 +108,7 @@ const Bookings = () => {
   const handleEventResize = async (info) => {
     const { event } = info;
     try {
-      await axios.put(`/api/bookings/${event.extendedProps._id}`, {
+      await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${event.extendedProps._id}`, {
         startTime: event.start.toISOString(),
         endTime: event.end?.toISOString(),
         status: event.extendedProps.status,
@@ -167,7 +175,7 @@ const Bookings = () => {
               <div className="absolute right-0 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <button
                   onClick={async () => {
-                    await axios.put(`/api/bookings/${b._id}`, { status: "approved" });
+                    await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${b._id}`, { status: "approved" });
                     fetchBookings();
                   }}
                   className="bg-green-100 hover:bg-green-200 text-green-800 font-bold rounded-full px-2 py-1 text-sm"
@@ -177,7 +185,7 @@ const Bookings = () => {
                 </button>
                 <button
                   onClick={async () => {
-                    await axios.put(`/api/bookings/${b._id}`, { status: "cancelled" });
+                    await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${b._id}`, { status: "cancelled" });
                     fetchBookings();
                   }}
                   className="bg-red-100 hover:bg-red-200 text-red-800 font-bold rounded-full px-2 py-1 text-sm"

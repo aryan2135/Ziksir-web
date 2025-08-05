@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Card, CardContent, CardHeader, CardTitle, CardDescription
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-  Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import {
-  Select, SelectTrigger, SelectValue, SelectContent, SelectItem
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
 } from "@/components/ui/select";
-import axios from "@/api/axios"; 
+import axios from "@/api/axios";
 
 const Equipment = () => {
   const [equipmentList, setEquipmentList] = useState([]);
@@ -27,6 +39,7 @@ const Equipment = () => {
   });
   const [dialogMode, setDialogMode] = useState("add");
   const [selectedId, setSelectedId] = useState(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const API_BASE = import.meta.env.VITE_API_URI + "/api/equipment";
 
@@ -45,7 +58,10 @@ const Equipment = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: name === "quantity" || name === "available" ? parseInt(value) : value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "quantity" || name === "available" ? parseInt(value) || 0 : value,
+    }));
   };
 
   const handleAddOrEdit = async () => {
@@ -59,7 +75,9 @@ const Equipment = () => {
         await axios.post(API_BASE, payload);
       } else {
         await axios.put(`${API_BASE}/${selectedId}`, payload);
+        setEditDialogOpen(false); // close dialog after editing
       }
+
       resetForm();
       fetchEquipment();
     } catch (err) {
@@ -97,6 +115,12 @@ const Equipment = () => {
       .includes(searchQuery.toLowerCase())
   );
 
+  const statusClasses = {
+    available: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+    unavailable: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+    maintenance: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -109,12 +133,12 @@ const Equipment = () => {
                 resetForm();
               }}
             >
-              <i className="fas fa-plus mr-2"></i>Add New Equipment
+              <i className="fas fa-plus mr-2" /> Add New Equipment
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{dialogMode === "add" ? "Add New Equipment" : "Edit Equipment"}</DialogTitle>
+              <DialogTitle>Add New Equipment</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               {["name", "type", "equipmentLocation"].map((field) => (
@@ -122,7 +146,6 @@ const Equipment = () => {
                   <Label>{field === "equipmentLocation" ? "Location" : field.charAt(0).toUpperCase() + field.slice(1)}</Label>
                   <Input
                     name={field}
-                    placeholder={`Enter ${field}`}
                     value={formData[field]}
                     onChange={handleInputChange}
                   />
@@ -134,6 +157,7 @@ const Equipment = () => {
                   <Input
                     name="quantity"
                     type="number"
+                    min={0}
                     value={formData.quantity}
                     onChange={handleInputChange}
                   />
@@ -143,6 +167,7 @@ const Equipment = () => {
                   <Input
                     name="available"
                     type="number"
+                    min={0}
                     value={formData.available}
                     onChange={handleInputChange}
                   />
@@ -151,23 +176,21 @@ const Equipment = () => {
               <div>
                 <Label>Status</Label>
                 <Select
-                  onValueChange={(value) => setFormData({ ...formData, status: value })}
                   value={formData.status}
+                  onValueChange={(value) => setFormData({ ...formData, status: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {["available", "unavailable", "maintenance"].map((status) => (
-                      <SelectItem key={status} value={status}>
-                        {status}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="available">available</SelectItem>
+                    <SelectItem value="unavailable">unavailable</SelectItem>
+                    <SelectItem value="maintenance">maintenance</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <Button className="w-full" onClick={handleAddOrEdit}>
-                {dialogMode === "add" ? "Add Equipment" : "Update Equipment"}
+                Add Equipment
               </Button>
             </div>
           </DialogContent>
@@ -189,119 +212,130 @@ const Equipment = () => {
           <CardDescription>Manage your research equipment and facilities</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {filteredEquipment.length > 0 ? (
-              filteredEquipment.map((equipment) => (
-                <div
-                  key={equipment._id}
-                  className="flex items-center justify-between p-4 bg-secondary rounded-lg"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-                      <i className="fas fa-microscope text-accent-foreground"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">{equipment.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {equipment.type} • {equipment.equipmentLocation}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        equipment.status === "available"
-                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                          : equipment.status === "unavailable"
-                          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                          : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                      }`}
-                    >
-                      {equipment.status}
-                    </span>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            setDialogMode("edit");
-                            setFormData(equipment);
-                            setSelectedId(equipment._id);
-                          }}
-                        >
-                          <i className="fas fa-edit"></i>
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Edit Equipment</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          {["name", "type", "equipmentLocation"].map((field) => (
-                            <div key={field}>
-                              <Label>{field === "equipmentLocation" ? "Location" : field.charAt(0).toUpperCase() + field.slice(1)}</Label>
-                              <Input
-                                name={field}
-                                value={formData[field]}
-                                onChange={handleInputChange}
-                              />
-                            </div>
-                          ))}
-                          <div className="flex gap-4">
-                            <div>
-                              <Label>Quantity</Label>
-                              <Input
-                                name="quantity"
-                                type="number"
-                                value={formData.quantity}
-                                onChange={handleInputChange}
-                              />
-                            </div>
-                            <div>
-                              <Label>Available</Label>
-                              <Input
-                                name="available"
-                                type="number"
-                                value={formData.available}
-                                onChange={handleInputChange}
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <Label>Status</Label>
-                            <Select
-                              onValueChange={(value) => setFormData({ ...formData, status: value })}
-                              value={formData.status}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select Status" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="available">available</SelectItem>
-                                <SelectItem value="unavailable">unavailable</SelectItem>
-                                <SelectItem value="maintenance">maintenance</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <Button className="w-full" onClick={handleAddOrEdit}>
-                            Update Equipment
-                          </Button>
+              filteredEquipment.map((equipment) => {
+                const effectiveStatus =
+                  equipment.status === "maintenance"
+                    ? "maintenance"
+                    : equipment.available > 0
+                    ? "available"
+                    : "unavailable";
+
+                return (
+                  <div
+                    key={equipment._id}
+                    className="flex flex-col p-5 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center text-2xl">
+                          🧪
                         </div>
-                      </DialogContent>
-                    </Dialog>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDelete(equipment._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
+                        <div>
+                          <h4 className="font-semibold text-foreground">{equipment.name}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {equipment.type} • {equipment.equipmentLocation}
+                          </p>
+                        </div>
+                      </div>
+                      <span className={`px-4 py-1 rounded-full text-sm font-semibold ${statusClasses[effectiveStatus]}`}>
+                        {effectiveStatus}
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex space-x-8 text-sm text-muted-foreground">
+                      <div><strong>Quantity:</strong> {equipment.quantity}</div>
+                      <div><strong>Available:</strong> {equipment.available}</div>
+                    </div>
+
+                    <div className="mt-4 flex items-center space-x-3">
+                      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setDialogMode("edit");
+                              setFormData(equipment);
+                              setSelectedId(equipment._id);
+                              setEditDialogOpen(true);
+                            }}
+                          >
+                            <i className="fas fa-edit" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Edit Equipment</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            {["name", "type", "equipmentLocation"].map((field) => (
+                              <div key={field}>
+                                <Label>{field === "equipmentLocation" ? "Location" : field.charAt(0).toUpperCase() + field.slice(1)}</Label>
+                                <Input
+                                  name={field}
+                                  value={formData[field]}
+                                  onChange={handleInputChange}
+                                />
+                              </div>
+                            ))}
+                            <div className="flex gap-4">
+                              <div>
+                                <Label>Quantity</Label>
+                                <Input
+                                  name="quantity"
+                                  type="number"
+                                  value={formData.quantity}
+                                  onChange={handleInputChange}
+                                />
+                              </div>
+                              <div>
+                                <Label>Available</Label>
+                                <Input
+                                  name="available"
+                                  type="number"
+                                  value={formData.available}
+                                  onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <Label>Status</Label>
+                              <Select
+                                value={formData.status}
+                                onValueChange={(value) => setFormData({ ...formData, status: value })}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="available">available</SelectItem>
+                                  <SelectItem value="unavailable">unavailable</SelectItem>
+                                  <SelectItem value="maintenance">maintenance</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <Button className="w-full" onClick={handleAddOrEdit}>
+                              Update Equipment
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDelete(equipment._id)}
+                      >
+                        <i className="fas fa-trash" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
-              <p className="text-muted-foreground text-center py-4">No equipment found.</p>
+              <p className="text-muted-foreground">No equipment found.</p>
             )}
           </div>
         </CardContent>

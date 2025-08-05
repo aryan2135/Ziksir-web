@@ -15,17 +15,20 @@ export default function MyBookings() {
   const [userBookings, setUserBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const user = localStorage.getItem("currentUser");
-  const userId = JSON.parse(user)._id;
-
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(import.meta.env.VITE_API_URI + `/api/bookings/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      const userId = user._id;
+
+      const response = await axios.get(
+        import.meta.env.VITE_API_URI + `/api/bookings/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setUserBookings(response.data);
     } catch (error) {
       console.error("Failed to fetch bookings", error);
@@ -79,7 +82,7 @@ export default function MyBookings() {
                   <div>
                     <CardTitle className="flex items-center space-x-2">
                       <i className="fas fa-microscope text-accent" />
-                      <span>{booking.equipmentId.name || "Unknown Equipment"}</span>
+                      <span>{booking.equipmentId?.name || "Unknown Equipment"}</span>
                     </CardTitle>
                     <CardDescription>
                       {booking.slotDate?.slice(0, 10)} • {booking.timeSlot}

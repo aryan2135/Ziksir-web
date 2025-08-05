@@ -1,4 +1,3 @@
-// BookSlots.jsx (Improved UX)
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,6 +24,14 @@ export default function BookSlots() {
   const userId = user._id;
 
   const [equipmentList, setEquipmentList] = useState([]);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+
+  const [alert, setAlert] = useState({ message: "", type: "", visible: false });
+
+  const showAlert = (message, type = "info") => {
+    setAlert({ message, type, visible: true });
+    setTimeout(() => setAlert({ ...alert, visible: false }), 3000);
+  };
 
   const [bookingForm, setBookingForm] = useState({
     equipmentId: "",
@@ -47,11 +54,53 @@ export default function BookSlots() {
     remarks: "",
     organizationCategory: "",
     noOfSamples: "",
+    totalCharge: "",
   });
 
   useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const savedDetails = JSON.parse(localStorage.getItem("customerDetails"));
+        if (savedDetails) {
+          setBookingForm((prev) => ({
+            ...prev,
+            ...savedDetails,
+          }));
+        } else {
+          const token = localStorage.getItem("token");
+          const response = await axios.get(`${import.meta.env.VITE_API_URI}/api/user/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const userData = response.data;
+
+          setBookingForm((prev) => ({
+            ...prev,
+            name: userData.name || "",
+            contactNo: userData.contactNo || "",
+            emailId: userData.emailId || "",
+            organizationAddress: userData.organizationAddress || "",
+            state: userData.state || "",
+            country: userData.country || "",
+            gstin: userData.gstin || "",
+            gstinNo: userData.gstinNo || "",
+            panNo: userData.panNo || "",
+            pincode: userData.pincode || "",
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details for autofill:", error);
+      }
+    };
+
+    fetchUserDetails();
+  }, [userId]);
+
+  useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URI}/api/equipment`)
+      .get(import.meta.env.VITE_API_URI + "/api/equipment")
       .then((res) => setEquipmentList(res.data))
       .catch((err) => console.error("Error fetching equipment list:", err));
   }, []);
@@ -62,58 +111,93 @@ export default function BookSlots() {
 
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
 
-    const payload = {
-      userId,
-      ...bookingForm,
-      slotDate: bookingForm.slotDate?.toISOString(),
-      bookingDate: new Date().toISOString(),
+    if (!token) {
+      showAlert("Please log in first.", "error");
+      return;
+    }
+
+    const userUpdatePayload = {
+      name: bookingForm.name,
+      contactNo: bookingForm.contactNo,
+      emailId: bookingForm.emailId,
+      organizationAddress: bookingForm.organizationAddress,
+      state: bookingForm.state,
+      country: bookingForm.country,
+      gstin: bookingForm.gstin,
+      gstinNo: bookingForm.gstinNo,
+      panNo: bookingForm.panNo,
+      pincode: bookingForm.pincode,
     };
 
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("Please log in first.");
-        return;
-      }
-
-      await axios.post("/api/bookings/", payload, {
+      await axios.put(`${import.meta.env.VITE_API_URI}/api/user/${userId}`, userUpdatePayload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      alert("Booking request submitted successfully!");
-      navigate("/user");
+      localStorage.setItem("customerDetails", JSON.stringify(userUpdatePayload));
+
+      const bookingPayload = {
+        userId,
+        equipmentId: bookingForm.equipmentId,
+        slotDate: bookingForm.slotDate?.toISOString(),
+        bookingDate: new Date().toISOString(),
+        status: "pending",
+        timeSlot: bookingForm.timeSlot,
+        sampleDescription: bookingForm.sampleDescription,
+        analysisRequired: bookingForm.analysisRequired,
+        referenceNo: bookingForm.referenceNo,
+        remarks: bookingForm.remarks,
+        organizationCategory: bookingForm.organizationCategory,
+        noOfSamples: bookingForm.noOfSamples,
+        totalCharge: bookingForm.totalCharge,
+      };
+
+      await axios.post(import.meta.env.VITE_API_URI + "/api/bookings/", bookingPayload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      showAlert("Booking request submitted successfully!", "success");
+      setTimeout(() => navigate("/user"), 2000);
     } catch (error) {
-      console.error("Booking error:", error.response?.data || error.message);
-      alert("Booking failed. Please try again.");
+      console.error("Submission error:", error.response?.data || error.message);
+      showAlert("Submission failed. Please try again.", "error");
     }
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto p-6 ">
+    <div className="space-y-6 max-w-6xl mx-auto p-6">
       <h2 className="text-3xl font-bold text-foreground">Book Slots</h2>
 
+      {alert.visible && (
+        <div className={`transition-all duration-300 px-4 py-2 rounded-md text-sm font-medium w-fit ${alert.type === "error"
+          ? "bg-red-100 text-red-700 border border-red-300"
+          : alert.type === "success"
+            ? "bg-green-100 text-green-700 border border-green-300"
+            : "bg-blue-100 text-blue-700 border border-blue-300"
+          }`}>
+          {alert.message}
+        </div>
+      )}
+
       <form onSubmit={handleBookingSubmit} className="space-y-2">
-
-        {/* Booking Schedule Section */}
-
         <Card>
           <CardHeader>
             <CardTitle className="text-lg text-muted-foreground">📅 Booking Schedule</CardTitle>
           </CardHeader>
           <CardContent className="grid md:grid-cols-2 gap-6">
-            {/* Equipment */}
             <div>
               <label className="text-sm font-medium mb-2 block">Equipment *</label>
               <Select
                 value={bookingForm.equipmentId}
                 onValueChange={(value) => handleBookingFormChange("equipmentId", value)}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select equipment" />
-                </SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="Select equipment" /></SelectTrigger>
                 <SelectContent>
                   {equipmentList.map((eq) => (
                     <SelectItem key={eq._id} value={eq._id}>{eq.name}</SelectItem>
@@ -122,7 +206,6 @@ export default function BookSlots() {
               </Select>
             </div>
 
-            {/* Total Equipment Charge */}
             <div>
               <label className="text-sm font-medium mb-2 block">Total Equipment Charge *</label>
               <Input
@@ -133,10 +216,9 @@ export default function BookSlots() {
               />
             </div>
 
-            {/* Slot Date */}
             <div>
               <label className="text-sm font-medium mb-2 block">Booking Date *</label>
-              <Popover>
+              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
@@ -153,35 +235,26 @@ export default function BookSlots() {
                   <Calendar
                     mode="single"
                     selected={bookingForm.slotDate}
-                    onSelect={(date) => handleBookingFormChange("slotDate", date)}
+                    onSelect={(date) => {
+                      handleBookingFormChange("slotDate", date);
+                      setCalendarOpen(false);
+                    }}
                     disabled={(date) => date < new Date()}
                   />
                 </PopoverContent>
               </Popover>
             </div>
 
-            {/* Time Slot */}
             <div>
               <label className="text-sm font-medium mb-2 block">Time Slot *</label>
               <Select
                 value={bookingForm.timeSlot}
                 onValueChange={(value) => handleBookingFormChange("timeSlot", value)}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select time slot" />
-                </SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="Select time slot" /></SelectTrigger>
                 <SelectContent>
-                  {[
-                    "09:00-10:00",
-                    "10:00-11:00",
-                    "11:00-12:00",
-                    "14:00-15:00",
-                    "15:00-16:00",
-                    "16:00-17:00",
-                  ].map((slot) => (
-                    <SelectItem key={slot} value={slot}>
-                      {slot.replace("-", " - ")}
-                    </SelectItem>
+                  {["09:00-10:00", "10:00-11:00", "11:00-12:00", "14:00-15:00", "15:00-16:00", "16:00-17:00"].map(slot => (
+                    <SelectItem key={slot} value={slot}>{slot.replace("-", " - ")}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -189,8 +262,7 @@ export default function BookSlots() {
           </CardContent>
         </Card>
 
-
-        {/* Customer Details Section */}
+        {/* Customer / Party Details */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg text-muted-foreground">👤 Customer / Party Details</CardTitle>
@@ -198,8 +270,30 @@ export default function BookSlots() {
           <CardContent className="grid md:grid-cols-3 gap-6">
             <Input placeholder="Full Name *" value={bookingForm.name} onChange={(e) => handleBookingFormChange("name", e.target.value)} required />
             <Input placeholder="Organization Address *" value={bookingForm.organizationAddress} onChange={(e) => handleBookingFormChange("organizationAddress", e.target.value)} required />
-            <Input placeholder="State *" value={bookingForm.state} onChange={(e) => handleBookingFormChange("state", e.target.value)} required />
-            <Input placeholder="Country *" value={bookingForm.country} onChange={(e) => handleBookingFormChange("country", e.target.value)} required />
+            <Select value={bookingForm.state} onValueChange={(v) => handleBookingFormChange("state", v)}>
+              <SelectTrigger><SelectValue placeholder="State *" /></SelectTrigger>
+              <SelectContent>
+                {[
+                  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
+                  "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+                  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
+                  "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
+                  "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+                ].map((state) => (
+                  <SelectItem key={state} value={state}>{state}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={bookingForm.country} onValueChange={(v) => handleBookingFormChange("country", v)}>
+              <SelectTrigger><SelectValue placeholder="Country *" /></SelectTrigger>
+              <SelectContent>
+                {[
+                  "India", "United States", "United Kingdom", "Australia", "Canada", "Germany", "France", "Singapore", "Japan", "China", "Nepal", "Bangladesh", "Sri Lanka"
+                ].map((country) => (
+                  <SelectItem key={country} value={country}>{country}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Select value={bookingForm.gstin} onValueChange={(v) => handleBookingFormChange("gstin", v)}>
               <SelectTrigger><SelectValue placeholder="Customer/Party GSTIN?" /></SelectTrigger>
               <SelectContent>
@@ -217,7 +311,7 @@ export default function BookSlots() {
           </CardContent>
         </Card>
 
-        {/* Research Details */}
+        
         <Card>
           <CardHeader>
             <CardTitle className="text-lg text-muted-foreground">🔬 Research Equipment Details</CardTitle>
@@ -238,7 +332,6 @@ export default function BookSlots() {
                 ))}
               </SelectContent>
             </Select>
-            {/* Future input: total charges, etc. */}
             <div className="md:col-span-3 grid md:grid-cols-2 gap-6 mt-6">
               <Textarea placeholder="Sample Description *" value={bookingForm.sampleDescription} onChange={(e) => handleBookingFormChange("sampleDescription", e.target.value)} required />
               <Textarea placeholder="Analysis Required *" value={bookingForm.analysisRequired} onChange={(e) => handleBookingFormChange("analysisRequired", e.target.value)} required />

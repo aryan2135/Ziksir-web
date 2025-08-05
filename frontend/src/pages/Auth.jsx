@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "@/api/axios";
-
-const ADMIN_EMAIL = "newadmin@gmail.com"; // Set your admin email here
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,18 +17,7 @@ const Auth = () => {
     role: 'user',
   });
   const [error, setError] = useState("");
-  const [darkMode, setDarkMode] = useState(true);
   const navigate = useNavigate();
-
-  //useEffect(() => {
-    //const savedTheme = localStorage.getItem('theme');
-    //if (savedTheme) {
-      //setDarkMode(savedTheme === 'dark');
-      //document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-    //} else {
-      //document.documentElement.classList.add('dark');
-    //}
-  //}, []);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -45,14 +32,12 @@ const Auth = () => {
 
     try {
       if (isLogin) {
+        // Login flow
         const res = await axios.post(import.meta.env.VITE_API_URI + "/api/user/login", {
           email: formData.email,
           password: formData.password,
         });
-        console.log('login resonse: ', res.data);
-
         const { token, user } = res.data;
-        console.log("Login success:", user.role);
 
         localStorage.setItem("token", token);
         localStorage.setItem("currentUser", JSON.stringify(user));
@@ -61,7 +46,7 @@ const Auth = () => {
 
         navigate(user.role === "admin" ? "/admin/Overview" : "/user");
       } else {
-        // Validate sign-up
+        // Signup validation
         if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
           setError("All fields are required.");
           return;
@@ -71,6 +56,7 @@ const Auth = () => {
           return;
         }
 
+        // Signup flow
         const res = await axios.post(import.meta.env.VITE_API_URI + "/api/user/signup", {
           name: formData.name,
           email: formData.email,
@@ -79,9 +65,18 @@ const Auth = () => {
         });
 
         const { user } = res.data;
-        console.log("Signup success:", user);
+
+        // Signup successful — reset form and switch to login mode
         setIsLogin(true);
-        handleSubmit();
+        setFormData({
+          name: '',
+          username: '',
+          email: formData.email,  // autofill email for convenience
+          password: '',
+          confirmPassword: '',
+          role: 'user',
+        });
+        setError("Signup successful! Please log in.");
       }
     } catch (err) {
       const backendError = err?.response?.data?.message || "An error occurred during authentication.";
@@ -207,7 +202,10 @@ const Auth = () => {
                 {isLogin ? "Don't have an account?" : "Already have an account?"}
                 <button
                   type="button"
-                  onClick={() => setIsLogin(!isLogin)}
+                  onClick={() => {
+                    setIsLogin(!isLogin);
+                    setError("");
+                  }}
                   className="text-accent hover:underline ml-1 font-semibold"
                 >
                   {isLogin ? 'Sign Up' : 'Sign In'}
