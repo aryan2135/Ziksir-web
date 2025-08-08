@@ -18,6 +18,7 @@ import BrowseEquipment from "./pages/user/BrowseEquipment.jsx";
 import MyBookings from "./pages/user/MyBookings.jsx";
 import ResearchAssistant from "./pages/user/ResearchAssistant.jsx";
 import UserProfile from "./pages/user/UserProfile.jsx";
+import ProtectedRoute from "./components/hoc/protectedRoute.js";
 
 const queryClient = new QueryClient();
 
@@ -28,10 +29,19 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
 
-          <Route path="/user" element={<UserDashboard />}>
+          {/* ✅ Protected User Routes */}
+          <Route
+            path="/user"
+            element={
+              <ProtectedRoute>
+                <UserDashboard />
+              </ProtectedRoute>
+            }
+          >
             <Route path="book-slots" element={<BookSlots />} />
             <Route path="browse-equipment" element={<BrowseEquipment />} />
             <Route path="my-bookings" element={<MyBookings />} />
@@ -39,8 +49,15 @@ const App = () => (
             <Route path="profile" element={<UserProfile />} />
           </Route>
 
-          {/* Nested Admin Routes */}
-          <Route path="/admin" element={<AdminDashboard />}>
+          {/* ✅ Protected Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          >
             <Route path="overview" element={<OverviewPage />} />
             <Route path="equipment" element={<EquipmentPage />} />
             <Route path="bookings" element={<BookingsPage />} />
@@ -48,6 +65,7 @@ const App = () => (
             <Route path="settings" element={<SettingsPage />} />
           </Route>
 
+          {/* 404 Page (can protect or leave public) */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
