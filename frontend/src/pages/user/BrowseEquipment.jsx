@@ -78,57 +78,101 @@ export default function BrowseEquipment() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEquipments.length > 0 ? (
-            filteredEquipments.map((equipment) => (
-              <Card
-                key={equipment._id}
-                className="shadow-lg hover:shadow-xl hover:scale-105 transition-all border rounded-lg cursor-pointer"
-                onClick={() => setSelectedEquipment(equipment)}
-              >
-                <CardHeader>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden bg-accent">
-                      {equipment.img_location ? (
-                        <img
-                          src={equipment.img_location}
-                          alt={equipment.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <i className="fas fa-cogs text-xl text-accent-foreground" />
-                      )}
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">{equipment.name}</CardTitle>
-                      <CardDescription>
-                        {equipment.type} • {equipment.equipmentLocation}
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-center">
-                    <div className="text-sm text-muted-foreground">
-                      {equipment.available} / {equipment.quantity} available
-                    </div>
-                    {equipment.available > 0 ? (
-                      <Button
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate("/user/book-slots");
-                        }}
-                      >
-                        <i className="fas fa-calendar-plus mr-2"></i> Book Now
-                      </Button>
+            filteredEquipments.map((equipment) => {
+              const availabilityPercent =
+                (equipment.available / equipment.quantity) * 100;
+              const availabilityColor =
+                availabilityPercent > 50
+                  ? "bg-green-500"
+                  : availabilityPercent > 0
+                    ? "bg-yellow-500"
+                    : "bg-red-500";
+
+              return (
+                <Card
+                  key={equipment._id}
+                  className="relative cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border rounded-xl overflow-hidden group flex flex-col"
+                  onClick={() => setSelectedEquipment(equipment)}
+                >
+                  {/* Image Section */}
+                  <div className="h-40 overflow-hidden bg-gray-100">
+                    {equipment.img_location ? (
+                      <img
+                        src={equipment.img_location}
+                        alt={equipment.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
                     ) : (
-                      <Button size="sm" disabled>
-                        <i className="fas fa-ban mr-2"></i> Not Available
-                      </Button>
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        <i className="fas fa-cogs text-4xl"></i>
+                      </div>
                     )}
                   </div>
-                </CardContent>
-              </Card>
-            ))
+
+                  {/* Header */}
+                  <CardHeader className="p-4 flex-1">
+                    <CardTitle className="text-lg font-semibold line-clamp-1">
+                      {equipment.name}
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      {equipment.type} • {equipment.equipmentLocation}
+                    </CardDescription>
+                  </CardHeader>
+
+                  {/* Availability & Actions */}
+                  <CardContent className="px-4 pb-4">
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      {/* Availability Badge */}
+                      <div
+                        className={`flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-medium shadow-sm
+        ${availabilityPercent > 50
+                            ? "bg-green-50 text-green-700 border-green-200"
+                            : availabilityPercent > 0
+                              ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+                              : "bg-red-50 text-red-700 border-red-200"
+                          }`}
+                      >
+                        <span
+                          className={`w-2 h-2 rounded-full ${availabilityPercent > 50
+                              ? "bg-green-500"
+                              : availabilityPercent > 0
+                                ? "bg-yellow-500"
+                                : "bg-red-500"
+                            }`}
+                        ></span>
+                        <span>
+                          {equipment.available} / {equipment.quantity} Available
+                        </span>
+                      </div>
+
+                      {/* Book Now / Unavailable Button */}
+                      {equipment.available > 0 ? (
+                        <Button
+                          size="sm"
+                          className="bg-indigo-600 hover:bg-indigo-700 flex items-center gap-2"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate("/user/book-slots");
+                          }}
+                        >
+                          <i className="fas fa-calendar-plus"></i> Book Now
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          disabled
+                          variant="secondary"
+                          className="flex items-center gap-2"
+                        >
+                          <i className="fas fa-ban"></i> Unavailable
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+
+                </Card>
+              );
+            })
           ) : (
             <p className="text-muted-foreground text-center col-span-full">
               No equipment found.
@@ -137,8 +181,11 @@ export default function BrowseEquipment() {
         </div>
       </div>
 
-      {/* Modal Popup with Radix Dialog */}
-      <Dialog.Root open={!!selectedEquipment} onOpenChange={(open) => !open && setSelectedEquipment(null)}>
+      {/* Modal Popup */}
+      <Dialog.Root
+        open={!!selectedEquipment}
+        onOpenChange={(open) => !open && setSelectedEquipment(null)}
+      >
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50 z-40" />
           <Dialog.Content
@@ -189,12 +236,14 @@ export default function BrowseEquipment() {
                   </div>
 
                   <p className="mt-3">
-                    <strong>Available:</strong> {selectedEquipment.available} /{" "}
-                    {selectedEquipment.quantity}
+                    <strong>Available:</strong>{" "}
+                    <span className="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
+                      {selectedEquipment.available} / {selectedEquipment.quantity}
+                    </span>
                   </p>
                 </div>
 
-                <div className="flex justify-end space-x-4 mt-6">
+                <div className="flex justify-end space-x-4 mt-6 flex-wrap">
                   {selectedEquipment.available > 0 ? (
                     <Button onClick={() => navigate("/user/book-slots")}>
                       <i className="fas fa-calendar-plus mr-2"></i> Book Now

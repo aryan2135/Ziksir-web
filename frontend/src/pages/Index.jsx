@@ -21,20 +21,6 @@ const ziksir = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   // Set dark mode as default
-  //   document.documentElement.classList.add('dark');
-
-  //   // Check localStorage for theme preference
-  //   const savedTheme = localStorage.getItem('theme');
-  //   if (savedTheme) {
-  //     setDarkMode(savedTheme === 'dark');
-  //     if (savedTheme === 'light') {
-  //       document.documentElement.classList.remove('dark');
-  //     }
-  //   }
-  // }, []);
-
   useEffect(() => {
     const isUserLogin = async () => {
       try {
@@ -130,9 +116,6 @@ const ziksir = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
-            {/* <Button onClick={toggleTheme} variant="outline" size="sm">
-              <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
-            </Button> */}
             <Button
               onClick={() => (window.location.href = "/auth")}
               variant="default"
@@ -197,24 +180,12 @@ const ziksir = () => {
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-5xl font-sans md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              World class services & equipment on demand
+              World class services & facilities on demand
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 font-open-sans">
-              Access thousands of instruments and services from renowned
-              scientific organizations.
+              Access thousands of instruments and services from renowned scientific organizations.
             </p>
 
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
-              <Button size="lg" className="text-lg px-8 py-3">
-                <i className="fas fa-calendar-alt mr-2"></i>
-                Book a Demo
-              </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-3">
-                <i className="fas fa-play mr-2"></i>
-                Watch Demo
-              </Button>
-            </div>
           </div>
         </div>
       </section>
@@ -305,16 +276,14 @@ const ziksir = () => {
 
       {/* Features Section */}
       <section id="features" className="py-16">
-        <SlideInSection>
+        
           <div className="container">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4 text-foreground">
                 {" "}
                 Search thousands of scientific services and instruments{" "}
               </h2>
-              {/* <p className="text-xl text-muted-foreground font-open-sans">
-              Everything you need to manage research infrastructure efficiently
-            </p> */}
+            </div>
             </div>
 
             <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:px-20 overflow-x-scroll md:overflow-visible flex md:block space-x-4 md:space-x-0">
@@ -378,8 +347,6 @@ const ziksir = () => {
                 </Card>
               ))}
             </div>
-          </div>
-        </SlideInSection>
       </section>
 
       {/* Process Section */}

@@ -40,11 +40,13 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('yo')
     setError("");
 
     try {
       if (isLogin) {
         // Login flow
+
         const res = await axios.post(
           import.meta.env.VITE_API_URI + "/api/user/login",
           {
@@ -102,9 +104,11 @@ const Auth = () => {
         setError("Signup successful! Please log in.");
       }
     } catch (err) {
-      const backendError =
-        err?.response?.data?.message ||
-        "An error occurred during authentication.";
+      let backendError = err?.response?.data?.message || "An error occurred during authentication.";
+      if (typeof backendError !== "string") {
+          backendError = JSON.stringify(backendError);
+    }
+
       console.error("Auth Error:", err?.response?.data || err);
       setError(
         backendError.includes("Invalid") || backendError.includes("not")
@@ -112,7 +116,7 @@ const Auth = () => {
           : backendError
       );
     }
-  };
+};
 
   return (
     <div className="min-h-screen bg-background font-poppins flex items-center justify-center px-4">
@@ -209,35 +213,19 @@ const Auth = () => {
               </div>
 
               {!isLogin && (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <Input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      placeholder="Confirm your password"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      required
-                      className="font-open-sans"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="role">Select Role</Label>
-                    <select
-                      id="role"
-                      name="role"
-                      value={formData.role}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border rounded-md bg-background text-foreground font-open-sans"
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  </div>
-                </>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="Confirm your password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    required
+                    className="font-open-sans"
+                  />
+                </div>
               )}
 
               <Button type="submit" className="w-full text-lg py-3">

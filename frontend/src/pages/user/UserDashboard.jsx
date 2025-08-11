@@ -49,6 +49,7 @@ export default function UserDashboard() {
     { name: "Book Slots", path: "/user/book-slots" },
     { name: "Browse Equipment", path: "/user/browse-equipment" },
     { name: "My Bookings", path: "/user/my-bookings" },
+    { name: "Request Equipment", path: "/user/request-equipment" },
     { name: "Research Assistant", path: "/user/research-assistant" },
     { name: "Profile", path: "/user/profile" },
   ];
@@ -69,6 +70,14 @@ export default function UserDashboard() {
       console.log(error);
       console.log("error while logout ...");
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+  localStorage.removeItem("currentUser");
+  localStorage.removeItem("isAuthenticated");
+  localStorage.removeItem("userType");
+    navigate("/"); 
   };
 
   return (
@@ -185,6 +194,8 @@ export default function UserDashboard() {
         <header className="flex md:hidden bg-white shadow p-4 justify-between items-center">
           <button
             onClick={() => {
+              navigate("/user");
+              window.scrollTo({ top: 0, behavior: "smooth" });
               navigate("/user");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}

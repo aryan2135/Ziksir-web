@@ -24,6 +24,7 @@ const Bookings = () => {
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
   const [status, setStatus] = useState("pending");
+  const [filterStatus, setFilterStatus] = useState("all");
   const calendarRef = useRef(null);
 
   const fetchBookings = async () => {
@@ -34,14 +35,6 @@ const Bookings = () => {
       console.error("Error fetching bookings:", err);
     }
   };
-
-  // const userId = JSON.parse(localStorage.getItem("currentUser"))._id;
-
-  // const validStatusBookings = {
-  //   pending: ["cancelled", "approved"],
-  //   approved: ["completed", "cancelled"],
-  //   completed: [],
-  // }
 
   useEffect(() => {
     fetchBookings();
@@ -120,6 +113,23 @@ const Bookings = () => {
     }
   };
 
+  const handleDeleteBooking = async (id) => {
+    try {
+      await axios.delete(import.meta.env.VITE_API_URI + `/api/bookings/${id}`);
+      fetchBookings();
+    } catch (error) {
+      console.error("Error deleting booking:", error);
+    }
+  };
+
+  const filteredSortedBookings = bookings
+    .filter((b) => filterStatus === "all" || b.status === filterStatus)
+    .sort((a, b) => {
+      if (a.status === "pending" && b.status !== "pending") return -1;
+      if (a.status !== "pending" && b.status === "pending") return 1;
+      return new Date(b.slotDate) - new Date(a.slotDate);
+    });
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -130,78 +140,99 @@ const Bookings = () => {
       </div>
 
       <Card className="bg-white/90 backdrop-blur-lg shadow-xl rounded-xl p-6">
-        <CardHeader>
+        <CardHeader className="flex flex-wrap justify-between gap-2 w-full">
           <CardTitle>Recent Bookings</CardTitle>
+          <div className=" w-[160px]">
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger>
+                <SelectValue placeholder="Filter Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="approved">Approved</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
+
         <CardContent>
-  {bookings.length === 0 ? (
-    <p className="text-muted-foreground">No bookings yet.</p>
-  ) : (
-    <div className="space-y-4">
-      {bookings.map((b) => (
-        <div
-          key={b._id}
-          className="group flex justify-between items-center p-4 bg-white border border-gray-200 rounded-lg shadow-md transition-shadow duration-200 hover:shadow-lg"
-        >
-          {/* Booking details */}
-          <div>
-            <h4 className="font-semibold text-lg">{b.equipmentId?.name || "Unknown Equipment"}</h4>
-            <p className="text-sm text-gray-500">
-              {b.userId?.name || "Unknown User"} • {new Date(b.slotDate).toLocaleDateString()}
-            </p>
-          </div>
-
-          {/* Status badge or actions */}
-          <div className="relative flex items-center">
-            {/* Default status badge (hidden when hovering) */}
-            <span
-              className={`
-                px-3 py-1 text-sm font-semibold rounded-full transition-opacity duration-200
-                ${
-                  b.status === "approved"
-                    ? "bg-blue-100 text-blue-800"
-                    : b.status === "cancelled"
-                    ? "bg-red-100 text-red-800"
-                    : "bg-yellow-100 text-yellow-800"
-                }
-                ${b.status === "pending" ? "group-hover:opacity-0" : ""}
-              `}
-            >
-              {b.status}
-            </span>
-
-            {/* Hover buttons for pending bookings */}
-            {b.status === "pending" && (
-              <div className="absolute right-0 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <button
-                  onClick={async () => {
-                    await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${b._id}`, { status: "approved" });
-                    fetchBookings();
-                  }}
-                  className="bg-green-100 hover:bg-green-200 text-green-800 font-bold rounded-full px-2 py-1 text-sm"
-                  title="Approve"
+          {filteredSortedBookings.length === 0 ? (
+            <p className="text-muted-foreground">No bookings yet.</p>
+          ) : (
+            <div className="space-y-4">
+              {filteredSortedBookings.map((b) => (
+                <div
+                  key={b._id}
+                  className="group flex justify-between items-center p-4 bg-white border border-gray-200 rounded-lg shadow-md transition-shadow duration-200 hover:shadow-lg"
                 >
-                  ✓
-                </button>
-                <button
-                  onClick={async () => {
-                    await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${b._id}`, { status: "cancelled" });
-                    fetchBookings();
-                  }}
-                  className="bg-red-100 hover:bg-red-200 text-red-800 font-bold rounded-full px-2 py-1 text-sm"
-                  title="Reject"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
-  )}
-</CardContent>
+                  <div>
+                    <h4 className="font-semibold text-lg">{b.equipmentId?.name || "Unknown Equipment"}</h4>
+                    <p className="text-sm text-gray-500">
+                      {b.userId?.name || "Unknown User"} • {new Date(b.slotDate).toLocaleDateString()}
+                    </p>
+                  </div>
 
+                  <div className="relative flex items-center gap-2">
+                    <span
+                      className={`px-3 py-1 text-sm font-semibold rounded-full transition-opacity duration-200
+                        ${
+                          b.status === "approved"
+                            ? "bg-blue-100 text-blue-800"
+                            : b.status === "cancelled"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }
+                        ${b.status === "pending" ? "group-hover:opacity-0" : ""}
+                      `}
+                    >
+                      {b.status}
+                    </span>
+
+                    {b.status === "pending" && (
+                      <div className="absolute right-8 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <button
+                          onClick={async () => {
+                            await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${b._id}`, {
+                              status: "approved",
+                            });
+                            fetchBookings();
+                          }}
+                          className="bg-green-100 hover:bg-green-200 text-green-800 font-bold rounded-full px-2 py-1 text-sm"
+                          title="Approve"
+                        >
+                          ✓
+                        </button>
+                        <button
+                          onClick={async () => {
+                            await axios.put(import.meta.env.VITE_API_URI + `/api/bookings/${b._id}`, {
+                              status: "cancelled",
+                            });
+                            fetchBookings();
+                          }}
+                          className="bg-red-100 hover:bg-red-200 text-red-800 font-bold rounded-full px-2 py-1 text-sm"
+                          title="Reject"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Delete Button */}
+                    <button
+                      onClick={() => handleDeleteBooking(b._id)}
+                      className="text-red-600 hover:text-red-800 text-xl font-bold"
+                      title="Delete Booking"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
       </Card>
 
       {/* Calendar Dialog */}

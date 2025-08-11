@@ -16,31 +16,7 @@ const AdminDas = () => {
       navigate("/auth");
       return;
     }
-
-    //const savedTheme = localStorage.getItem("theme");
-    //if (savedTheme) {
-      //setDarkMode(savedTheme === "dark");
-      //if (savedTheme === "light") {
-        //document.documentElement.classList.remove("dark");
-      //} else {
-        //document.documentElement.classList.add("dark");
-      //}
-    //} else {
-      //document.documentElement.classList.add("dark");
-    //}
   }, [navigate]);
-
-  //const toggleTheme = () => {
-    //const newTheme = !darkMode;
-    //setDarkMode(newTheme);
-    //localStorage.setItem("theme", newTheme ? "dark" : "light");
-
-    //if (newTheme) {
-      //document.documentElement.classList.add("dark");
-    //} else {
-      //document.documentElement.classList.remove("dark");
-    //}
-  //};
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");

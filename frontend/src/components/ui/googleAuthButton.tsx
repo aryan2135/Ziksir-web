@@ -24,11 +24,10 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({
         variant="outline"
         className="w-full py-5 px-4 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 bg-white hover:bg-gray-50"
       >
-        <FcGoogle className="text-2xl mr-2" />
+        {/* <FcGoogle className="text-2xl mr-2" /> */}
         <span className="text-sm sm:text-base">{children}</span>
       </Button>
     </>
   );
 };
-
 export default GoogleAuthButton;

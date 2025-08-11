@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner.js";
 import { TooltipProvider } from "@/components/ui/tooltip.js";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Index from "./pages/Index.jsx";
 import Auth from "./pages/Auth.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
@@ -16,9 +17,10 @@ import EquipmentPage from "./pages/Equipment.jsx";
 import BookSlots from "./pages/user/BookSlots.jsx";
 import BrowseEquipment from "./pages/user/BrowseEquipment.jsx";
 import MyBookings from "./pages/user/MyBookings.jsx";
+import RequestEquipment from "./pages/user/RequestEquipment.jsx";
 import ResearchAssistant from "./pages/user/ResearchAssistant.jsx";
 import UserProfile from "./pages/user/UserProfile.jsx";
-import ProtectedRoute from "./components/hoc/protectedRoute.js";
+import ProtectRoutes from "./pages/ProtectRoutes.jsx";
 
 const queryClient = new QueryClient();
 
@@ -29,40 +31,31 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
+          {/* Public routes */}
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
 
-          {/* ✅ Protected User Routes */}
-          <Route
-            path="/user"
-            element={
-              <ProtectedRoute>
-                <UserDashboard />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="book-slots" element={<BookSlots />} />
-            <Route path="browse-equipment" element={<BrowseEquipment />} />
-            <Route path="my-bookings" element={<MyBookings />} />
-            <Route path="research-assistant" element={<ResearchAssistant />} />
-            <Route path="profile" element={<UserProfile />} />
+          {/* User protected routes */}
+          <Route element={<ProtectRoutes allowedRoles={["user"]} />}>
+            <Route path="/user" element={<UserDashboard />}>
+              <Route path="book-slots" element={<BookSlots />} />
+              <Route path="browse-equipment" element={<BrowseEquipment />} />
+              <Route path="my-bookings" element={<MyBookings />} />
+              <Route path="request-equipment" element={<RequestEquipment />} />
+              <Route path="research-assistant" element={<ResearchAssistant />} />
+              <Route path="profile" element={<UserProfile />} />
+            </Route>
           </Route>
 
-          {/* ✅ Protected Admin Routes */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="overview" element={<OverviewPage />} />
-            <Route path="equipment" element={<EquipmentPage />} />
-            <Route path="bookings" element={<BookingsPage />} />
-            <Route path="users" element={<UsersPage />} />
-            <Route path="settings" element={<SettingsPage />} />
+          {/* Admin protected routes */}
+          <Route element={<ProtectRoutes allowedRoles={["admin"]} />}>
+            <Route path="/admin" element={<AdminDashboard />}>
+              <Route path="overview" element={<OverviewPage />} />
+              <Route path="equipment" element={<EquipmentPage />} />
+              <Route path="bookings" element={<BookingsPage />} />
+              <Route path="users" element={<UsersPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+            </Route>
           </Route>
 
           {/* 404 Page (can protect or leave public) */}
