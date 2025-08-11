@@ -22,9 +22,13 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({
       <Button
         onClick={onClick}
         variant="outline"
-        className="w-full py-5 px-4 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 bg-white hover:bg-gray-50"
+        className="w-full py-5 px-6 font-medium text-gray-700 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-300 bg-white hover:bg-gray-50 flex items-center gap-2"
       >
-        {/* <FcGoogle className="text-2xl mr-2" /> */}
+        <img
+          src="https://grafik.agency/wp-content/uploads/Google-G.jpg"
+          alt=""
+          className="w-14 h-6"
+        />
         <span className="text-sm sm:text-base">{children}</span>
       </Button>
     </>
