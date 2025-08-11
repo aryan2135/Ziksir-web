@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate, NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import axios from "@/api/axios";
 
 const AdminDas = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -19,41 +20,76 @@ const AdminDas = () => {
 
     //const savedTheme = localStorage.getItem("theme");
     //if (savedTheme) {
-      //setDarkMode(savedTheme === "dark");
-      //if (savedTheme === "light") {
-        //document.documentElement.classList.remove("dark");
-      //} else {
-        //document.documentElement.classList.add("dark");
-      //}
+    //setDarkMode(savedTheme === "dark");
+    //if (savedTheme === "light") {
+    //document.documentElement.classList.remove("dark");
     //} else {
-      //document.documentElement.classList.add("dark");
+    //document.documentElement.classList.add("dark");
+    //}
+    //} else {
+    //document.documentElement.classList.add("dark");
     //}
   }, [navigate]);
 
   //const toggleTheme = () => {
-    //const newTheme = !darkMode;
-    //setDarkMode(newTheme);
-    //localStorage.setItem("theme", newTheme ? "dark" : "light");
+  //const newTheme = !darkMode;
+  //setDarkMode(newTheme);
+  //localStorage.setItem("theme", newTheme ? "dark" : "light");
 
-    //if (newTheme) {
-      //document.documentElement.classList.add("dark");
-    //} else {
-      //document.documentElement.classList.remove("dark");
-    //}
+  //if (newTheme) {
+  //document.documentElement.classList.add("dark");
+  //} else {
+  //document.documentElement.classList.remove("dark");
+  //}
   //};
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("userType");
-    navigate("/");
+    try {
+      await axios.post(
+        import.meta.env.VITE_API_URI + "/api/user/logout",
+        {},
+        { withCredentials: true }
+      );
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      console.log("error while logout ...");
+    }
   };
 
   const sidebarItems = [
-    { id: "overview", icon: "fas fa-chart-bar", label: "Overview", path: "/admin/overview" },
-    { id: "equipment", icon: "fas fa-cogs", label: "Equipment Management", path: "/admin/equipment" },
-    { id: "bookings", icon: "fas fa-calendar-check", label: "Booking Requests", path: "/admin/bookings" },
-    { id: "users", icon: "fas fa-users", label: "User Management", path: "/admin/users" },
-    { id: "settings", icon: "fas fa-cog", label: "Settings", path: "/admin/settings" },
+    {
+      id: "overview",
+      icon: "fas fa-chart-bar",
+      label: "Overview",
+      path: "/admin/overview",
+    },
+    {
+      id: "equipment",
+      icon: "fas fa-cogs",
+      label: "Equipment Management",
+      path: "/admin/equipment",
+    },
+    {
+      id: "bookings",
+      icon: "fas fa-calendar-check",
+      label: "Booking Requests",
+      path: "/admin/bookings",
+    },
+    {
+      id: "users",
+      icon: "fas fa-users",
+      label: "User Management",
+      path: "/admin/users",
+    },
+    {
+      id: "settings",
+      icon: "fas fa-cog",
+      label: "Settings",
+      path: "/admin/settings",
+    },
   ];
 
   return (
@@ -118,7 +154,9 @@ const AdminDas = () => {
           </button>
 
           <div>
-            <h1 className="text-xl font-semibold text-foreground">Admin Dashboard</h1>
+            <h1 className="text-xl font-semibold text-foreground">
+              Admin Dashboard
+            </h1>
             <p className="text-sm text-muted-foreground font-open-sans">
               Welcome back, Administrator
             </p>
@@ -146,4 +184,3 @@ const AdminDas = () => {
 };
 
 export default AdminDas;
-

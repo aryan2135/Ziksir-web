@@ -1,0 +1,114 @@
+import { mailTransporter } from "../config/nodemailer";
+import { env } from "../config/env";
+
+export const sendEmail = async (to: string, resetLink: string) => {
+  const htmlContent = `
+  <div style="
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: linear-gradient(135deg, #f0f4ff, #d9e2ff); 
+    padding: 15px 0; 
+    margin: 0;
+  ">
+    <div style="
+      max-width: 600px; 
+      margin: auto; 
+      background: white; 
+      border-radius: 10px; 
+      box-shadow: 0 6px 18px rgba(100, 115, 255, 0.2); 
+      overflow: hidden;
+    ">
+      
+      <!-- Header -->
+      <div style="
+        background: linear-gradient(90deg, #667eea, #764ba2); 
+        padding: 18px 15px; 
+        text-align: center;
+      ">
+        <h1 style="
+          color: #f9f9f9; 
+          font-weight: 700; 
+          font-size: 26px; 
+          margin: 0; 
+          letter-spacing: 1.5px;
+          user-select: none;
+        ">
+          ziksir
+        </h1>
+      </div>
+
+      <!-- Body -->
+      <div style="
+        padding: 20px 25px; 
+        color: #222; 
+        font-size: 16px; 
+        line-height: 1.4;
+      ">
+        <h2 style="
+          font-weight: 700; 
+          font-size: 21px; 
+          margin: 0 0 12px 0; 
+          color: #4c51bf;
+        ">
+          Password Reset Request
+        </h2>
+        <p style="
+          margin: 0 0 20px 0; 
+          color: #555;
+        ">
+          We received a request to reset your password for your Ziksir account. Click the button below to reset it. This link will be valid for <strong>30 minutes</strong>.
+        </p>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+          <a href="${resetLink}" style="
+            display: inline-block;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 7px;
+            font-weight: 700;
+            font-size: 17px;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(118, 75, 162, 0.5);
+            transition: background 0.3s ease;
+          ">
+            Reset Password
+          </a>
+        </div>
+
+        <p style="
+          font-size: 13px; 
+          color: #777; 
+          text-align: center;
+          margin: 0;
+        ">
+          If you didn’t request this, you can safely ignore this email.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div style="
+        background: #f5f7ff; 
+        padding: 12px 15px; 
+        text-align: center; 
+        font-size: 12px; 
+        color: #999;
+      ">
+        &copy; ${new Date().getFullYear()} Ziksir. All rights reserved.
+      </div>
+    </div>
+  </div>
+  `;
+
+  try {
+    const info = await mailTransporter.sendMail({
+      from: `"Ziksir" <${env.SMTP_USER}>`,
+      to,
+      subject: "Reset Your Password - Ziksir",
+      html: htmlContent,
+    });
+    return info;
+  } catch (error) {
+    console.error("Error sending email: ", error);
+    throw error;
+  }
+};

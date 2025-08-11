@@ -14,4 +14,6 @@ export const env = {
   GOOGLE_CLIENT_SECRET: getEnvVariable("GOOGLE_CLIENT_SECRET"),
   CLIENT_URL: getEnvVariable("CLIENT_URL"),
   JWT_SECRET: getEnvVariable("JWT_SECRET"),
+  SMTP_USER: getEnvVariable("SMTP_USER"),
+  SMTP_PASS: getEnvVariable("SMTP_PASS"),
 };

@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { authService } from "../services/user.service";
+import { tokenService } from "../services/token.service";
 import passport from "passport";
 import { generateToken } from "../utils/jwt";
 import { env } from "../config/env";
 import GenertateRandomString from "../utils/generateBytes";
+import { sendEmail } from "../utils/sendEmail";
 
 class AuthController {
   async signup(req: Request, res: Response): Promise<void> {
@@ -81,6 +83,16 @@ class AuthController {
 
   async changePassword(req: Request, res: Response): Promise<void> {
     try {
+      if (req.body.resetToken) {
+        const resetToken = await tokenService.verifyResetToken(
+          req.body.resetToken
+        );
+        if (!resetToken) {
+          res.status(400).json({ message: "token expired or Invalid " });
+          return;
+        }
+        req.params.id = resetToken.userId.toString();
+      }
       const updatedUser = await authService.changePassword(
         req.params.id,
         req.body.newPassword
@@ -133,9 +145,31 @@ class AuthController {
     return res.status(200).json({ message: "logout successfully" });
   };
 
-  forgotPassword = (req: Request, res: Response) => {
+  forgotPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
+    const user = await authService.isEmailExists(email);
+    if (user?.authProvider == "google")
+      return res.status(200).json({
+        message: "google users does not need to change password",
+        googleUser: true,
+      });
+    if (!user)
+      return res.status(200).json({
+        isUserExists: false,
+        message: "if this email exists , a password reset link has been sent  ",
+      });
+
     const token = GenertateRandomString();
+    try {
+      await tokenService.saveResetToken(user._id, token);
+      const resetURL =
+        env.CLIENT_URL + "/reset-password" + `/${user._id}/` + token;
+
+      await sendEmail(email, resetURL);
+      return res.status(200).json({ message: "email sent successfully" });
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
   };
 }
 export const authController = new AuthController();

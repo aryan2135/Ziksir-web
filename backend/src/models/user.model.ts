@@ -18,6 +18,11 @@ const userSchema = new Schema<UserInterface>({
   pincode: { type: Number, required: false },
   remarks: { type: String, required: false },
   organizationCategory: { type: String, required: false },
+  authProvider: {
+    type: String,
+    enum: ["local", "google"],
+    default: "local",
+  },
 });
 
 export const User = mongoose.model<UserInterface>("User", userSchema);

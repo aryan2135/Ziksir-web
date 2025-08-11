@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import GoogleAuthButton from "../components/ui/googleAuthButton";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "@/api/axios";
+import { Eye, EyeOff } from "lucide-react";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -24,6 +25,9 @@ const Auth = () => {
     role: "user",
   });
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleGoogleAuth = async () => {
@@ -191,16 +195,27 @@ const Auth = () => {
                 <Input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleInputChange}
                   required
-                  className="font-open-sans"
+                  className="font-open-sans pr-10"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute top-[38px] right-3 text-gray-500 hover:text-gray-700"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
                 {isLogin && (
                   <button
                     type="button"
+                    onClick={() => {
+                      navigate("/forgot-password");
+                    }}
                     className="absolute top-0 right-0 text-[13px] text-blue-600 hover:underline hover:decoration-1 hover:decoration-blue-500"
                   >
                     Forgot password ?
@@ -210,18 +225,30 @@ const Auth = () => {
 
               {!isLogin && (
                 <>
-                  <div className="space-y-2">
+                  <div className="space-y-2 relative">
                     <Label htmlFor="confirmPassword">Confirm Password</Label>
                     <Input
                       id="confirmPassword"
                       name="confirmPassword"
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       placeholder="Confirm your password"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
                       required
-                      className="font-open-sans"
+                      className="font-open-sans pr-10"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword((prev) => !prev)}
+                      className="absolute top-[38px] right-3 text-gray-500 hover:text-gray-700"
+                      tabIndex={-1}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
                   </div>
 
                   <div className="space-y-2">

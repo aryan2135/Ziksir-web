@@ -18,8 +18,9 @@ import BrowseEquipment from "./pages/user/BrowseEquipment.jsx";
 import MyBookings from "./pages/user/MyBookings.jsx";
 import ResearchAssistant from "./pages/user/ResearchAssistant.jsx";
 import UserProfile from "./pages/user/UserProfile.jsx";
+import ForgotPassword from "./pages/forgotPassword";
+import ResetPassword from "./pages/resetPassword";
 import ProtectedRoute from "./components/hoc/protectedRoute.js";
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -32,6 +33,11 @@ const App = () => (
           {/* Public Routes */}
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/reset-password/:id/:token"
+            element={<ResetPassword />}
+          />
 
           {/* ✅ Protected User Routes */}
           <Route

@@ -1,7 +1,5 @@
 import { User as UserInterface, UserData } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
-
-import { model } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -85,8 +83,8 @@ class AuthService {
     ).select("-password");
   }
 
-  async isEmailExists(emaill: string): Promise<UserInterface | null> {
-    return await User.findOne({ emailId: emaill });
+  async isEmailExists(email: string): Promise<UserInterface | null> {
+    return await User.findOne({ email: email });
   }
 
   async loginViaGoogle(profile: {
@@ -104,6 +102,7 @@ class AuthService {
       name: profile.displayName,
       email: profile.emails?.[0]?.value || "",
       clientId: profile.id,
+      authProvider: "google",
     });
 
     return newUser;
