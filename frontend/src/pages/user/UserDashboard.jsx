@@ -58,19 +58,19 @@ export default function UserDashboard() {
 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  const handleUserLogout = async () => {
-    try {
-      await axios.post(
-        import.meta.env.VITE_API_URI + "/api/user/logout",
-        {},
-        { withCredentials: true }
-      );
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-      console.log("error while logout ...");
-    }
-  };
+  // const handleUserLogout = async () => {
+  //   try {
+  //     await axios.post(
+  //       import.meta.env.VITE_API_URI + "/api/user/logout",
+  //       {},
+  //       { withCredentials: true }
+  //     );
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.log(error);
+  //     console.log("error while logout ...");
+  //   }
+  // };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -184,7 +184,7 @@ export default function UserDashboard() {
           <div className="flex space-x-4 items-center">
             <button
               className="bg-white px-4 py-2 rounded hover:bg-blue-300 font-bold font-poppins"
-              onClick={handleUserLogout} //changes to handle logout
+              onClick={handleLogout} //changes to handle logout
             >
               Logout
             </button>
