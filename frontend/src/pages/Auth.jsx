@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import GoogleAuthButton from "../components/ui/googleAuthButton";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +30,7 @@ const Auth = () => {
 
   const navigate = useNavigate();
 
-  const handleGoogleAuth = async () => {
+  const handleGoogleAuth = () => {
     window.location.href =
       import.meta.env.VITE_API_URI + "/api/user/auth/google";
   };
@@ -48,7 +48,7 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        // Login flow
+        // Login
         const res = await axios.post(
           import.meta.env.VITE_API_URI + "/api/user/login",
           {
@@ -56,14 +56,14 @@ const Auth = () => {
             password: formData.password,
           }
         );
-        const { token, user } = res.data;
 
+        const { token, user } = res.data;
         localStorage.setItem("token", token);
         localStorage.setItem("currentUser", JSON.stringify(user));
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("userType", user.role);
 
-        navigate(user.role === "admin" ? "/admin/Overview" : "/user");
+        navigate(user.role === "admin" ? "/admin/overview" : "/user");
       } else {
         // Signup validation
         if (
@@ -80,25 +80,19 @@ const Auth = () => {
           return;
         }
 
-        // Signup flow
-        const res = await axios.post(
-          import.meta.env.VITE_API_URI + "/api/user/signup",
-          {
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            role: formData.role || "user",
-          }
-        );
+        // Signup
+        await axios.post(import.meta.env.VITE_API_URI + "/api/user/signup", {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role || "user",
+        });
 
-        const { user } = res.data;
-
-        // Signup successful — reset form and switch to login mode
         setIsLogin(true);
         setFormData({
           name: "",
           username: "",
-          email: formData.email, // autofill email for convenience
+          email: formData.email,
           password: "",
           confirmPassword: "",
           role: "user",
@@ -106,10 +100,13 @@ const Auth = () => {
         setError("Signup successful! Please log in.");
       }
     } catch (err) {
-      const backendError =
+      let backendError =
         err?.response?.data?.message ||
         "An error occurred during authentication.";
-      console.error("Auth Error:", err?.response?.data || err);
+      if (typeof backendError !== "string") {
+        backendError = JSON.stringify(backendError);
+      }
+
       setError(
         backendError.includes("Invalid") || backendError.includes("not")
           ? "Credentials mismatch."
@@ -121,6 +118,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background font-poppins flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+
       <div className="absolute top-4 left-4">
         <Button onClick={() => navigate("/")} variant="outline" size="sm">
           <i className="fas fa-home mr-2"></i> Home
@@ -171,7 +169,6 @@ const Auth = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="font-open-sans"
                   />
                 </div>
               )}
@@ -186,7 +183,6 @@ const Auth = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="font-open-sans"
                 />
               </div>
 
@@ -200,12 +196,12 @@ const Auth = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   required
-                  className="font-open-sans pr-10"
+                  className="pr-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute top-[38px] right-3 text-gray-500 hover:text-gray-700"
+                  className="absolute top-[38px] right-3 text-gray-500"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -213,10 +209,8 @@ const Auth = () => {
                 {isLogin && (
                   <button
                     type="button"
-                    onClick={() => {
-                      navigate("/forgot-password");
-                    }}
-                    className="absolute top-0 right-0 text-[13px] text-blue-600 hover:underline hover:decoration-1 hover:decoration-blue-500"
+                    onClick={() => navigate("/forgot-password")}
+                    className="absolute top-0 right-0 text-[13px] text-blue-600 hover:underline"
                   >
                     Forgot password ?
                   </button>
@@ -235,12 +229,12 @@ const Auth = () => {
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
                       required
-                      className="font-open-sans pr-10"
+                      className="pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword((prev) => !prev)}
-                      className="absolute top-[38px] right-3 text-gray-500 hover:text-gray-700"
+                      className="absolute top-[38px] right-3 text-gray-500"
                       tabIndex={-1}
                     >
                       {showConfirmPassword ? (
@@ -258,7 +252,7 @@ const Auth = () => {
                       name="role"
                       value={formData.role}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border rounded-md bg-background text-foreground font-open-sans"
+                      className="w-full px-3 py-2 border rounded-md bg-background text-foreground"
                     >
                       <option value="user">User</option>
                       <option value="admin">Admin</option>
@@ -276,11 +270,13 @@ const Auth = () => {
                 {isLogin ? "Sign In" : "Sign Up"}
               </Button>
             </form>
+
             <GoogleAuthButton onClick={handleGoogleAuth}>
               {isLogin ? "Continue with Google" : "Sign Up with Google"}
             </GoogleAuthButton>
+
             <div className="mt-6 text-center">
-              <p className="text-muted-foreground font-open-sans">
+              <p className="text-muted-foreground">
                 {isLogin
                   ? "Don't have an account?"
                   : "Already have an account?"}

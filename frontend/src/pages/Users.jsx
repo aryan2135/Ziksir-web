@@ -67,14 +67,14 @@ const Users = () => {
             <p className="text-muted-foreground">No registered users found.</p>
           ) : (
             <div className="space-y-4">
-              {users.map((user, index) => (
+              {users.map((user) => (
                 <div
                   key={user._id}
-                  className="flex items-center justify-between p-4 bg-secondary rounded-lg"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 bg-secondary rounded-lg"
                 >
-                  <div>
-                    <h4 className="font-semibold text-foreground">{user.name}</h4>
-                    <p className="text-sm text-muted-foreground">
+                  <div className="min-w-0">
+                    <h4 className="font-semibold text-foreground truncate">{user.name}</h4>
+                    <p className="text-sm text-muted-foreground truncate">
                       {user.email} • {user.role}
                     </p>
                   </div>

@@ -29,7 +29,13 @@ export default function MyBookings() {
           },
         }
       );
-      setUserBookings(response.data);
+      
+      const sortedBookings = response.data.sort((a, b) => {
+        const order = { pending: 0, approved: 1, completed: 2, rejected: 3 };
+        return (order[a.status] ?? 4) - (order[b.status] ?? 4);
+      });
+
+      setUserBookings(sortedBookings);
     } catch (error) {
       console.error("Failed to fetch bookings", error);
     } finally {
@@ -110,15 +116,15 @@ export default function MyBookings() {
                     <div className="space-y-1 text-sm">
                       <p>
                         <span className="text-muted-foreground">Organization:</span>{" "}
-                        {booking.organizationAddress}
+                        {booking.userId.organizationAddress || "NA"}
                       </p>
                       <p>
                         <span className="text-muted-foreground">Samples:</span>{" "}
-                        {booking.noOfSamples}
+                        {booking.userId.noOfSamples || "NA"}
                       </p>
                       <p>
                         <span className="text-muted-foreground">Category:</span>{" "}
-                        {booking.organizationCategory}
+                        {booking.organizationCategory || "NA"}
                       </p>
                     </div>
                   </div>
@@ -128,11 +134,11 @@ export default function MyBookings() {
                     <div className="space-y-1 text-sm">
                       <p>
                         <span className="text-muted-foreground">Email:</span>{" "}
-                        {booking.emailId}
+                        {booking.emailId || booking.userId?.email || "NA"}
                       </p>
                       <p>
                         <span className="text-muted-foreground">Phone:</span>{" "}
-                        {booking.contactNo}
+                        {booking.contactNo || booking.userId?.contactNo || "NA"}
                       </p>
                       <p>
                         <span className="text-muted-foreground">Submitted:</span>{" "}

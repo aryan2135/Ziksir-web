@@ -6,7 +6,7 @@ import axios from "@/api/axios";
 
 const AdminDas = () => {
   const [darkMode, setDarkMode] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // NEW
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,31 +17,7 @@ const AdminDas = () => {
       navigate("/auth");
       return;
     }
-
-    //const savedTheme = localStorage.getItem("theme");
-    //if (savedTheme) {
-    //setDarkMode(savedTheme === "dark");
-    //if (savedTheme === "light") {
-    //document.documentElement.classList.remove("dark");
-    //} else {
-    //document.documentElement.classList.add("dark");
-    //}
-    //} else {
-    //document.documentElement.classList.add("dark");
-    //}
   }, [navigate]);
-
-  //const toggleTheme = () => {
-  //const newTheme = !darkMode;
-  //setDarkMode(newTheme);
-  //localStorage.setItem("theme", newTheme ? "dark" : "light");
-
-  //if (newTheme) {
-  //document.documentElement.classList.add("dark");
-  //} else {
-  //document.documentElement.classList.remove("dark");
-  //}
-  //};
 
   const handleLogout = async () => {
     localStorage.removeItem("isAuthenticated");
@@ -105,7 +81,7 @@ const AdminDas = () => {
             className="p-6 font-bold text-4xl font-sans text-primary mb-8 cursor-pointer"
             onClick={() => {
               navigate("/admin/overview");
-              setSidebarOpen(false); // Close on mobile when navigating
+              setSidebarOpen(false);
             }}
           >
             ziksir
@@ -116,7 +92,7 @@ const AdminDas = () => {
               <NavLink
                 key={item.id}
                 to={item.path}
-                onClick={() => setSidebarOpen(false)} // NEW: Close sidebar on mobile click
+                onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) =>
                   `w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                     isActive
@@ -163,10 +139,6 @@ const AdminDas = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* Uncomment if theme toggle is needed */}
-            {/* <Button onClick={toggleTheme} variant="outline" size="sm">
-              <i className={`fas ${darkMode ? "fa-sun" : "fa-moon"}`}></i>
-            </Button> */}
             <Button onClick={handleLogout} variant="outline">
               <i className="fas fa-sign-out-alt mr-2"></i>
               Logout

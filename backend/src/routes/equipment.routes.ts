@@ -1,5 +1,6 @@
 import express from "express";
 import { equipmentController } from "../controllers/equipment.controller";
+import { protect } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 

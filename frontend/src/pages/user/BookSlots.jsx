@@ -29,9 +29,11 @@ export default function BookSlots() {
   const [alert, setAlert] = useState({ message: "", type: "", visible: false });
 
   const showAlert = (message, type = "info") => {
-    setAlert({ message, type, visible: true });
-    setTimeout(() => setAlert({ ...alert, visible: false }), 3000);
-  };
+  setAlert({ message, type, visible: true });
+  setTimeout(() => {
+    setAlert((prev) => ({ ...prev, visible: false }));
+  }, 3000);
+};
 
   const [bookingForm, setBookingForm] = useState({
     equipmentId: "",
@@ -88,6 +90,8 @@ export default function BookSlots() {
             gstinNo: userData.gstinNo || "",
             panNo: userData.panNo || "",
             pincode: userData.pincode || "",
+            organizationCategory: userData.organizationCategory || "",
+            noOfSamples: userData.noOfSamples || "",
           }));
         }
       } catch (error) {
@@ -129,6 +133,8 @@ export default function BookSlots() {
       gstinNo: bookingForm.gstinNo,
       panNo: bookingForm.panNo,
       pincode: bookingForm.pincode,
+      organizationCategory: bookingForm.organizationCategory,
+      noOfSamples: bookingForm.noOfSamples,
     };
 
     try {
@@ -163,7 +169,6 @@ export default function BookSlots() {
       });
 
       showAlert("Booking request submitted successfully!", "success");
-      setTimeout(() => navigate("/user"), 2000);
     } catch (error) {
       console.error("Submission error:", error.response?.data || error.message);
       showAlert("Submission failed. Please try again.", "error");
@@ -180,7 +185,7 @@ export default function BookSlots() {
           : alert.type === "success"
             ? "bg-green-100 text-green-700 border border-green-300"
             : "bg-blue-100 text-blue-700 border border-blue-300"
-          }`}>
+          }`}>/
           {alert.message}
         </div>
       )}
