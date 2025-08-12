@@ -55,7 +55,7 @@ export const sendEmail = async (to: string, resetLink: string) => {
           margin: 0 0 20px 0; 
           color: #555;
         ">
-          We received a request to reset your password for your Ziksir account. Click the button below to reset it. This link will be valid for <strong>30 minutes</strong>.
+          We received a request to reset your password for your ziksir account. Click the button below to reset it. This link will be valid for <strong>15 minutes</strong>.
         </p>
 
         <div style="text-align: center; margin-bottom: 20px;">
@@ -93,7 +93,7 @@ export const sendEmail = async (to: string, resetLink: string) => {
         font-size: 12px; 
         color: #999;
       ">
-        &copy; ${new Date().getFullYear()} Ziksir. All rights reserved.
+        &copy; ${new Date().getFullYear()} ziksir. All rights reserved.
       </div>
     </div>
   </div>
@@ -101,9 +101,9 @@ export const sendEmail = async (to: string, resetLink: string) => {
 
   try {
     const info = await mailTransporter.sendMail({
-      from: `"Ziksir" <${env.SMTP_USER}>`,
+      from: `"ziksir" <${env.SMTP_USER}>`,
       to,
-      subject: "Reset Your Password - Ziksir",
+      subject: "Reset Your Password - ziksir",
       html: htmlContent,
     });
     return info;
