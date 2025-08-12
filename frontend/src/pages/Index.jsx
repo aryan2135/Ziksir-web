@@ -702,27 +702,6 @@ const ziksir = () => {
 
               {/* Contact Info & Calendly */}
               <div className="space-y-8">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Schedule a Demo</CardTitle>
-                    <CardDescription>
-                      Book a personalized demo with our team
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="bg-secondary rounded-lg p-4 text-center">
-                      <i className="fas fa-calendar-alt text-3xl text-accent mb-4"></i>
-                      <p className="text-muted-foreground mb-4 font-open-sans">
-                        See ziksir in action with a live demo tailored to your
-                        needs
-                      </p>
-                      <Button className="w-full">
-                        <i className="fas fa-video mr-2"></i>
-                        Book Demo Call
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
 
                 <Card>
                   <CardHeader>

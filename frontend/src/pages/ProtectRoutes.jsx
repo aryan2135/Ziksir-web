@@ -6,7 +6,7 @@ export default function ProtectRoutes({ allowedRoles }) {
 
     // Not logged in
     if (!token || !user) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/auth" replace />;
     }
 
     // Role not allowed
