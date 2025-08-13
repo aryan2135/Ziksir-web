@@ -1,0 +1,1468 @@
+[
+  {
+    "name": "[2P] LSM510 NLO Axiovert 200M",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab A",
+    "status": "available",
+    "lastMaintenance": "2025-06-29T07:43:37.051Z",
+    "createdAt": "2025-05-07T07:43:37.051Z",
+    "updatedAt": "2025-07-08T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=9bb326d9-5838-42f8-af86-e0820733ee08"
+  },
+  {
+    "name": "[2P] TriMscope I LaVision Biotec",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Storage",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-25T07:43:37.051Z",
+    "createdAt": "2025-05-28T07:43:37.051Z",
+    "updatedAt": "2025-07-20T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "INMED Imaging Facility "
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "INSERM"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=246c21aa-4128-4a91-b8c3-78170aaa221e"
+  },
+  {
+    "name": "[CLSM] LSM800 Confocal Zeiss",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab A",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-20T07:43:37.051Z",
+    "createdAt": "2025-06-21T07:43:37.051Z",
+    "updatedAt": "2025-07-08T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "INMED Imaging Facility "
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "INSERM"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=29a71beb-6dbb-4e9b-a4e2-88824e1d6bbe"
+  },
+  {
+    "name": "[CLSM] SP8 Leica",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab B",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-05T07:43:37.051Z",
+    "createdAt": "2025-05-14T07:43:37.051Z",
+    "updatedAt": "2025-08-02T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "INMED Imaging Facility "
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "INSERM"
+        ]
+      }
+    ],
+    "quantity": 2,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=64d049fb-6dd4-46b1-8f64-2d1e69223c8b"
+  },
+  {
+    "name": "[CPD] Leica EM CPD 300",
+    "type": "Critical Point Dryer",
+    "equipmentLocation": "Storage",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-18T07:43:37.051Z",
+    "createdAt": "2025-06-30T07:43:37.051Z",
+    "updatedAt": "2025-07-08T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Electron Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 2,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=377f9e9a-79af-4b84-bebe-52fb866b0226"
+  },
+  {
+    "name": "[DMW] Upright Widefield microscope (Histo)",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab C",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-22T07:43:37.051Z",
+    "createdAt": "2025-05-24T07:43:37.051Z",
+    "updatedAt": "2025-07-14T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=d89365b8-9ff6-48d5-919a-92b0a7c94e0a"
+  },
+  {
+    "name": "[DWM, 3D] IMARIS",
+    "type": "Biological image data service",
+    "equipmentLocation": "Lab B",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-18T07:43:37.051Z",
+    "createdAt": "2025-05-20T07:43:37.051Z",
+    "updatedAt": "2025-07-21T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=478f3aba-2521-4686-afff-f4016c8d6c7e"
+  },
+  {
+    "name": "[DWM, 3D] QuPath - QCM",
+    "type": "Biological image data service",
+    "equipmentLocation": "Storage",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-12T07:43:37.051Z",
+    "createdAt": "2025-06-27T07:43:37.051Z",
+    "updatedAt": "2025-07-29T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 2,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=f86e73ec-a833-4ea8-adf2-68220ccf827b"
+  },
+  {
+    "name": "[DWM,HCS,QPI] Video-microscope",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Storage",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-14T07:43:37.051Z",
+    "createdAt": "2025-05-08T07:43:37.051Z",
+    "updatedAt": "2025-07-16T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 2,
+    "available": 2,
+    "img_location": "https://openiris.io/files/picture?id=eb456ae3-8898-4e93-aab0-89dd57ddf456"
+  },
+  {
+    "name": "[DWM] Apotome imager Z2 Zeiss",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab B",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-06T07:43:37.051Z",
+    "createdAt": "2025-06-13T07:43:37.051Z",
+    "updatedAt": "2025-07-13T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "INMED Imaging Facility "
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "INSERM"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 4,
+    "img_location": "https://openiris.io/files/picture?id=6c4a9167-ed75-4a68-b314-6308d40de639"
+  },
+  {
+    "name": "2100 Bioanalyzer Instrument",
+    "type": "Quality Control",
+    "equipmentLocation": "Lab A",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-13T07:43:37.051Z",
+    "createdAt": "2025-05-15T07:43:37.051Z",
+    "updatedAt": "2025-08-03T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Bio2Mar (Marine Biodiversity and Biotechnology)"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "OOB"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=e73c139b-ffa3-4555-806b-45d79569a33c"
+  },
+  {
+    "name": "[DWM] BX 40 Olympus",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Storage",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-19T07:43:37.051Z",
+    "createdAt": "2025-06-13T07:43:37.051Z",
+    "updatedAt": "2025-07-24T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "INMED Imaging Facility "
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "INSERM"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=e26433ea-041a-4849-948c-097f88b5d4bd"
+  },
+  {
+    "name": "[DWM] DM6000 Leica",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab C",
+    "status": "available",
+    "lastMaintenance": "2025-08-02T07:43:37.051Z",
+    "createdAt": "2025-05-20T07:43:37.051Z",
+    "updatedAt": "2025-08-04T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "INMED Imaging Facility "
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "INSERM"
+        ]
+      }
+    ],
+    "quantity": 2,
+    "available": 2,
+    "img_location": "https://openiris.io/files/picture?id=e26433ea-041a-4849-948c-097f88b5d4bd"
+  },
+  {
+    "name": "[DWM] Stereo-microscope Olympus",
+    "type": "Stereo Microscope",
+    "equipmentLocation": "Facility 1",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-06T07:43:37.051Z",
+    "createdAt": "2025-06-13T07:43:37.051Z",
+    "updatedAt": "2025-07-30T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "INMED Imaging Facility "
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "INSERM"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=dd8ecd25-fe48-480b-bdd7-c97cee7f9678"
+  },
+  {
+    "name": "[FCCS-FLIM] Alba",
+    "type": "Functional Imaging",
+    "equipmentLocation": "Lab B",
+    "status": "available",
+    "lastMaintenance": "2025-06-29T07:43:37.051Z",
+    "createdAt": "2025-06-19T07:43:37.051Z",
+    "updatedAt": "2025-08-01T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=89861087-c1ed-4285-9fce-61ee74a2f399"
+  },
+  {
+    "name": "[FCS] FCS-LEDI - ANGUS",
+    "type": "Functional Imaging",
+    "equipmentLocation": "Facility 1",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-27T07:43:37.051Z",
+    "createdAt": "2025-05-07T07:43:37.051Z",
+    "updatedAt": "2025-07-15T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 2,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=d7780b8e-116b-42b5-8ea5-0cb109e144b1"
+  },
+  {
+    "name": "[FCS] spot variation FCS - STEVIE",
+    "type": "Functional Imaging",
+    "equipmentLocation": "Facility 1",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-28T07:43:37.051Z",
+    "createdAt": "2025-06-07T07:43:37.051Z",
+    "updatedAt": "2025-07-30T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=6a662c87-7cf2-4e8f-ba36-9030def235f7"
+  },
+  {
+    "name": "[HTM/HCS] Slide Scanner SLASH",
+    "type": "Functional Imaging",
+    "equipmentLocation": "Facility 1",
+    "status": "unavailable",
+    "lastMaintenance": "2025-06-22T07:43:37.051Z",
+    "createdAt": "2025-06-07T07:43:37.051Z",
+    "updatedAt": "2025-07-22T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=60a09fe6-5146-44e7-a0da-170dfbb90f61"
+  },
+  {
+    "name": "[LSCM,CLSM] LSM 980 NIR GEORGES",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Facility 1",
+    "status": "available",
+    "lastMaintenance": "2025-07-23T07:43:37.051Z",
+    "createdAt": "2025-05-15T07:43:37.051Z",
+    "updatedAt": "2025-07-11T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=e6164c00-8ea3-46c3-ba4b-c9389784304a"
+  },
+  {
+    "name": "[LSCM,CLSM] LSM 980 NIR HARRISON",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Facility 1",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-15T07:43:37.051Z",
+    "createdAt": "2025-06-22T07:43:37.051Z",
+    "updatedAt": "2025-07-29T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=3f628c7d-2ef1-465f-95ad-42d2faf3cf95"
+  },
+  {
+    "name": "[LSCM/CLSM] ﻿CD7 - LSM900",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab B",
+    "status": "unavailable",
+    "lastMaintenance": "2025-08-02T07:43:37.051Z",
+    "createdAt": "2025-06-09T07:43:37.051Z",
+    "updatedAt": "2025-07-23T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=6298b8c1-5c2a-4f5b-9fbf-ca2b44353c7d"
+  },
+  {
+    "name": "AFM, Park NX 10",
+    "type": "Atomic Force Microscope",
+    "equipmentLocation": "Lab A",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-06T07:43:37.051Z",
+    "createdAt": "2025-06-28T07:43:37.051Z",
+    "updatedAt": "2025-07-15T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "AMI nanocharacterization platform"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "UNIFR"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 2,
+    "img_location": "https://openiris.io/files/picture?id=69488edf-711b-44f0-ab19-01c0c4733c0b"
+  },
+  {
+    "name": "[LSCM/CLSM] Leica confocal microscope",
+    "type": "Confocal Microscope",
+    "equipmentLocation": "Lab C",
+    "status": "unavailable",
+    "lastMaintenance": "2025-06-14T07:43:37.051Z",
+    "createdAt": "2025-06-20T07:43:37.051Z",
+    "updatedAt": "2025-07-26T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 2,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=b66ac636-9844-4118-84d4-d783ec21d031"
+  },
+  {
+    "name": "[LSCM/CLSM] LSM 510 (Zen)",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Facility 1",
+    "status": "available",
+    "lastMaintenance": "2025-07-12T07:43:37.051Z",
+    "createdAt": "2025-06-03T07:43:37.051Z",
+    "updatedAt": "2025-07-12T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=49fab198-b36e-4e63-8f06-6b595a349f5c"
+  },
+  {
+    "name": "[LSCM/CLSM] LSM 510 META UV",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Facility 1",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-27T07:43:37.051Z",
+    "createdAt": "2025-06-27T07:43:37.051Z",
+    "updatedAt": "2025-07-23T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=d4eeed2a-a680-46ec-9f1d-eb56d142a3b0"
+  },
+  {
+    "name": "[LSCM/CLSM] LSM 780",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab B",
+    "status": "unavailable",
+    "lastMaintenance": "2025-06-26T07:43:37.051Z",
+    "createdAt": "2025-06-11T07:43:37.051Z",
+    "updatedAt": "2025-08-01T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=169237ef-b9b7-4a3d-a594-91bb3ba988b7"
+  },
+  {
+    "name": "[LSCM/CLSM] LSM 880 + Airyscan KIRK",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab A",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-29T07:43:37.051Z",
+    "createdAt": "2025-06-03T07:43:37.051Z",
+    "updatedAt": "2025-08-04T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=e6164c00-8ea3-46c3-ba4b-c9389784304a"
+  },
+  {
+    "name": "[LSCM/CLSM] LSM 880 AiryScan Flim",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab C",
+    "status": "available",
+    "lastMaintenance": "2025-06-09T07:43:37.051Z",
+    "createdAt": "2025-06-22T07:43:37.051Z",
+    "updatedAt": "2025-08-01T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 4,
+    "img_location": "https://openiris.io/files/picture?id=897d4963-612a-439f-979b-25d981db3e0e"
+  },
+  {
+    "name": "[LSCM/CLSM] LSM 880 Airyscan NLO",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab C",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-12T07:43:37.051Z",
+    "createdAt": "2025-06-16T07:43:37.051Z",
+    "updatedAt": "2025-07-17T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=bb9f1305-990f-435c-8285-541925f79a36"
+  },
+  {
+    "name": "[PARMS] Helios 400 - ø100 mm",
+    "type": "IF - Plasma Assisted Reactive Magnetrons Spittering (PARMS)",
+    "equipmentLocation": "Facility 1",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-31T07:43:37.051Z",
+    "createdAt": "2025-05-28T07:43:37.051Z",
+    "updatedAt": "2025-07-27T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=b7df81c0-a107-4590-a6bc-1eca3448ee19"
+  },
+  {
+    "name": "[PARMS] Helios 800 - ø200 mm",
+    "type": "IF - Plasma Assisted Reactive Magnetrons Spittering (PARMS)",
+    "equipmentLocation": "Lab B",
+    "status": "available",
+    "lastMaintenance": "2025-07-18T07:43:37.051Z",
+    "createdAt": "2025-05-22T07:43:37.051Z",
+    "updatedAt": "2025-07-09T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=ee6de30d-217f-46e9-905d-3878303f534a"
+  },
+  {
+    "name": "[QPI-FM] Quantitative Phase Imaging + Fluorescence (135)",
+    "type": "IF - Quantitative Phase Imaging",
+    "equipmentLocation": "Lab B",
+    "status": "maintenance",
+    "lastMaintenance": "2025-08-03T07:43:37.051Z",
+    "createdAt": "2025-07-06T07:43:37.051Z",
+    "updatedAt": "2025-07-20T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=9227120c-8b1d-4886-9521-ba19c7653356"
+  },
+  {
+    "name": "Cell Sorter - AriaFusion &quot;Terpsichore&quot;",
+    "type": "Flow Cytometry Sorter",
+    "equipmentLocation": "Storage",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-10T07:43:37.051Z",
+    "createdAt": "2025-06-14T07:43:37.051Z",
+    "updatedAt": "2025-07-30T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Flow &amp; Mass Cytometry Core Facility (BIH CCF)"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "BIH",
+          "Charité"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=a35812bd-2321-4014-9c6f-fead4b47ac2c"
+  },
+  {
+    "name": "[Raman] LabRam (EP - etage 1)",
+    "type": "IF - Raman",
+    "equipmentLocation": "Lab B",
+    "status": "available",
+    "lastMaintenance": "2025-07-23T07:43:37.051Z",
+    "createdAt": "2025-05-15T07:43:37.051Z",
+    "updatedAt": "2025-07-29T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 2,
+    "img_location": "https://openiris.io/files/picture?id=fd9bba87-125f-45be-bcf5-21d22f817071"
+  },
+  {
+    "name": "[SDCM] Spinning Disk",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab C",
+    "status": "available",
+    "lastMaintenance": "2025-07-03T07:43:37.051Z",
+    "createdAt": "2025-06-06T07:43:37.051Z",
+    "updatedAt": "2025-07-08T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 4,
+    "img_location": "https://openiris.io/files/picture?id=ce46b57b-4b2e-4a72-9b35-d27df7f99c69"
+  },
+  {
+    "name": "[SDCM] Spinning INSCOPER",
+    "type": "Fluorescence Microscopy",
+    "equipmentLocation": "Lab A",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-18T07:43:37.051Z",
+    "createdAt": "2025-07-05T07:43:37.051Z",
+    "updatedAt": "2025-07-24T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=306880f0-fac6-4fae-822b-d3c9802afef8"
+  },
+  {
+    "name": "[SDCM-PM] Spinning-Polar (EP)",
+    "type": "IF - Spinning disk confocal",
+    "equipmentLocation": "Facility 1",
+    "status": "unavailable",
+    "lastMaintenance": "2025-06-13T07:43:37.051Z",
+    "createdAt": "2025-06-03T07:43:37.051Z",
+    "updatedAt": "2025-07-28T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=0f81053b-cb20-4c2d-8968-1e4bfae595d1"
+  },
+  {
+    "name": "[SEM] FEI Teneo VS",
+    "type": "Scanning Electron Microscope",
+    "equipmentLocation": "Facility 1",
+    "status": "available",
+    "lastMaintenance": "2025-07-21T07:43:37.051Z",
+    "createdAt": "2025-06-12T07:43:37.051Z",
+    "updatedAt": "2025-07-26T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Electron Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=8c12cefd-6b74-410f-a73d-90c85bbedd6d"
+  },
+  {
+    "name": "[SEM-FIB] Scanning electron microscope + focused ion beam milling (019)",
+    "type": "IF - Scanning electron microscope + Focused ion beam",
+    "equipmentLocation": "Lab C",
+    "status": "available",
+    "lastMaintenance": "2025-07-23T07:43:37.051Z",
+    "createdAt": "2025-05-13T07:43:37.051Z",
+    "updatedAt": "2025-07-30T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 2,
+    "img_location": "https://openiris.io/files/picture?id=20f3c0dc-d073-48f3-bbc2-a70a832e0860"
+  },
+  {
+    "name": "[SMLM,TIRF] Nanoscopy - JIM",
+    "type": "Fluorescence Nanoscopy",
+    "equipmentLocation": "Lab B",
+    "status": "available",
+    "lastMaintenance": "2025-07-26T07:43:37.051Z",
+    "createdAt": "2025-06-06T07:43:37.051Z",
+    "updatedAt": "2025-08-04T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=cec20b1a-7e82-405e-b222-80fa66fd194f"
+  },
+  {
+    "name": "[SMLM-PM] SMLM + SMOLM (110)",
+    "type": "IF - Single Molecule Localization Microscopy",
+    "equipmentLocation": "Lab B",
+    "status": "unavailable",
+    "lastMaintenance": "2025-06-24T07:43:37.051Z",
+    "createdAt": "2025-06-15T07:43:37.051Z",
+    "updatedAt": "2025-07-17T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=77179213-e21f-4ea9-a64c-c61d00eec0fd"
+  },
+  {
+    "name": "[SPIM/dSLSM] Light Sheet Z1 Zeiss",
+    "type": "Mesoscopic Imaging",
+    "equipmentLocation": "Lab C",
+    "status": "unavailable",
+    "lastMaintenance": "2025-08-03T07:43:37.051Z",
+    "createdAt": "2025-06-13T07:43:37.051Z",
+    "updatedAt": "2025-07-08T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 2,
+    "img_location": "https://openiris.io/files/picture?id=2a71fbad-e205-4a9f-95a3-d314870e946d"
+  },
+  {
+    "name": "Cell Sorter - Aurora CS &quot;Luke&quot; - Full Spectrum Sorter",
+    "type": "Flow Cytometry Sorter",
+    "equipmentLocation": "Storage",
+    "status": "available",
+    "lastMaintenance": "2025-07-03T07:43:37.051Z",
+    "createdAt": "2025-06-08T07:43:37.051Z",
+    "updatedAt": "2025-07-07T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Flow &amp; Mass Cytometry Core Facility (BIH CCF)"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "BIH",
+          "Charité"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 4,
+    "img_location": "https://openiris.io/files/picture?id=53b71408-a6a4-4af8-98ed-a09f258e0e8a"
+  },
+  {
+    "name": "[SPIM/dSLSM] UltraMicroscope Blaze",
+    "type": "Mesoscopic Imaging",
+    "equipmentLocation": "Lab A",
+    "status": "available",
+    "lastMaintenance": "2025-07-14T07:43:37.051Z",
+    "createdAt": "2025-05-18T07:43:37.051Z",
+    "updatedAt": "2025-07-28T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 3,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=cb7f23d3-f19e-42b2-bd76-ce951188fa4d"
+  },
+  {
+    "name": "[SPIM] Lightsheet Björk",
+    "type": "Light Sheet Microscope",
+    "equipmentLocation": "Lab A",
+    "status": "available",
+    "lastMaintenance": "2025-07-13T07:43:37.051Z",
+    "createdAt": "2025-06-09T07:43:37.051Z",
+    "updatedAt": "2025-07-13T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "CIML - ImagImm facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CIML"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=33913206-8bfa-444d-88ea-3cd8212b8a2a"
+  },
+  {
+    "name": "[SPIM] UltraMicroscope II LaVision Biotec",
+    "type": "Light Sheet",
+    "equipmentLocation": "Facility 1",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-30T07:43:37.051Z",
+    "createdAt": "2025-07-03T07:43:37.051Z",
+    "updatedAt": "2025-07-18T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "INMED Imaging Facility "
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "INSERM"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=8323eb93-20c7-49bb-9cc1-d3eae842452c"
+  },
+  {
+    "name": "[SRS+SHG+TPF+Polar] Stimulated Raman Scattering (EP - etage 1)",
+    "type": "IF - Stimulated Raman scattering",
+    "equipmentLocation": "Lab C",
+    "status": "maintenance",
+    "lastMaintenance": "2025-08-01T07:43:37.051Z",
+    "createdAt": "2025-06-29T07:43:37.051Z",
+    "updatedAt": "2025-08-02T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Institut Fresnel - Photonics"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "EuBI",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=e3062651-b529-413c-a884-6bb57caaa4d2"
+  },
+  {
+    "name": "[STED] SP8-STED",
+    "type": "Fluorescence Nanoscopy",
+    "equipmentLocation": "Storage",
+    "status": "unavailable",
+    "lastMaintenance": "2025-06-13T07:43:37.051Z",
+    "createdAt": "2025-05-08T07:43:37.051Z",
+    "updatedAt": "2025-07-16T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Light Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=b4be6143-6722-4122-8dc8-4d93b7f329ba"
+  },
+  {
+    "name": "[TEM] FEI Tecnai G2 200kV",
+    "type": "Transmission Electron Microscope",
+    "equipmentLocation": "Lab C",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-03T07:43:37.051Z",
+    "createdAt": "2025-05-14T07:43:37.051Z",
+    "updatedAt": "2025-07-25T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Electron Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 2,
+    "img_location": "https://openiris.io/files/picture?id=55768907-3c69-4d75-ae1d-683351d52e2d"
+  },
+  {
+    "name": "[UC] Leica UCS",
+    "type": "Ultramicrotome",
+    "equipmentLocation": "Lab C",
+    "status": "maintenance",
+    "lastMaintenance": "2025-08-01T07:43:37.051Z",
+    "createdAt": "2025-06-11T07:43:37.051Z",
+    "updatedAt": "2025-07-07T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Electron Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=52a4ea03-7273-47f7-b481-ea434b0c9637"
+  },
+  {
+    "name": "[UC] Leica UCT",
+    "type": "Ultramicrotome",
+    "equipmentLocation": "Facility 1",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-16T07:43:37.051Z",
+    "createdAt": "2025-05-29T07:43:37.051Z",
+    "updatedAt": "2025-08-02T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Electron Microscopy Facility - IBDM"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "AMU",
+          "FBI"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=52a4ea03-7273-47f7-b481-ea434b0c9637"
+  },
+  {
+    "name": "µMLA -Maskless aligner Heidelberg Instruments",
+    "type": "Lithography",
+    "equipmentLocation": "Facility 1",
+    "status": "unavailable",
+    "lastMaintenance": "2025-06-18T07:43:37.051Z",
+    "createdAt": "2025-06-04T07:43:37.051Z",
+    "updatedAt": "2025-07-13T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Clean room - ETIT- FB18"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "TUDa"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 4,
+    "img_location": "https://openiris.io/files/picture?id=23f0670c-968a-452b-bdec-bcdd2877e900"
+  },
+  {
+    "name": "1 NormalDeviceAusleihbar",
+    "type": "Infrastructure",
+    "equipmentLocation": "Lab C",
+    "status": "unavailable",
+    "lastMaintenance": "2025-07-30T07:43:37.051Z",
+    "createdAt": "2025-06-10T07:43:37.051Z",
+    "updatedAt": "2025-07-27T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Laboratory of Atmospheric Chemistry"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "PSI"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 4,
+    "img_location": "https://openiris.io/files/picture?id=24c4eff6-284f-453c-8a4c-bc3332cb1c01"
+  },
+  {
+    "name": "IVIF 1 workstation IMARIS (AGORA)",
+    "type": "Workstation",
+    "equipmentLocation": "Storage",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-23T07:43:37.051Z",
+    "createdAt": "2025-06-19T07:43:37.051Z",
+    "updatedAt": "2025-07-16T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "In Vivo Imaging Facility - Lausanne"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CHUV",
+          "EPFL",
+          "UNIGE",
+          "UNIL"
+        ]
+      }
+    ],
+    "quantity": 2,
+    "available": 1,
+    "img_location": "https://openiris.io/files/picture?id=c98367ff-964f-4c4f-a9c8-b66c69577214"
+  },
+  {
+    "name": "10. AMBIO Nikon Widefield Ti2",
+    "type": "Microscope",
+    "equipmentLocation": "Lab A",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-31T07:43:37.051Z",
+    "createdAt": "2025-06-13T07:43:37.051Z",
+    "updatedAt": "2025-07-17T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "Advanced Medical BIOimaging Core Facility"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "Charité"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 3,
+    "img_location": "https://openiris.io/files/picture?id=8382764a-22b4-45d9-964c-6f08efc54f6d"
+  },
+  {
+    "name": "nanoScan PET/CT",
+    "type": "Preclinical Imaging System",
+    "equipmentLocation": "Lab C",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-12T07:43:37.051Z",
+    "createdAt": "2025-06-01T07:43:37.051Z",
+    "updatedAt": "2025-07-27T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "BERIC"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "Charité"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=1ddaf176-3be4-4dc0-b795-d8cbb81b6f41"
+  },
+  {
+    "name": "nanoSPECT/CT plus",
+    "type": "Preclinical Imaging System",
+    "equipmentLocation": "Lab A",
+    "status": "maintenance",
+    "lastMaintenance": "2025-07-21T07:43:37.051Z",
+    "createdAt": "2025-05-17T07:43:37.051Z",
+    "updatedAt": "2025-07-27T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "BERIC"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "Charité"
+        ]
+      }
+    ],
+    "quantity": 1,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=27b34b1e-6654-47b0-bcfe-389c21315b70"
+  },
+  {
+    "name": "Small meeting point area / Area in front of kitchen (SupraFAB)",
+    "type": "Room",
+    "equipmentLocation": "Lab B",
+    "status": "available",
+    "lastMaintenance": "2025-06-12T07:43:37.051Z",
+    "createdAt": "2025-06-19T07:43:37.051Z",
+    "updatedAt": "2025-08-01T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "SupraFAB"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "FU Berlin"
+        ]
+      }
+    ],
+    "quantity": 4,
+    "available": 0,
+    "img_location": "https://openiris.io/files/picture?id=4dae224d-1e7a-4c4f-93c4-ec6c787439c9"
+  },
+  {
+    "name": "SPARK® Multimode Microplate Reader",
+    "type": "Plate Reader",
+    "equipmentLocation": "Lab C",
+    "status": "maintenance",
+    "lastMaintenance": "2025-06-28T07:43:37.051Z",
+    "createdAt": "2025-05-13T07:43:37.051Z",
+    "updatedAt": "2025-07-15T07:43:37.051Z",
+    "descriptionFields": [
+      {
+        "key": "provider",
+        "value": "SOCAGORA Common Equipment"
+      },
+      {
+        "key": "affiliation",
+        "value": [
+          "CHUV",
+          "EPFL",
+          "HUG-GE",
+          "UNIL"
+        ]
+      }
+    ],
+    "quantity": 5,
+    "available": 5,
+    "img_location": "https://openiris.io/files/picture?id=a0e5196d-4dfa-4c4f-b6ab-b443f6003fe7"
+  }
+]
