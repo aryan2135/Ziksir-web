@@ -8,13 +8,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import axios from "axios";
 
 export default function UserProfile() {
@@ -28,30 +21,46 @@ export default function UserProfile() {
 
   const [profile, setProfile] = useState(() => {
     try {
-      const savedProfile = JSON.parse(localStorage.getItem("userProfile")) || {};
+      const savedProfile =
+        JSON.parse(localStorage.getItem("userProfile")) || {};
       return {
         name: savedProfile.name || currentUser.fullName || "Your Full Name",
-        email: savedProfile.email || currentUser.email || "your.email@example.com",
-        phone: savedProfile.phone || "+91 98123-40567",
-        organization: savedProfile.organization || "Your Organization",
-        department: savedProfile.department || "Your Department",
+        email:
+          savedProfile.email || currentUser.email || "your.email@example.com",
+        phone: currentUser.phone || "+91 98123-40567",
+        organization:
+          savedProfile.organization ||
+          currentUser.organization ||
+          "Your Organization",
+        department:
+          savedProfile.department ||
+          currentUser.department ||
+          "Your Department",
         researchArea: savedProfile.researchArea || "Your Research Area",
       };
     } catch {
       return {
         name: currentUser.fullName || "Your Full Name",
         email: currentUser.email || "your.email@example.com",
-        phone: "+91 98123-40567",
-        organization: "Your Organization",
-        department: "Your Department",
+        phone: currentUser.phone || "+91 98123-40567",
+        organization: currentUser.organization || "Your Organization",
+        department: currentUser.department || "Your Department",
         researchArea: "Your Research Area",
       };
     }
   });
 
+  const [originalProfile, setOriginalProfile] = useState(profile);
   const [isEditing, setIsEditing] = useState(false);
-  const [password, setPasswords] = useState({ newPassword: "", confirmPassword: "" });
-  const [stats, setStats] = useState({ totalBookings: 0, pendingBookings: 0, completedBookings: 0 });
+  const [password, setPasswords] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [stats, setStats] = useState({
+    totalBookings: 0,
+    pendingBookings: 0,
+    completedBookings: 0,
+  });
   const [alert, setAlert] = useState({ message: "", type: "" });
 
   const showAlert = (message, type = "success") => {
@@ -61,24 +70,36 @@ export default function UserProfile() {
 
   useEffect(() => {
     try {
-      const savedProfile = JSON.parse(localStorage.getItem("userProfile")) || {};
-      setProfile({
+      const savedProfile =
+        JSON.parse(localStorage.getItem("userProfile")) || {};
+      const initProfile = {
         name: savedProfile.name || currentUser.fullName || "Your Full Name",
-        email: savedProfile.email || currentUser.email || "your.email@example.com",
-        phone: savedProfile.phone || "+91 98123-40567",
-        organization: savedProfile.organization || "Your Organization",
-        department: savedProfile.department || "Your Department",
+        email:
+          savedProfile.email || currentUser.email || "your.email@example.com",
+        phone: savedProfile.phone || currentUser.phone || "+91 98123-40567",
+        organization:
+          savedProfile.organization ||
+          currentUser.organization ||
+          "Your Organization",
+        department:
+          savedProfile.department ||
+          currentUser.department ||
+          "Your Department",
         researchArea: savedProfile.researchArea || "Your Research Area",
-      });
+      };
+      setProfile(initProfile);
+      setOriginalProfile(initProfile);
     } catch {
-      setProfile({
+      const initProfile = {
         name: currentUser.fullName || "Your Full Name",
         email: currentUser.email || "your.email@example.com",
-        phone: "+91 98123-40567",
-        organization: "Your Organization",
-        department: "Your Department",
+        phone: currentUser.phone || "+91 98123-40567",
+        organization: currentUser.organization || "Your Organization",
+        department: currentUser.department || "Your Department",
         researchArea: "Your Research Area",
-      });
+      };
+      setProfile(initProfile);
+      setOriginalProfile(initProfile);
     }
   }, [currentUser]);
 
@@ -88,26 +109,38 @@ export default function UserProfile() {
         try {
           const newUser = JSON.parse(event.newValue) || {};
           setCurrentUser(newUser);
-          const savedProfile = JSON.parse(localStorage.getItem("userProfile")) || {};
-          setProfile({
+          const savedProfile =
+            JSON.parse(localStorage.getItem("userProfile")) || {};
+          const updatedProfile = {
             name: savedProfile.name || newUser.fullName || "Your Full Name",
-            email: savedProfile.email || newUser.email || "your.email@example.com",
+            email:
+              savedProfile.email || newUser.email || "your.email@example.com",
             phone: savedProfile.phone || "+91 98123-40567",
-            organization: savedProfile.organization || "Your Organization",
-            department: savedProfile.department || "Your Department",
+            organization:
+              savedProfile.organization ||
+              newUser.organization ||
+              "Your Organization",
+            department:
+              savedProfile.department ||
+              newUser.department ||
+              "Your Department",
             researchArea: savedProfile.researchArea || "Your Research Area",
-          });
+          };
+          setProfile(updatedProfile);
+          setOriginalProfile(updatedProfile);
           setIsEditing(false);
         } catch {
           setCurrentUser({});
-          setProfile({
+          const defaultProfile = {
             name: "Your Full Name",
             email: "your.email@example.com",
             phone: "+91 98123-40567",
             organization: "Your Organization",
             department: "Your Department",
             researchArea: "Your Research Area",
-          });
+          };
+          setProfile(defaultProfile);
+          setOriginalProfile(defaultProfile);
           setIsEditing(false);
         }
       }
@@ -130,7 +163,9 @@ export default function UserProfile() {
         if (!currentUser._id || !token) return;
 
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URI}/api/bookings/count/${currentUser._id}`,
+          `${import.meta.env.VITE_API_URI}/api/bookings/count/${
+            currentUser._id
+          }`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setStats(res.data);
@@ -145,13 +180,47 @@ export default function UserProfile() {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = () => {
-    localStorage.setItem("userProfile", JSON.stringify(profile));
-    const updatedUser = { ...currentUser, fullName: profile.name };
-    setCurrentUser(updatedUser);
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+  const handleUpdate = async () => {
+    try {
+      const updatedData = {};
+      Object.keys(profile).forEach((key) => {
+        if (profile[key] && profile[key].trim() !== "")
+          updatedData[key] = profile[key];
+      });
+
+      if (Object.keys(updatedData).length === 0) {
+        showAlert("No changes to update!", "error");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `${import.meta.env.VITE_API_URI}/api/user/updateUser`,
+        updatedData,
+        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const updatedUser = {
+        ...currentUser,
+        fullName: profile.name,
+      };
+      setCurrentUser(updatedUser);
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      localStorage.setItem("userProfile", JSON.stringify(profile));
+
+      setOriginalProfile(profile);
+      setIsEditing(false);
+      showAlert("Profile updated successfully!", "success");
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+      showAlert("Failed to update profile. Please try again.", "error");
+    }
+  };
+
+  const handleCancel = () => {
+    setProfile(originalProfile);
     setIsEditing(false);
-    showAlert("Profile updated successfully!", "success");
   };
 
   const handlePasswordChange = async () => {
@@ -181,7 +250,6 @@ export default function UserProfile() {
 
   return (
     <>
-      {/* Alert Popup */}
       {alert.message && (
         <div
           className={`fixed top-4 right-4 px-4 py-2 rounded-md shadow-md text-white z-50 transition-opacity duration-300 ${
@@ -196,7 +264,6 @@ export default function UserProfile() {
         <h2 className="text-3xl font-bold text-foreground">User Profile</h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Personal Info */}
           <Card className="md:col-span-2">
             <CardHeader className="flex items-center justify-between">
               <div>
@@ -206,108 +273,65 @@ export default function UserProfile() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsEditing(!isEditing)}
+                onClick={isEditing ? handleCancel : () => setIsEditing(true)}
               >
-                <i className={`fas ${isEditing ? "fa-times" : "fa-edit"} mr-2`}></i>
+                <i
+                  className={`fas ${isEditing ? "fa-times" : "fa-edit"} mr-2`}
+                ></i>
                 {isEditing ? "Cancel" : "Edit"}
               </Button>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4">
-                <InputField label="Full Name" name="name" value={profile.name} readOnly={!isEditing} onChange={handleChange} />
-                <InputField label="Email Address" name="email" value={profile.email} readOnly />
-                <InputField label="Phone Number" name="phone" value={profile.phone} readOnly={!isEditing} onChange={handleChange} />
-                <InputField label="Organization" name="organization" value={profile.organization} readOnly={!isEditing} onChange={handleChange} />
-                <InputField label="Department" name="department" value={profile.department} readOnly={!isEditing} onChange={handleChange} />
-                <InputField label="Research Area" name="researchArea" value={profile.researchArea} readOnly={!isEditing} onChange={handleChange} />
+                <InputField
+                  label="Full Name"
+                  name="name"
+                  value={profile.name}
+                  readOnly={!isEditing}
+                  onChange={handleChange}
+                />
+                <InputField
+                  label="Email Address"
+                  name="email"
+                  value={profile.email}
+                  readOnly
+                />
+                <InputField
+                  label="Phone Number"
+                  name="phone"
+                  value={profile.phone}
+                  readOnly={!isEditing}
+                  onChange={handleChange}
+                />
+                <InputField
+                  label="Organization"
+                  name="organization"
+                  value={profile.organization}
+                  readOnly={!isEditing}
+                  onChange={handleChange}
+                />
+                <InputField
+                  label="Department"
+                  name="department"
+                  value={profile.department}
+                  readOnly={!isEditing}
+                  onChange={handleChange}
+                />
+                <InputField
+                  label="Research Area"
+                  name="researchArea"
+                  value={profile.researchArea}
+                  readOnly={!isEditing}
+                  onChange={handleChange}
+                />
               </div>
               {isEditing && (
                 <div className="mt-6">
                   <Button onClick={handleUpdate}>
-                    <i className="fas fa-save mr-2"></i>
-                    Update Profile
+                    <i className="fas fa-save mr-2"></i>Update Profile
                   </Button>
                 </div>
               )}
-            </CardContent>
-          </Card>
-
-          {/* Stats */}
-          <Card className="md:col-span-2">
-            <CardHeader>
-              <CardTitle>Account Statistics</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  { label: "Total Bookings", value: stats.totalBookings, icon: "fa-calendar-check", color: "text-blue-500" },
-                  { label: "Completed", value: stats.completedBookings, icon: "fa-check-circle", color: "text-green-500" },
-                  { label: "Pending", value: stats.pendingBookings, icon: "fa-clock", color: "text-yellow-500" },
-                ].map((stat, idx) => (
-                  <div key={idx} className="text-center p-4 bg-secondary rounded-lg">
-                    <div className={`w-12 h-12 ${stat.color} mx-auto mb-2 flex items-center justify-center`}>
-                      <i className={`fas ${stat.icon} text-2xl`}></i>
-                    </div>
-                    <p className="text-2xl font-bold">{stat.value}</p>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Security */}
-          <Card className="md:col-span-2">
-            <CardHeader>
-              <CardTitle>Security Settings</CardTitle>
-              <CardDescription>Manage your account security</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {/* Change Password */}
-                <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
-                  <div>
-                    <h4 className="font-semibold">Change Password</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Update your account password
-                    </p>
-                  </div>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline">
-                        <i className="fas fa-key mr-2"></i>
-                        Change
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Change Password</DialogTitle>
-                      </DialogHeader>
-                      <Input
-                        type="password"
-                        placeholder="New Password"
-                        className="mt-4"
-                        value={password.newPassword}
-                        onChange={(e) =>
-                          setPasswords({ ...password, newPassword: e.target.value })
-                        }
-                      />
-                      <Input
-                        type="password"
-                        placeholder="Confirm Password"
-                        className="mt-4"
-                        value={password.confirmPassword}
-                        onChange={(e) =>
-                          setPasswords({ ...password, confirmPassword: e.target.value })
-                        }
-                      />
-                      <Button className="mt-4 w-full" onClick={handlePasswordChange}>
-                        Update Password
-                      </Button>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>
@@ -316,7 +340,6 @@ export default function UserProfile() {
   );
 }
 
-// Reusable Input Field Component
 function InputField({ label, name, value, onChange, readOnly = false }) {
   return (
     <div>

@@ -7,7 +7,7 @@ export interface User extends Document {
   email: string;
   password: string;
   role: "admin" | "user";
-  contactNo: string;
+  phone: string;
   emailId: string;
   organizationAddress: string;
   state: string;
@@ -28,7 +28,7 @@ export interface UserData {
   email: string;
   password: string;
   role: "admin" | "user";
-  contactNo: string;
+  phone: string;
   emailId: string;
   organizationAddress: string;
   state: string;
