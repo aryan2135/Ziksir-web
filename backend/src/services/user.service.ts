@@ -1,4 +1,5 @@
 import { User as UserInterface, UserData } from "../interfaces/user.interface";
+
 import { User } from "../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -37,7 +38,7 @@ class AuthService {
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
+      { id: user._id },
       process.env.JWT_SECRET || "your_jwt_secret", // Use a secure secret in production
       { expiresIn: "7d" }
     );

@@ -7,7 +7,7 @@ const userSchema = new Schema<UserInterface>({
   email: { type: String, unique: true },
   password: String,
   role: { type: String, enum: ["admin", "user"], default: "user" },
-  contactNo: { type: String, required: false },
+  phone: { type: String, required: false },
   emailId: { type: String, required: false },
   organizationAddress: { type: String, required: false },
   state: { type: String, required: false },

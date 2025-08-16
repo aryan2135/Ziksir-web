@@ -65,6 +65,10 @@ export default function UserDashboard() {
         {},
         { withCredentials: true }
       );
+      localStorage.removeItem("userProfile");
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("savedProfile");
+      localStorage.setItem("isAuthenticated", "false");
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -77,7 +81,7 @@ export default function UserDashboard() {
   // localStorage.removeItem("currentUser");
   // localStorage.removeItem("isAuthenticated");
   // localStorage.removeItem("userType");
-  //   navigate("/"); 
+  //   navigate("/");
   // };
 
   return (

@@ -4,8 +4,9 @@ import { tokenService } from "../services/token.service";
 import passport from "passport";
 import { generateToken } from "../utils/jwt";
 import { env } from "../config/env";
-import GenertateRandomString from "../utils/generateBytes";
-import { sendEmail } from "../utils/sendEmail";
+import { GenertateRandomString, generateOtp4 } from "../utils/generateCodes";
+import { sendResetLinkEmail } from "../utils/emails/sendResetlinkEmail";
+import { sendOtpEmail } from "../utils/emails/sendOTPemail";
 
 class AuthController {
   async signup(req: Request, res: Response): Promise<void> {
@@ -59,14 +60,21 @@ class AuthController {
     }
   }
 
-  async updateUser(req: Request, res: Response): Promise<void> {
+  async updateUser(req: Request, res: Response): Promise<Response> {
     try {
-      const updatedUser = await authService.updateUser(req.params.id, req.body);
-      res
+      if (!req.user?.id) {
+        return res.status(400).json({ error: "User ID is missing" });
+      }
+      const updatedUser = await authService.updateUser(req.user.id, {
+        ...req.body,
+        organizationCategory: req.body.organization,
+        organizationAddress: req.body.department,
+      });
+      return res
         .status(200)
         .json({ message: "User updated successfully", user: updatedUser });
     } catch (error: any) {
-      res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
   }
 
@@ -116,7 +124,10 @@ class AuthController {
       { session: false },
       (err: any, user: any, info: any) => {
         if (err || !user) {
-          return res.status(401).json({ error: "Authentication failed" });
+          return res.status(401).json({
+            error:
+              "Authentication failed ,  user did not sign uped via google please try login with user googel password instead ",
+          });
         }
         const token = generateToken(user.id);
 
@@ -131,9 +142,12 @@ class AuthController {
     )(req, res);
   };
 
-  authorization = (req: Request, res: Response) => {
-    //DB call if needed,we can acess req.user here !
-    res.status(200).json({ message: "completed" });
+  authorization = async (req: Request, res: Response) => {
+    if (!req.user?.id) {
+      return res.status(400).json({ error: "User ID is missing" });
+    }
+    const user = await authService.getUserById(req.user.id);
+    res.status(200).json({ message: "completed", user });
   };
 
   logout = (req: Request, res: Response) => {
@@ -165,10 +179,56 @@ class AuthController {
       const resetURL =
         env.CLIENT_URL + "/reset-password" + `/${user._id}/` + token;
 
-      await sendEmail(email, resetURL);
+      await sendResetLinkEmail(email, resetURL);
       return res.status(200).json({ message: "email sent successfully" });
     } catch (error: any) {
       res.status(400).json({ message: error.message });
+    }
+  };
+  sendOTP = async (req: Request, res: Response) => {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+      const isExist = await authService.isEmailExists(email);
+      if (isExist) {
+        return res.status(400).json({
+          message:
+            "This email is already registered. Please sign in to continue",
+        });
+      }
+      const otp = generateOtp4();
+      const otpDoc = await tokenService.saveOtp(otp, email);
+
+      if (!otpDoc) {
+        return res.status(500).json({ message: "Error while saving OTP" });
+      }
+      sendOtpEmail(email, otp);
+      return res.status(200).json({ message: "OTP sent successfully" });
+    } catch (error) {
+      console.error("Error in sendOTP:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  };
+
+  verifyUserOtp = async (req: Request, res: Response) => {
+    try {
+      const { email, otp } = req.body;
+      if (!email || !otp) {
+        return res.status(400).json({ message: "Email and OTP are required" });
+      }
+
+      const isValid = await tokenService.verifyOtp(email, otp);
+      if (!isValid) {
+        return res.status(400).json({ message: "Invalid or expired OTP" });
+      }
+
+      return res.status(200).json({ message: "OTP verified successfully" });
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   };
 }

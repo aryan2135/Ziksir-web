@@ -5,3 +5,9 @@ export interface ResetToken extends Document {
   token: string;
   createdAt: Date;
 }
+
+export interface Otp extends Document {
+  otp: string;
+  createdAt: Date;
+  email: string;
+}

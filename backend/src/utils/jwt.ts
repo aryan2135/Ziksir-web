@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { env } from "../config/env";
 import { NextFunction, Request, Response } from "express";
 
@@ -18,10 +18,10 @@ export const verifyToken = (
   }
 
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET);
+    const decoded = jwt.verify(token, env.JWT_SECRET!) as Express.User;
     req.user = decoded;
     next();
-  } catch (err) {
+  } catch {
     return res.status(401).json({ message: "Invalid token" });
   }
 };

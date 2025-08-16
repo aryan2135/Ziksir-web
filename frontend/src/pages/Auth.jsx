@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleAuthButton from "../components/ui/googleAuthButton";
+import OtpComponent from "../components/hoc/OtpComponent";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +17,8 @@ import { Eye, EyeOff } from "lucide-react";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [showOtp, setShowOtp] = useState(false);
+  const [otp, setOtp] = useState(["", "", "", ""]);
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -25,8 +28,10 @@ const Auth = () => {
     role: "user",
   });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -42,13 +47,71 @@ const Auth = () => {
     });
   };
 
+  const sendOtp = async () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      await axios.post(import.meta.env.VITE_API_URI + "/api/user/sendOTP", {
+        email: formData.email,
+      });
+      setShowOtp(true);
+    } catch (err) {
+      setError(err?.response?.data?.message || "Failed to send OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyOtp = async () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const enteredOtp = otp.join("");
+      await axios.post(import.meta.env.VITE_API_URI + "/api/user/verifyOTP", {
+        email: formData.email,
+        otp: enteredOtp,
+      });
+      return true;
+    } catch (err) {
+      setError(err?.response?.data?.message || "Invalid OTP");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
+
+    if (!isLogin) {
+      if (!showOtp) {
+        if (
+          !formData.name ||
+          !formData.email ||
+          !formData.password ||
+          !formData.confirmPassword
+        ) {
+          setError("Please fill all fields before generating OTP.");
+          return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+          setError("Passwords do not match.");
+          return;
+        }
+        await sendOtp();
+        return;
+      } else if (otp.join("").length < 4) {
+        setError("Please enter the complete 4-digit OTP.");
+        return;
+      }
+    }
 
     try {
       if (isLogin) {
-        // Login
         const res = await axios.post(
           import.meta.env.VITE_API_URI + "/api/user/login",
           {
@@ -60,33 +123,22 @@ const Auth = () => {
         const { token, user } = res.data;
         localStorage.setItem("token", token);
         localStorage.setItem("currentUser", JSON.stringify(user));
-        localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("userType", user.role);
 
         navigate(user.role === "admin" ? "/admin/overview" : "/user");
       } else {
-        // Signup validation
-        if (
-          !formData.name ||
-          !formData.email ||
-          !formData.password ||
-          !formData.confirmPassword
-        ) {
-          setError("All fields are required.");
-          return;
-        }
-        if (formData.password !== formData.confirmPassword) {
-          setError("Passwords do not match.");
-          return;
-        }
+        const otpVerified = await verifyOtp();
+        if (!otpVerified) return;
 
-        // Signup
         await axios.post(import.meta.env.VITE_API_URI + "/api/user/signup", {
           name: formData.name,
           email: formData.email,
           password: formData.password,
           role: formData.role || "user",
         });
+
+        // ✅ Set isAuthenticated true after signup
+        localStorage.setItem("isAuthenticated", "true");
 
         setIsLogin(true);
         setFormData({
@@ -97,7 +149,9 @@ const Auth = () => {
           confirmPassword: "",
           role: "user",
         });
-        setError("Signup successful! Please log in.");
+        setSuccess("Signup successful! Please log in.");
+        setShowOtp(false);
+        setOtp(["", "", "", ""]);
       }
     } catch (err) {
       let backendError =
@@ -156,6 +210,11 @@ const Auth = () => {
                 {error}
               </p>
             )}
+            {success && (
+              <p className="text-green-500 text-center mb-4 font-semibold">
+                {success}
+              </p>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
@@ -183,6 +242,7 @@ const Auth = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -197,6 +257,7 @@ const Auth = () => {
                   onChange={handleInputChange}
                   required
                   className="pr-10"
+                  disabled={loading}
                 />
                 <button
                   type="button"
@@ -230,6 +291,7 @@ const Auth = () => {
                       onChange={handleInputChange}
                       required
                       className="pr-10"
+                      disabled={loading}
                     />
                     <button
                       type="button"
@@ -244,31 +306,50 @@ const Auth = () => {
                       )}
                     </button>
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="role">Select Role</Label>
-                    <select
-                      id="role"
-                      name="role"
-                      value={formData.role}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border rounded-md bg-background text-foreground"
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  </div>
                 </>
               )}
 
-              <Button type="submit" className="w-full text-lg py-3">
-                <i
-                  className={`fas ${
-                    isLogin ? "fa-sign-in-alt" : "fa-user-plus"
-                  } mr-2`}
-                ></i>
-                {isLogin ? "Sign In" : "Sign Up"}
-              </Button>
+              {!isLogin && showOtp && (
+                <>
+                  <OtpComponent otp={otp} setOtp={setOtp} />
+                  <Button
+                    type="submit"
+                    className={`w-full text-lg py-3 mt-2 ${
+                      otp.join("").length < 4 || loading
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-primary"
+                    }`}
+                    disabled={otp.join("").length < 4 || loading}
+                  >
+                    {loading ? "Processing..." : "Sign Up"}
+                  </Button>
+                </>
+              )}
+
+              {(isLogin || !showOtp) && (
+                <Button
+                  type="submit"
+                  className="w-full text-lg py-3"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    "Processing..."
+                  ) : (
+                    <>
+                      <i
+                        className={`fas ${
+                          isLogin
+                            ? "fa-sign-in-alt"
+                            : showOtp
+                            ? "fa-user-plus"
+                            : "fa-key"
+                        } mr-2`}
+                      ></i>
+                      {isLogin ? "Sign In" : "Generate OTP"}
+                    </>
+                  )}
+                </Button>
+              )}
             </form>
 
             <GoogleAuthButton onClick={handleGoogleAuth}>
@@ -285,6 +366,9 @@ const Auth = () => {
                   onClick={() => {
                     setIsLogin(!isLogin);
                     setError("");
+                    setSuccess("");
+                    setShowOtp(false);
+                    setOtp(["", "", "", ""]);
                   }}
                   className="text-accent hover:underline ml-1 font-semibold"
                 >
