@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "backend for ziksir",
-  "main": "dist/server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.ts",
@@ -22,8 +22,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.5",
     "nodemailer": "^7.0.5",
+    "nodemon": "^3.1.10",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -36,8 +38,6 @@
     "@types/node": "^24.1.0",
     "@types/nodemailer": "^6.4.17",
     "@types/passport-google-oauth20": "^2.0.16",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
-    "nodemon": "^3.1.10"
+    "ts-node": "^10.9.2"
   }
 }

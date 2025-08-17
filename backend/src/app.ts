@@ -4,12 +4,12 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import passport from "passport";
-import "../src/config/passport/googleStrategy";
+import "./config/passport/googleStrategy";
 
-import userRoutes from './routes/user.routes';
-import bookingRoutes from './routes/booking.routes';
-import equipmentRoutes from './routes/equipment.routes';
-import requestRoutes from './routes/request.routes';
+import userRoutes from "./routes/user.routes";
+import bookingRoutes from "./routes/booking.routes";
+import equipmentRoutes from "./routes/equipment.routes";
+import requestRoutes from "./routes/request.routes";
 
 dotenv.config();
 const app = express();
@@ -29,9 +29,9 @@ app.use(cookieParser());
 
 app.use(passport.initialize());
 
-app.use('/api/user', userRoutes);
-app.use('/api/bookings', bookingRoutes);
-app.use('/api/equipment', equipmentRoutes);
-app.use('/api/requests', requestRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/equipment", equipmentRoutes);
+app.use("/api/requests", requestRoutes);
 
 export default app;
