@@ -56,32 +56,32 @@ export default function RequestEquipment() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-6 bg-white">
+    <div className="relative min-h-screen flex items-center justify-center p-3 sm:p-6 bg-white">
       <div className="max-w-2xl w-full relative z-10">
         {/* Page Heading */}
-        <h1 className="text-4xl font-bold mb-8 text-center text-black drop-shadow-lg">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center text-black drop-shadow-lg">
           Request Equipment
         </h1>
 
         {/* Animated gradient border wrapper */}
-        <div className="p-[3px] rounded-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 animate-[gradientBorder_6s_ease_infinite] bg-[length:300%_300%]">
-          <Card className="shadow-2xl rounded-3xl backdrop-blur-lg bg-white hover:scale-[1.02] transition-all duration-300">
-            <CardHeader className="pb-4 border-b border-gray-200">
-              <CardTitle className="text-xl font-semibold text-gray-800">
-                Can’t find what you need?
+        <div className="p-[2px] sm:p-[3px] rounded-2xl sm:rounded-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 animate-[gradientBorder_6s_ease_infinite] bg-[length:300%_300%]">
+          <Card className="shadow-2xl rounded-2xl sm:rounded-3xl backdrop-blur-lg bg-white hover:scale-[1.01] sm:hover:scale-[1.02] transition-all duration-300">
+            <CardHeader className="pb-3 sm:pb-4 border-b border-gray-200 px-4 sm:px-6">
+              <CardTitle className="text-lg sm:text-xl font-semibold text-gray-800">
+                Can't find what you need?
               </CardTitle>
-              <CardDescription className="text-gray-600">
+              <CardDescription className="text-sm sm:text-base text-gray-600">
                 Fill out the details below and our team will look into making it available.
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="pt-6">
-              <form onSubmit={handleSubmit} className="space-y-5">
+            <CardContent className="pt-4 sm:pt-6 px-4 sm:px-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                 {/* Equipment Name */}
                 <div>
-                  <Label className="text-gray-700 font-medium">Equipment Name</Label>
+                  <Label className="text-sm sm:text-base text-gray-700 font-medium">Equipment Name</Label>
                   <Input
-                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
+                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-sm sm:text-base"
                     name="name"
                     value={form.name}
                     onChange={handleChange}
@@ -92,9 +92,9 @@ export default function RequestEquipment() {
 
                 {/* Type */}
                 <div>
-                  <Label className="text-gray-700 font-medium">Type</Label>
+                  <Label className="text-sm sm:text-base text-gray-700 font-medium">Type</Label>
                   <Input
-                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
+                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-sm sm:text-base"
                     name="type"
                     value={form.type}
                     onChange={handleChange}
@@ -105,9 +105,9 @@ export default function RequestEquipment() {
 
                 {/* Model */}
                 <div>
-                  <Label className="text-gray-700 font-medium">Model</Label>
+                  <Label className="text-sm sm:text-base text-gray-700 font-medium">Model</Label>
                   <Input
-                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
+                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-sm sm:text-base"
                     name="model"
                     value={form.model}
                     onChange={handleChange}
@@ -117,11 +117,11 @@ export default function RequestEquipment() {
 
                 {/* Reference Link */}
                 <div>
-                  <Label className="text-gray-700 font-medium">
+                  <Label className="text-sm sm:text-base text-gray-700 font-medium">
                     Reference Link (optional)
                   </Label>
                   <Input
-                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
+                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-sm sm:text-base"
                     name="link"
                     value={form.link}
                     onChange={handleChange}
@@ -131,14 +131,14 @@ export default function RequestEquipment() {
 
                 {/* Upload Image */}
                 <div>
-                  <Label className="text-gray-700 font-medium">
+                  <Label className="text-sm sm:text-base text-gray-700 font-medium">
                     Upload Image (optional)
                   </Label>
                   <Input
                     type="file"
                     accept="image/*"
                     name="image"
-                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
+                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-xs sm:text-sm"
                     onChange={handleChange}
                   />
                 </div>
@@ -146,7 +146,7 @@ export default function RequestEquipment() {
                 {/* Submit Button */}
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-violet-400 hover:from-purple-600 hover:via-pink-600 hover:to-violet-500 text-white shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl"
+                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-violet-400 hover:from-purple-600 hover:via-pink-600 hover:to-violet-500 text-white shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl text-sm sm:text-base py-2 sm:py-3"
                   disabled={loading}
                 >
                   {loading ? "Submitting..." : "Submit Request"}
@@ -156,7 +156,7 @@ export default function RequestEquipment() {
               {/* Message Display */}
               {message && (
                 <p
-                  className={`mt-6 text-center text-sm font-medium ${message.includes("✅") ? "text-green-600" : "text-red-500"
+                  className={`mt-4 sm:mt-6 text-center text-xs sm:text-sm font-medium ${message.includes("✅") ? "text-green-600" : "text-red-500"
                     }`}
                 >
                   {message}

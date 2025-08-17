@@ -1,1 +1,30 @@
-* text=auto
+# Auto-detect text files and normalize to LF
+* text=auto eol=lf
+
+# Explicitly set common file types to LF
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Lockfiles should always use LF to avoid conflicts
+*.lock text eol=lf
+
+# Images and binaries - keep them untouched
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

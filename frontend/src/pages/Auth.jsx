@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "@/api/axios";
-import { Eye, EyeOff } from "lucide-react";
+
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -29,8 +29,6 @@ const Auth = () => {
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -251,22 +249,13 @@ const Auth = () => {
                 <Input
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type="password"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleInputChange}
                   required
-                  className="pr-10"
                   disabled={loading}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute top-[38px] right-3 text-gray-500"
-                  tabIndex={-1}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
                 {isLogin && (
                   <button
                     type="button"
@@ -280,31 +269,18 @@ const Auth = () => {
 
               {!isLogin && (
                 <>
-                  <div className="space-y-2 relative">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label> 
                     <Input
                       id="confirmPassword"
                       name="confirmPassword"
-                      type={showConfirmPassword ? "text" : "password"}
+                      type="password"
                       placeholder="Confirm your password"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
                       required
-                      className="pr-10"
                       disabled={loading}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword((prev) => !prev)}
-                      className="absolute top-[38px] right-3 text-gray-500"
-                      tabIndex={-1}
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff size={20} />
-                      ) : (
-                        <Eye size={20} />
-                      )}
-                    </button>
                   </div>
                 </>
               )}

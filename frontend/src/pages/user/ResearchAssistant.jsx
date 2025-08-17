@@ -29,17 +29,17 @@ export default function ResearchAssistant() {
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-foreground">Research Assistant</h2>
+    <div className="space-y-4 sm:space-y-6">
+      <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Research Assistant</h2>
 
-      <Card className="h-[600px] flex flex-col">
+      <Card className="h-[500px] sm:h-[600px] flex flex-col">
         {/* Header */}
-        <CardHeader className="border-b pb-4">
-          <CardTitle className="flex items-center space-x-2 text-xl">
-            <i className="fas fa-robot text-accent"></i>
+        <CardHeader className="border-b pb-3 sm:pb-4">
+          <CardTitle className="flex items-center space-x-2 text-lg sm:text-xl">
+            <i className="fas fa-robot text-accent text-base sm:text-lg"></i>
             <span>AI Research Assistant</span>
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-xs sm:text-sm">
             Ask about equipment, booking resources, or research guidance.
           </CardDescription>
         </CardHeader>
@@ -47,10 +47,10 @@ export default function ResearchAssistant() {
         <Separator />
 
         {/* Chat Content */}
-        <CardContent className="flex-1 flex flex-col">
-          <ScrollArea className="flex-1 mb-4 p-4 bg-secondary/30 rounded-lg">
+        <CardContent className="flex-1 flex flex-col p-3 sm:p-4">
+          <ScrollArea className="flex-1 mb-3 sm:mb-4 p-3 sm:p-4 bg-secondary/30 rounded-lg">
             {chatHistory.length === 0 ? (
-              <p className="text-center text-muted-foreground mt-10">
+              <p className="text-center text-muted-foreground mt-8 sm:mt-10 text-xs sm:text-sm">
                 👋 Start by asking something like: <br />
                 <span className="italic">"Which microscope should I book?"</span>
               </p>
@@ -61,15 +61,15 @@ export default function ResearchAssistant() {
                   className={`flex mb-3 ${chat.type === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] p-3 rounded-lg shadow-md text-sm font-open-sans ${
+                    className={`max-w-[85%] sm:max-w-[80%] p-2 sm:p-3 rounded-lg shadow-md text-xs sm:text-sm font-open-sans ${
                       chat.type === "user"
-                        ? "bg-accent text-accent-foreground ml-4"
-                        : "bg-card border border-border mr-4"
+                        ? "bg-accent text-accent-foreground ml-2 sm:ml-4"
+                        : "bg-card border border-border mr-2 sm:mr-4"
                     }`}
                   >
-                    {chat.type === "bot" && <i className="fas fa-robot text-accent mr-2"></i>}
+                    {chat.type === "bot" && <i className="fas fa-robot text-accent mr-2 text-xs sm:text-sm"></i>}
                     {chat.message}
-                    {chat.type === "user" && <i className="fas fa-user ml-2 text-accent-foreground"></i>}
+                    {chat.type === "user" && <i className="fas fa-user ml-2 text-accent-foreground text-xs sm:text-sm"></i>}
                   </div>
                 </div>
               ))
@@ -82,9 +82,9 @@ export default function ResearchAssistant() {
               value={chatMessage}
               onChange={(e) => setChatMessage(e.target.value)}
               placeholder="Ask about equipment, bookings, or research help..."
-              className="flex-1 font-open-sans"
+              className="flex-1 font-open-sans text-xs sm:text-sm"
             />
-            <Button type="submit" className="bg-accent hover:bg-accent/90">
+            <Button type="submit" className="bg-accent hover:bg-accent/90 text-xs sm:text-sm px-3 sm:px-4">
               <i className="fas fa-paper-plane"></i>
             </Button>
           </form>

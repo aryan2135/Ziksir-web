@@ -173,6 +173,16 @@ export default function UserDashboard() {
               ))}
             </ul>
           </nav>
+
+          {/* Mobile Logout Button */}
+          <div className="mt-auto pt-6">
+            <Button
+              onClick={handleUserLogout}
+              className="w-full bg-red-600 hover:bg-red-700 text-white"
+            >
+              Logout
+            </Button>
+          </div>
         </aside>
       </div>
       {/* Main Content */}
@@ -216,7 +226,7 @@ export default function UserDashboard() {
         </header>
 
         {/* Dashboard or Page Content */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-6">
           {isDashboard ? (
             <div className="space-y-6">
               <h2 className="text-3xl font-bold text-foreground">

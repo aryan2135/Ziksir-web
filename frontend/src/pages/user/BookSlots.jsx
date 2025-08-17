@@ -196,12 +196,13 @@ export default function BookSlots() {
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto p-6">
-      <h2 className="text-3xl font-bold text-foreground">Book Slots</h2>
+    <div className="bg-background p-3 sm:p-4 md:p-6">
+      <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Book Slots</h2>
 
       {alert.visible && (
         <div
-          className={`transition-all duration-300 px-4 py-2 rounded-md text-sm font-medium w-fit ${
+          className={`transition-all duration-300 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium w-fit ${
             alert.type === "error"
               ? "bg-red-100 text-red-700 border border-red-300"
               : alert.type === "success"
@@ -209,20 +210,20 @@ export default function BookSlots() {
               : "bg-blue-100 text-blue-700 border border-blue-300"
           }`}
         >
-          /{alert.message}
+          {alert.message}
         </div>
       )}
 
-      <form onSubmit={handleBookingSubmit} className="space-y-2">
+      <form onSubmit={handleBookingSubmit} className="space-y-4 sm:space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-muted-foreground">
+            <CardTitle className="text-base sm:text-lg text-muted-foreground">
               📅 Booking Schedule
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid md:grid-cols-2 gap-6">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
-              <label className="text-sm font-medium mb-2 block">
+              <label className="text-xs sm:text-sm font-medium mb-2 block">
                 Equipment *
               </label>
               <Select
@@ -231,7 +232,7 @@ export default function BookSlots() {
                   handleBookingFormChange("equipmentId", value)
                 }
               >
-                <SelectTrigger>
+                <SelectTrigger className="text-xs sm:text-sm">
                   <SelectValue placeholder="Select equipment" />
                 </SelectTrigger>
                 <SelectContent>
@@ -245,7 +246,7 @@ export default function BookSlots() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">
+              <label className="text-xs sm:text-sm font-medium mb-2 block">
                 Total Equipment Charge *
               </label>
               <Input
@@ -255,11 +256,12 @@ export default function BookSlots() {
                   handleBookingFormChange("totalCharge", e.target.value)
                 }
                 required
+                className="text-xs sm:text-sm"
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">
+              <label className="text-xs sm:text-sm font-medium mb-2 block">
                 Booking Date *
               </label>
               <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
@@ -267,11 +269,11 @@ export default function BookSlots() {
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full justify-start text-left font-normal",
+                      "w-full justify-start text-left font-normal text-xs sm:text-sm",
                       !bookingForm.slotDate && "text-muted-foreground"
                     )}
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                     {bookingForm.slotDate
                       ? format(bookingForm.slotDate, "PPP")
                       : "Pick a date"}
@@ -292,7 +294,7 @@ export default function BookSlots() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">
+              <label className="text-xs sm:text-sm font-medium mb-2 block">
                 Time Slot *
               </label>
               <Select
@@ -301,7 +303,7 @@ export default function BookSlots() {
                   handleBookingFormChange("timeSlot", value)
                 }
               >
-                <SelectTrigger>
+                <SelectTrigger className="text-xs sm:text-sm">
                   <SelectValue placeholder="Select time slot" />
                 </SelectTrigger>
                 <SelectContent>
@@ -326,16 +328,17 @@ export default function BookSlots() {
         {/* Customer / Party Details */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-muted-foreground">
+            <CardTitle className="text-base sm:text-lg text-muted-foreground">
               👤 Customer / Party Details
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid md:grid-cols-3 gap-6">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <Input
               placeholder="Full Name *"
               value={bookingForm.name}
               onChange={(e) => handleBookingFormChange("name", e.target.value)}
               required
+              className="text-xs sm:text-sm"
             />
             <Input
               placeholder="Organization Address *"
@@ -344,12 +347,13 @@ export default function BookSlots() {
                 handleBookingFormChange("organizationAddress", e.target.value)
               }
               required
+              className="text-xs sm:text-sm sm:col-span-2 lg:col-span-1"
             />
             <Select
               value={bookingForm.state}
               onValueChange={(v) => handleBookingFormChange("state", v)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="text-xs sm:text-sm">
                 <SelectValue placeholder="State *" />
               </SelectTrigger>
               <SelectContent>
@@ -401,7 +405,7 @@ export default function BookSlots() {
               value={bookingForm.country}
               onValueChange={(v) => handleBookingFormChange("country", v)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="text-xs sm:text-sm">
                 <SelectValue placeholder="Country *" />
               </SelectTrigger>
               <SelectContent>
@@ -430,7 +434,7 @@ export default function BookSlots() {
               value={bookingForm.gstin}
               onValueChange={(v) => handleBookingFormChange("gstin", v)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="text-xs sm:text-sm">
                 <SelectValue placeholder="Customer/Party GSTIN?" />
               </SelectTrigger>
               <SelectContent>
@@ -444,11 +448,13 @@ export default function BookSlots() {
               onChange={(e) =>
                 handleBookingFormChange("gstinNo", e.target.value)
               }
+              className="text-xs sm:text-sm"
             />
             <Input
               placeholder="PAN No"
               value={bookingForm.panNo}
               onChange={(e) => handleBookingFormChange("panNo", e.target.value)}
+              className="text-xs sm:text-sm"
             />
             <Input
               placeholder="Contact No *"
@@ -457,6 +463,7 @@ export default function BookSlots() {
                 handleBookingFormChange("contactNo", e.target.value)
               }
               required
+              className="text-xs sm:text-sm"
             />
             <Input
               type="email"
@@ -466,6 +473,7 @@ export default function BookSlots() {
                 handleBookingFormChange("emailId", e.target.value)
               }
               required
+              className="text-xs sm:text-sm"
             />
             <Input
               placeholder="Pincode *"
@@ -474,6 +482,7 @@ export default function BookSlots() {
                 handleBookingFormChange("pincode", e.target.value)
               }
               required
+              className="text-xs sm:text-sm"
             />
             <Input
               placeholder="Reference No"
@@ -481,6 +490,7 @@ export default function BookSlots() {
               onChange={(e) =>
                 handleBookingFormChange("referenceNo", e.target.value)
               }
+              className="text-xs sm:text-sm"
             />
             <Input
               placeholder="Remarks"
@@ -488,24 +498,25 @@ export default function BookSlots() {
               onChange={(e) =>
                 handleBookingFormChange("remarks", e.target.value)
               }
+              className="text-xs sm:text-sm sm:col-span-2 lg:col-span-1"
             />
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-muted-foreground">
+            <CardTitle className="text-base sm:text-lg text-muted-foreground">
               🔬 Research Equipment Details
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid md:grid-cols-3 gap-6">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <Select
               value={bookingForm.organizationCategory}
               onValueChange={(v) =>
                 handleBookingFormChange("organizationCategory", v)
               }
             >
-              <SelectTrigger>
+              <SelectTrigger className="text-xs sm:text-sm">
                 <SelectValue placeholder="Organization Category *" />
               </SelectTrigger>
               <SelectContent>
@@ -517,7 +528,7 @@ export default function BookSlots() {
               value={bookingForm.noOfSamples}
               onValueChange={(v) => handleBookingFormChange("noOfSamples", v)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="text-xs sm:text-sm">
                 <SelectValue placeholder="No. of Samples *" />
               </SelectTrigger>
               <SelectContent>
@@ -528,7 +539,7 @@ export default function BookSlots() {
                 ))}
               </SelectContent>
             </Select>
-            <div className="md:col-span-3 grid md:grid-cols-2 gap-6 mt-6">
+            <div className="sm:col-span-2 lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
               <Textarea
                 placeholder="Sample Description *"
                 value={bookingForm.sampleDescription}
@@ -536,6 +547,7 @@ export default function BookSlots() {
                   handleBookingFormChange("sampleDescription", e.target.value)
                 }
                 required
+                className="text-xs sm:text-sm min-h-[80px] sm:min-h-[100px]"
               />
               <Textarea
                 placeholder="Analysis Required *"
@@ -544,28 +556,31 @@ export default function BookSlots() {
                   handleBookingFormChange("analysisRequired", e.target.value)
                 }
                 required
+                className="text-xs sm:text-sm min-h-[80px] sm:min-h-[100px]"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Buttons */}
-        <div className="flex justify-end space-x-4 pt-4">
+        <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4 sm:pt-6">
           <Button
             type="button"
             variant="outline"
             onClick={() => navigate("/user")}
+            className="w-full sm:w-auto text-xs sm:text-sm"
           >
             Cancel
           </Button>
           <Button
             type="submit"
-            className="bg-primary text-white hover:bg-primary/90"
+            className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto text-xs sm:text-sm"
           >
             Submit Booking Request
           </Button>
         </div>
       </form>
+      </div>
     </div>
   );
 }

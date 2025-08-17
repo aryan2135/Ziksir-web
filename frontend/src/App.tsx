@@ -23,6 +23,8 @@ import UserProfile from "./pages/user/UserProfile.jsx";
 import ForgotPassword from "./pages/forgotPassword";
 import ResetPassword from "./pages/resetPassword";
 import ProtectedRoute from "./components/hoc/protectedRoute.js";
+import EquipmentRequestPage from "./pages/EquipmentRequest.jsx";
+import MessagesPage from "./pages/Messages.jsx";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +74,8 @@ const App = () => (
             <Route path="equipment" element={<EquipmentPage />} />
             <Route path="bookings" element={<BookingsPage />} />
             <Route path="users" element={<UsersPage />} />
+            <Route path="requests" element={<EquipmentRequestPage/>} />
+            <Route path="messages" element={<MessagesPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
 

@@ -61,6 +61,18 @@ const AdminDas = () => {
       path: "/admin/users",
     },
     {
+      id: "equipment-requests",
+      icon: "fas fa-box",
+      label: "Equipment Requests",
+      path: "/admin/requests",
+    },
+    {
+      id: "messages",
+      icon: "fas fa-envelope",
+      label: "User Messages",
+      path: "/admin/messages",
+    },
+    {
       id: "settings",
       icon: "fas fa-cog",
       label: "Settings",

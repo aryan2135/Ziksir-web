@@ -48,11 +48,11 @@ export default function MyBookings() {
   }, []);
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-poppins">My Bookings</h2>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-2xl sm:text-3xl font-bold text-poppins">My Bookings</h2>
         <Button
-          className="bg-accent hover:bg-accent/90"
+          className="bg-accent hover:bg-accent/90 w-full sm:w-auto text-sm sm:text-base"
           onClick={() => navigate("/user/book-slots")}
         >
           <i className="fas fa-plus mr-2"></i>
@@ -61,17 +61,17 @@ export default function MyBookings() {
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground text-center">Loading bookings...</p>
+        <p className="text-muted-foreground text-center text-sm sm:text-base">Loading bookings...</p>
       ) : userBookings.length === 0 ? (
         <Card>
-          <CardContent className="p-12 text-center">
-            <i className="fas fa-calendar-times text-6xl text-muted-foreground mb-4"></i>
-            <h3 className="text-xl font-semibold text-foreground mb-2">No Bookings Yet</h3>
-            <p className="text-muted-foreground mb-4">
+          <CardContent className="p-8 sm:p-12 text-center">
+            <i className="fas fa-calendar-times text-4xl sm:text-6xl text-muted-foreground mb-3 sm:mb-4"></i>
+            <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">No Bookings Yet</h3>
+            <p className="text-muted-foreground mb-4 text-sm sm:text-base">
               You haven't made any equipment bookings yet.
             </p>
             <Button
-              className="bg-accent hover:bg-accent/90"
+              className="bg-accent hover:bg-accent/90 text-sm sm:text-base"
               onClick={() => navigate("/user/book-slots")}
             >
               <i className="fas fa-plus mr-2"></i>
@@ -80,22 +80,22 @@ export default function MyBookings() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid gap-4 sm:gap-6">
           {userBookings.map((booking) => (
             <Card key={booking._id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="flex items-center space-x-2">
-                      <i className="fas fa-microscope text-accent" />
-                      <span>{booking.equipmentId?.name || "Unknown Equipment"}</span>
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="flex items-center space-x-2 text-base sm:text-lg">
+                      <i className="fas fa-microscope text-accent text-sm sm:text-base" />
+                      <span className="truncate">{booking.equipmentId?.name || "Unknown Equipment"}</span>
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-xs sm:text-sm">
                       {booking.slotDate?.slice(0, 10)} • {booking.timeSlot}
                     </CardDescription>
                   </div>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                       booking.status === "pending"
                         ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
                         : booking.status === "approved"
@@ -110,10 +110,10 @@ export default function MyBookings() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div>
-                    <h4 className="font-semibold text-foreground mb-2">Booking Details</h4>
-                    <div className="space-y-1 text-sm">
+                    <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">Booking Details</h4>
+                    <div className="space-y-1 text-xs sm:text-sm">
                       <p>
                         <span className="text-muted-foreground">Organization:</span>{" "}
                         {booking.userId.organizationAddress || "NA"}
@@ -130,8 +130,8 @@ export default function MyBookings() {
                   </div>
 
                   <div>
-                    <h4 className="font-semibold text-foreground mb-2">Contact Info</h4>
-                    <div className="space-y-1 text-sm">
+                    <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">Contact Info</h4>
+                    <div className="space-y-1 text-xs sm:text-sm">
                       <p>
                         <span className="text-muted-foreground">Email:</span>{" "}
                         {booking.emailId || booking.userId?.email || "NA"}
@@ -150,8 +150,8 @@ export default function MyBookings() {
 
                 {booking.sampleDescription && (
                   <div className="mt-4">
-                    <h4 className="font-semibold text-foreground mb-2">Sample Description</h4>
-                    <p className="text-sm text-muted-foreground bg-secondary p-3 rounded-lg">
+                    <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">Sample Description</h4>
+                    <p className="text-xs sm:text-sm text-muted-foreground bg-secondary p-3 rounded-lg">
                       {booking.sampleDescription}
                     </p>
                   </div>

@@ -6,7 +6,18 @@ class RequestController {
   // Create a request
   async createRequest(req: Request, res: Response) {
     try {
-      const newRequest = await requestService.createRequest(req.body);
+      let imageUrl: string | undefined;
+
+      if ((req as any).file) {
+        const file = (req as any).file as Express.Multer.File;
+        imageUrl = `${req.protocol}://${req.get("host")}/uploads/requests/${file.filename}`;
+      }
+
+      const newRequest = await requestService.createRequest({
+        ...req.body,
+        ...(imageUrl ? { imageUrl } : {}),
+      } as RequestInterface);
+
       res.status(201).json(newRequest);
     } catch (error) {
       res.status(500).json({ message: "Error creating request", error });
@@ -39,10 +50,18 @@ class RequestController {
   // Update a request by ID
   async updateRequest(req: Request, res: Response) {
     try {
-      const updatedRequest = await requestService.updateRequest(
-        req.params.id,
-        req.body
-      );
+      let imageUrl: string | undefined;
+
+      if ((req as any).file) {
+        const file = (req as any).file as Express.Multer.File;
+        imageUrl = `${req.protocol}://${req.get("host")}/uploads/requests/${file.filename}`;
+      }
+
+      const updatedRequest = await requestService.updateRequest(req.params.id, {
+        ...req.body,
+        ...(imageUrl ? { imageUrl } : {}),
+      });
+
       if (!updatedRequest) {
         return res.status(404).json({ message: "Request not found" });
       }

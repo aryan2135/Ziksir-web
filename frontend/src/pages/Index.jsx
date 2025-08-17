@@ -16,6 +16,7 @@ import {
 import axios from "@/api/axios";
 import SlideInSection from "@/components/ui/slidein";
 import { Outlet, useNavigate, NavLink } from "react-router-dom";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const ziksir = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -59,18 +60,48 @@ const ziksir = () => {
     }
     setMobileMenuOpen(false);
   };
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    institution: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState("idle"); // idle | success | error
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setStatus("idle");
+
+    try {
+      await axios.post(import.meta.env.VITE_API_URI + "/api/messages", formData);
+      setStatus("success");
+      setFormData({ name: "", email: "", institution: "", message: "" }); // reset form
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background font-poppins">
       {/* Fixed Header */}
       <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
-        <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <nav className="container mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
           <button
             onClick={() => {
               navigate("/");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className=" ml-4 font-sans transition-blue text-4xl font-bold text-primary text-accent font-open-sans"
+            className="ml-2 sm:ml-4 font-sans transition-blue text-2xl sm:text-3xl md:text-4xl font-bold text-primary text-accent font-open-sans"
           >
             ziksir
           </button>
@@ -101,9 +132,6 @@ const ziksir = () => {
             >
               Contact
             </button>
-            {/* <Button onClick={toggleTheme} variant="outline" size="sm">
-              <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
-            </Button> */}
             <Button
               onClick={() => (window.location.href = "/auth")}
               variant="default"
@@ -120,6 +148,7 @@ const ziksir = () => {
               onClick={() => (window.location.href = "/auth")}
               variant="default"
               size="sm"
+              className="text-xs px-3 py-1"
             >
               <i className="fas fa-sign-in-alt"></i>
             </Button>
@@ -127,6 +156,7 @@ const ziksir = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               variant="outline"
               size="sm"
+              className="text-xs px-3 py-1"
             >
               <i
                 className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}
@@ -138,34 +168,34 @@ const ziksir = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden bg-background border-t border-border">
-            <div className="container mx-auto px-4 py-4 space-y-4">
+            <div className="container mx-auto px-4 py-4 space-y-3">
               <button
                 onClick={() => scrollToSection("features")}
-                className="block text-foreground hover:text-accent transition-colors"
+                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
               >
                 Features
               </button>
               <button
                 onClick={() => scrollToSection("process")}
-                className="block text-foreground hover:text-accent transition-colors"
+                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
               >
                 Process
               </button>
               <button
                 onClick={() => scrollToSection("pricing")}
-                className="block text-foreground hover:text-accent transition-colors"
+                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
               >
                 Pricing
               </button>
               <button
                 onClick={() => scrollToSection("contact")}
-                className="block text-foreground hover:text-accent transition-colors"
+                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
               >
                 Contact
               </button>
               <button
                 onClick={() => (window.location.href = "/auth")}
-                className="block text-foreground hover:text-accent transition-colors"
+                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
               >
                 <i className="fas fa-sign-in-alt mr-2"></i>
                 Login
@@ -176,98 +206,97 @@ const ziksir = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-10 px-4">
+      <section className="pt-20 sm:pt-24 pb-8 sm:pb-10 px-4">
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl font-sans md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-sans font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-tight">
               World class services & facilities on demand
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 font-open-sans">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 sm:mb-8 font-open-sans px-2">
               Access thousands of instruments and services from renowned scientific organizations.
             </p>
-
           </div>
         </div>
       </section>
 
       {/* Institution Logos Section */}
-      <section className="bg-gray-900 text-white lg:py-20 py-10">
+      <section className="bg-gray-900 text-white py-8 sm:py-12 lg:py-16 xl:py-20 px-4">
         <div className="text-center">
-          <p className="text-lg lg:mb-20 mb-10 opacity-80 tracking-wide">
+          <p className="text-base sm:text-lg lg:mb-16 xl:mb-20 mb-8 sm:mb-10 opacity-80 tracking-wide px-2">
             Trusted by leading institutions across the country.
           </p>
           <div className="relative w-full overflow-hidden">
-            <div className="flex min-w-full animate-marquee gap-8">
+            <div className="flex min-w-full animate-marquee gap-4 sm:gap-6 lg:gap-8">
               <img
                 src="logo-iitkgp.png"
                 alt="IIT Kharagpur"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-cu.png"
                 alt="Calcutta University"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-durgapur.png"
                 alt="NIT Durgapur"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-jadavpur.png"
                 alt="Jadavpur University"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-shibpur.png"
                 alt="IIEST Shibpur"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-heritage.png"
                 alt="Heritage College"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-bangalore.png"
                 alt="IISc Bangalore"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
 
               <img
                 src="logo-iitkgp.png"
                 alt="IIT Kharagpur"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-cu.png"
                 alt="Calcutta University"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-durgapur.png"
                 alt="NIT Durgapur"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-jadavpur.png"
                 alt="Jadavpur University"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-shibpur.png"
                 alt="IIEST Shibpur"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-heritage.png"
                 alt="Heritage College"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
               <img
                 src="logo-bangalore.png"
                 alt="IISc Bangalore"
-                className="h-20 opacity-80 hover:opacity-100 transition"
+                className="h-12 sm:h-16 md:h-18 lg:h-20 opacity-80 hover:opacity-100 transition"
               />
             </div>
           </div>
@@ -275,94 +304,94 @@ const ziksir = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-16">
-        
-          <div className="container">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-4 text-foreground">
-                {" "}
-                Search thousands of scientific services and instruments{" "}
-              </h2>
-            </div>
-            </div>
+      <section id="features" className="py-12 sm:py-16 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
+              Search thousands of scientific services and instruments
+            </h2>
+          </div>
+        </div>
 
-            <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:px-20 overflow-x-scroll md:overflow-visible flex md:block space-x-4 md:space-x-0">
-              {[
-                {
-                  icon: "fas fa-search",
-                  title: "Smart Discovery",
-                  description:
-                    "Find the exact equipment and facilities you need with our advanced search and filtering system.",
-                },
-                {
-                  icon: "fas fa-calendar-check",
-                  title: "Easy Booking",
-                  description:
-                    "Schedule equipment time slots and facility access with our intuitive booking interface.",
-                },
-                {
-                  icon: "fas fa-chart-line",
-                  title: "Analytics & Insights",
-                  description:
-                    "Track usage patterns, optimize resource allocation, and make data-driven decisions.",
-                },
-                {
-                  icon: "fas fa-users",
-                  title: "Collaboration Tools",
-                  description:
-                    "Share resources, coordinate with team members, and manage multi-user projects.",
-                },
-                {
-                  icon: "fas fa-shield-alt",
-                  title: "Secure Access",
-                  description:
-                    "Role-based permissions and secure authentication ensure proper resource management.",
-                },
-                {
-                  icon: "fas fa-cog",
-                  title: "Integration Ready",
-                  description:
-                    "Connect with existing lab management systems and research workflows seamlessly.",
-                },
-              ].map((feature, index) => (
-                <Card
-                  key={index}
-                  className="min-w-[65%] sm:min-w-[300px] sm:min-h-[110%] md:min-w-0 lg:shadow-lg lg:hover:shadow-xl lg:hover:scale-105 transition-all duration-300"
-                >
-                  <CardHeader className="pb-2">
-                    <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mb-4">
-                      <i
-                        className={`${feature.icon} text-xl text-accent-foreground`}
-                      ></i>
-                    </div>
-                    <CardTitle className="text-xl font-bold">
-                      {feature.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="font-open-sans font-semibold">
-                      {feature.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-8 lg:px-20">
+            {[
+              {
+                icon: "fas fa-search",
+                title: "Smart Discovery",
+                description:
+                  "Find the exact equipment and facilities you need with our advanced search and filtering system.",
+              },
+              {
+                icon: "fas fa-calendar-check",
+                title: "Easy Booking",
+                description:
+                  "Schedule equipment time slots and facility access with our intuitive booking interface.",
+              },
+              {
+                icon: "fas fa-chart-line",
+                title: "Analytics & Insights",
+                description:
+                  "Track usage patterns, optimize resource allocation, and make data-driven decisions.",
+              },
+              {
+                icon: "fas fa-users",
+                title: "Collaboration Tools",
+                description:
+                  "Share resources, coordinate with team members, and manage multi-user projects.",
+              },
+              {
+                icon: "fas fa-shield-alt",
+                title: "Secure Access",
+                description:
+                  "Role-based permissions and secure authentication ensure proper resource management.",
+              },
+              {
+                icon: "fas fa-cog",
+                title: "Integration Ready",
+                description:
+                  "Connect with existing lab management systems and research workflows seamlessly.",
+              },
+            ].map((feature, index) => (
+              <Card
+                key={index}
+                className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 h-full"
+              >
+                <CardHeader className="pb-2">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-lg flex items-center justify-center mb-3 sm:mb-4">
+                    <i
+                      className={`${feature.icon} text-lg sm:text-xl text-accent-foreground`}
+                    ></i>
+                  </div>
+                  <CardTitle className="text-lg sm:text-xl font-bold">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="font-open-sans font-semibold text-sm sm:text-base">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Process Section */}
-      <section id="process" className="py-16 px-4 bg-gray-900">
+      <section id="process" className="py-12 sm:py-16 px-4 bg-gray-900">
         <SlideInSection>
           <div className="container mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-4 text-gray-300">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-300 px-2">
                 How ziksir Works
               </h2>
-              <p className="text-xl text-gray-400 font-open-sans font-semibold">
+              <p className="text-lg sm:text-xl text-gray-400 font-open-sans font-semibold px-2">
                 Three simple steps to access world-class research infrastructure
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
               {[
                 {
                   title: "Discover",
@@ -384,17 +413,17 @@ const ziksir = () => {
                 },
               ].map((step, index) => (
                 <div key={index} className="text-center">
-                  <div className="relative flex items-center">
-                    <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-6 mr-4">
+                  <div className="relative flex flex-col sm:flex-row items-center justify-center">
+                    <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                       <i
-                        className={`${step.icon} text-2xl text-accent-foreground`}
+                        className={`${step.icon} text-xl sm:text-2xl text-accent-foreground`}
                       ></i>
                     </div>
-                    <h3 className="text-2xl font-bold mx-auto mb-4 ml-2 text-accent">
+                    <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-accent">
                       {step.title}
                     </h3>
                   </div>
-                  <p className="text-gray-300 font-open-sans font-semibold">
+                  <p className="text-gray-300 font-open-sans font-semibold text-sm sm:text-base px-2">
                     {step.description}
                   </p>
                 </div>
@@ -405,19 +434,19 @@ const ziksir = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4">
+      <section className="py-12 sm:py-16 px-4">
         <SlideInSection>
           <div className="container mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-4 text-foreground">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
                 What Researchers Say
               </h2>
-              <p className="text-xl text-muted-foreground font-open-sans font-semibold">
+              <p className="text-lg sm:text-xl text-muted-foreground font-open-sans font-semibold px-2">
                 Trusted by leading research institutions throughout the country.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4">
               {[
                 {
                   quote:
@@ -448,7 +477,7 @@ const ziksir = () => {
                 return (
                   <Card
                     key={index}
-                    className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out"
+                    className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out h-full"
                   >
                     <CardContent className="pt-6">
                       <div className="flex items-center mb-4">
@@ -465,20 +494,20 @@ const ziksir = () => {
                           ></i>
                         ))}
                       </div>
-                      <p className="text-muted-foreground mb-6 font-open-sans italic font-medium">
+                      <p className="text-muted-foreground mb-6 font-open-sans italic font-medium text-sm sm:text-base">
                         "{testimonial.quote}"
                       </p>
                       <div className="flex items-center">
-                        <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center mr-3">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3">
                           <i
-                            className={`${testimonial.avatar} text-accent-foreground`}
+                            className={`${testimonial.avatar} text-accent-foreground text-sm sm:text-base`}
                           ></i>
                         </div>
                         <div>
-                          <div className="font-semibold text-foreground font-bold">
+                          <div className="font-semibold text-foreground font-bold text-sm sm:text-base">
                             {testimonial.author}
                           </div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-xs sm:text-sm text-muted-foreground">
                             {testimonial.role}
                           </div>
                         </div>
@@ -493,19 +522,19 @@ const ziksir = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-16 bg-gray-900">
+      <section id="pricing" className="py-12 sm:py-16 bg-gray-900">
         <SlideInSection>
-          <div className="container">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-4 text-gray-300">
+          <div className="container mx-auto">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-300 px-2">
                 Choose Your Plan
               </h2>
-              <p className="text-xl text-gray-400 font-open-sans">
+              <p className="text-lg sm:text-xl text-gray-400 font-open-sans px-2">
                 Flexible pricing for research teams of all sizes
               </p>
             </div>
 
-            <div className="flex md:grid md:grid-cols-3 gap-8 overflow-x-scroll overflow-y-hidden md:overflow-visible px-4 md:px-0 py-8 md:py-0 space-x-4 md:space-x-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4">
               {[
                 {
                   name: "Researcher",
@@ -559,52 +588,52 @@ const ziksir = () => {
               ].map((plan, index) => (
                 <Card
                   key={index}
-                  className={`relative min-w-[85%] sm:min-w-[300px] py-[30px] md:min-w-0 shadow hover:shadow-xl hover:scale-105 transition-all duration-300 ${
+                  className={`relative shadow hover:shadow-xl hover:scale-105 transition-all duration-300 h-full ${
                     plan.popular
-                      ? "shadow-lg hover:shadow-2xl hover:scale-110 ring-2 ring-accent scale-105 py-0"
+                      ? "shadow-lg hover:shadow-2xl hover:scale-110 ring-2 ring-accent scale-105"
                       : ""
                   }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-semibold whitespace-nowrap">
+                      <span className="bg-accent text-accent-foreground px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
                         Most Popular
                       </span>
                     </div>
                   )}
                   <CardHeader className="text-center pb-4">
-                    <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
                       <i
-                        className={`${plan.icon} text-2xl text-accent-foreground`}
+                        className={`${plan.icon} text-lg sm:text-xl md:text-2xl text-accent-foreground`}
                       ></i>
                     </div>
-                    <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                    <CardTitle className="text-xl sm:text-2xl">{plan.name}</CardTitle>
                     <div className="flex items-baseline justify-center">
-                      <span className="text-4xl font-bold text-foreground">
+                      <span className="text-3xl sm:text-4xl font-bold text-foreground">
                         {plan.price}
                       </span>
-                      <span className="text-muted-foreground ml-1">
+                      <span className="text-muted-foreground ml-1 text-sm sm:text-base">
                         {plan.period}
                       </span>
                     </div>
-                    <CardDescription className="font-open-sans">
+                    <CardDescription className="font-open-sans text-sm sm:text-base">
                       {plan.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-3 mb-6">
+                    <ul className="space-y-2 sm:space-y-3 mb-6">
                       {plan.features.map((feature, idx) => (
                         <li
                           key={idx}
-                          className="flex items-center font-open-sans"
+                          className="flex items-center font-open-sans text-sm sm:text-base"
                         >
-                          <i className="fas fa-check text-accent mr-3"></i>
+                          <i className="fas fa-check text-accent mr-3 text-sm"></i>
                           <span className="text-foreground">{feature}</span>
                         </li>
                       ))}
                     </ul>
                     <Button
-                      className="w-full"
+                      className="w-full text-sm sm:text-base"
                       variant={plan.popular ? "default" : "outline"}
                     >
                       {plan.name === "Enterprise"
@@ -620,42 +649,41 @@ const ziksir = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 px-4">
+      <section id="contact" className="py-12 sm:py-16 px-4">
         <SlideInSection>
           <div className="container mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-4 text-foreground">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
                 Get In Touch
               </h2>
-              <p className="text-xl text-muted-foreground font-open-sans">
+              <p className="text-lg sm:text-xl text-muted-foreground font-open-sans px-2">
                 Ready to transform your research infrastructure management?
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
               {/* Contact Form */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Send us a message</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg sm:text-xl">Send us a message</CardTitle>
+                  <CardDescription className="text-sm sm:text-base">
                     We'll get back to you within 24 hours
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form
                     className="space-y-4"
-                    onSubmit={(e) => {
-                      e.preventDefault(); // Prevent page reload
-                      alert("Message sent!");
-                    }}
-                  >
+                    onSubmit={handleSubmit}>
                     <div>
                       <label className="block text-sm font-medium mb-2">
                         Name
                       </label>
                       <input
                         type="text"
-                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+                        name="name"
+                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                        value={formData.name}
+                        onChange={handleChange}
                         placeholder="Your full name"
                         required
                       />
@@ -666,7 +694,10 @@ const ziksir = () => {
                       </label>
                       <input
                         type="email"
-                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
                         placeholder="your.email@institution.edu"
                         required
                       />
@@ -677,7 +708,10 @@ const ziksir = () => {
                       </label>
                       <input
                         type="text"
-                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+                        name="institution"
+                        value={formData.institution}
+                        onChange={handleChange}
+                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
                         placeholder="Your institution name"
                       />
                     </div>
@@ -687,57 +721,76 @@ const ziksir = () => {
                       </label>
                       <textarea
                         rows="4"
-                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
                         placeholder="Tell us about your research infrastructure needs..."
                         required
                       ></textarea>
                     </div>
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-full text-sm sm:text-base" disabled={loading}>
                       <i className="fas fa-paper-plane mr-2"></i>
-                      Send Message
+                      {loading ? "Sending..." : "Send Message"}
                     </Button>
                   </form>
+                  {/* ✅ Custom Alerts */}
+                  {status === "success" && (
+                    <Alert className="mt-4 border-green-500 text-green-700">
+                      <AlertTitle>Success</AlertTitle>
+                      <AlertDescription>
+                        Message sent successfully! We'll get back to you within 24 hours.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                  {status === "error" && (
+                    <Alert className="mt-4 border-red-500 text-red-700">
+                      <AlertTitle>Error</AlertTitle>
+                      <AlertDescription>
+                        Failed to send message. Please try again later.
+                      </AlertDescription>
+                    </Alert>
+                  )}
                 </CardContent>
               </Card>
 
               {/* Contact Info & Calendly */}
-              <div className="space-y-8">
-
+              <div className="space-y-6 sm:space-y-8">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Other Ways to Reach Us</CardTitle>
+                    <CardTitle className="text-lg sm:text-xl">Other Ways to Reach Us</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div className="flex items-center">
-                        <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center mr-4">
-                          <i className="fas fa-envelope text-accent-foreground"></i>
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                          <i className="fas fa-envelope text-accent-foreground text-sm"></i>
                         </div>
-                        <div>
-                          <div className="font-semibold">Email</div>
-                          <div className="text-muted-foreground">
+                        <div className="min-w-0">
+                          <div className="font-semibold text-sm sm:text-base">Email</div>
+                          <div className="text-muted-foreground text-xs sm:text-sm break-words">
                             suyashkankane@kgpian.iitkgp.ac.in
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center">
-                        <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center mr-4">
-                          <i className="fas fa-phone text-accent-foreground"></i>
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                          <i className="fas fa-phone text-accent-foreground text-sm"></i>
                         </div>
                         <div>
-                          <div className="font-semibold">Phone</div>
-                          <div className="text-muted-foreground">
+                          <div className="font-semibold text-sm sm:text-base">Phone</div>
+                          <div className="text-muted-foreground text-xs sm:text-sm">
                             +91 917 964 3101
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center">
-                        <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center mr-4">
-                          <i className="fas fa-map-marker-alt text-accent-foreground"></i>
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                          <i className="fas fa-map-marker-alt text-accent-foreground text-sm"></i>
                         </div>
                         <div>
-                          <div className="font-semibold">Office</div>
-                          <div className="text-muted-foreground">
+                          <div className="font-semibold text-sm sm:text-base">Office</div>
+                          <div className="text-muted-foreground text-xs sm:text-sm">
                             IIT Kharagpur
                           </div>
                         </div>
@@ -752,21 +805,21 @@ const ziksir = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-navy py-12 px-4">
+      <footer className="bg-navy py-8 sm:py-12 px-4">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             <div>
-              <div className="font-sans text-3xl font-bold text-secondary mb-4">
+              <div className="font-sans text-2xl sm:text-3xl font-bold text-secondary mb-4">
                 ziksir
               </div>
-              <p className="text-muted-foreground font-open-sans">
+              <p className="text-muted-foreground font-open-sans text-sm sm:text-base">
                 Connecting researchers with the infrastructure they need to
                 advance science.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-secondary">Product</h4>
-              <ul className="space-y-2 text-muted-foreground font-open-sans">
+              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">Product</h4>
+              <ul className="space-y-2 text-muted-foreground font-open-sans text-xs sm:text-sm">
                 <li>
                   <a href="#" className="hover:text-accent transition-colors">
                     Features
@@ -790,8 +843,8 @@ const ziksir = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-secondary">Company</h4>
-              <ul className="space-y-2 text-muted-foreground font-open-sans">
+              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">Company</h4>
+              <ul className="space-y-2 text-muted-foreground font-open-sans text-xs sm:text-sm">
                 <li>
                   <a href="#" className="hover:text-accent transition-colors">
                     About
@@ -815,8 +868,8 @@ const ziksir = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-secondary">Support</h4>
-              <ul className="space-y-2 text-muted-foreground font-open-sans">
+              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">Support</h4>
+              <ul className="space-y-2 text-muted-foreground font-open-sans text-xs sm:text-sm">
                 <li>
                   <a href="#" className="hover:text-accent transition-colors">
                     Help Center
@@ -840,7 +893,7 @@ const ziksir = () => {
               </ul>
             </div>
           </div>
-          <div className="mt-8 pt-8 text-center text-muted-foreground font-open-sans">
+          <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-muted-foreground font-open-sans text-xs sm:text-sm">
             <p>&copy; 2024 ziksir. All rights reserved.</p>
           </div>
         </div>
@@ -849,10 +902,10 @@ const ziksir = () => {
       {/* Back to Top Button */}
       <button
         onClick={scrollToTop}
-        className="fixed bottom-8 right-8 w-12 h-12 bg-accent hover:bg-accent/90 rounded-full flex items-center justify-center text-accent-foreground shadow-lg transition-all duration-300 hover:scale-110"
+        className="fixed bottom-6 sm:bottom-8 right-6 sm:right-8 w-10 h-10 sm:w-12 sm:h-12 bg-accent hover:bg-accent/90 rounded-full flex items-center justify-center text-accent-foreground shadow-lg transition-all duration-300 hover:scale-110 z-40"
         aria-label="Back to top"
       >
-        <i className="fas fa-chevron-up"></i>
+        <i className="fas fa-chevron-up text-sm sm:text-base"></i>
       </button>
     </div>
   );

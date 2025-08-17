@@ -1,17 +1,20 @@
-import express from 'express';
-import { requestController } from '../controllers/request.controller';
+import express from "express";
+import { requestController } from "../controllers/request.controller";
+import { upload } from "../middlewares/uploadMiddleware";
 
 const router = express.Router();
 
-router.get('/test', (req, res) => {
-    res.json({ message: 'Request route is working!' });
-}
-);
+router.get("/test", (_req, res) => res.json({ message: "Request route is working!" }));
 
-router.post('/', (req, res) => requestController.createRequest(req, res));
-router.get('/', (req, res) => requestController.getRequests(req, res));
-router.get('/:id', (req, res) => requestController.getRequestById(req, res));
-router.put('/:id', (req, res) => requestController.updateRequest(req, res));
-router.delete('/:id', (req, res) => requestController.deleteRequest(req, res));
+// Create with optional image upload (form field name: "image")
+router.post("/", upload.single("image"), (req, res) => requestController.createRequest(req, res));
+
+router.get("/", (req, res) => requestController.getRequests(req, res));
+router.get("/:id", (req, res) => requestController.getRequestById(req, res));
+
+// Update with optional image replacement
+router.put("/:id", upload.single("image"), (req, res) => requestController.updateRequest(req, res));
+
+router.delete("/:id", (req, res) => requestController.deleteRequest(req, res));
 
 export default router;

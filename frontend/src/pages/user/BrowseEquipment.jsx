@@ -59,24 +59,24 @@ export default function BrowseEquipment() {
   };
 
   if (loading) {
-    return <p className="text-center">Loading equipment...</p>;
+    return <p className="text-center text-sm sm:text-base">Loading equipment...</p>;
   }
 
   return (
     <>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-bold text-foreground">Browse Equipment</h2>
+      <div className="space-y-4 sm:space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Browse Equipment</h2>
           <Input
             type="text"
             placeholder="Search equipment..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-64"
+            className="w-full sm:w-64 text-sm sm:text-base"
           />
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredEquipments.length > 0 ? (
             filteredEquipments.map((equipment) => {
               const availabilityPercent =
@@ -95,7 +95,7 @@ export default function BrowseEquipment() {
                   onClick={() => setSelectedEquipment(equipment)}
                 >
                   {/* Image Section */}
-                  <div className="h-40 overflow-hidden bg-gray-100">
+                  <div className="h-32 sm:h-40 overflow-hidden bg-gray-100">
                     {equipment.img_location ? (
                       <img
                         src={equipment.img_location}
@@ -104,27 +104,27 @@ export default function BrowseEquipment() {
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full text-gray-400">
-                        <i className="fas fa-cogs text-4xl"></i>
+                        <i className="fas fa-cogs text-2xl sm:text-4xl"></i>
                       </div>
                     )}
                   </div>
 
                   {/* Header */}
-                  <CardHeader className="p-4 flex-1">
-                    <CardTitle className="text-lg font-semibold line-clamp-1">
+                  <CardHeader className="p-3 sm:p-4 flex-1">
+                    <CardTitle className="text-base sm:text-lg font-semibold line-clamp-1">
                       {equipment.name}
                     </CardTitle>
-                    <CardDescription className="text-sm">
+                    <CardDescription className="text-xs sm:text-sm">
                       {equipment.type} • {equipment.equipmentLocation}
                     </CardDescription>
                   </CardHeader>
 
                   {/* Availability & Actions */}
-                  <CardContent className="px-4 pb-4">
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <CardContent className="px-3 sm:px-4 pb-3 sm:pb-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                       {/* Availability Badge */}
                       <div
-                        className={`flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-medium shadow-sm
+                        className={`flex items-center gap-2 px-2 sm:px-3 py-1 rounded-full border text-xs sm:text-sm font-medium shadow-sm w-full sm:w-auto
         ${availabilityPercent > 50
                             ? "bg-green-50 text-green-700 border-green-200"
                             : availabilityPercent > 0
@@ -140,7 +140,7 @@ export default function BrowseEquipment() {
                                 : "bg-red-500"
                             }`}
                         ></span>
-                        <span>
+                        <span className="truncate">
                           {equipment.available} / {equipment.quantity} Available
                         </span>
                       </div>
@@ -149,7 +149,7 @@ export default function BrowseEquipment() {
                       {equipment.available > 0 ? (
                         <Button
                           size="sm"
-                          className="bg-indigo-600 hover:bg-indigo-700 flex items-center gap-2"
+                          className="bg-indigo-600 hover:bg-indigo-700 flex items-center gap-2 w-full sm:w-auto text-xs sm:text-sm"
                           onClick={(e) => {
                             e.stopPropagation();
                             navigate("/user/book-slots");
@@ -162,7 +162,7 @@ export default function BrowseEquipment() {
                           size="sm"
                           disabled
                           variant="secondary"
-                          className="flex items-center gap-2"
+                          className="flex items-center gap-2 w-full sm:w-auto text-xs sm:text-sm"
                         >
                           <i className="fas fa-ban"></i> Unavailable
                         </Button>
@@ -174,7 +174,7 @@ export default function BrowseEquipment() {
               );
             })
           ) : (
-            <p className="text-muted-foreground text-center col-span-full">
+            <p className="text-muted-foreground text-center col-span-full text-sm sm:text-base">
               No equipment found.
             </p>
           )}
@@ -189,73 +189,76 @@ export default function BrowseEquipment() {
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50 z-40" />
           <Dialog.Content
-            className="fixed top-1/2 left-1/2 max-w-lg w-[90vw] max-h-[90vh] overflow-auto rounded-lg bg-white p-6 shadow-lg
+            className="fixed top-1/2 left-1/2 max-w-lg w-[95vw] sm:w-[90vw] max-h-[90vh] overflow-auto rounded-lg bg-white p-4 sm:p-6 shadow-lg
               -translate-x-1/2 -translate-y-1/2 z-50 focus:outline-none"
             aria-describedby="equipment-details-description"
           >
             {selectedEquipment && (
               <>
-                <Dialog.Title className="text-2xl font-bold mb-4">
+                <Dialog.Title className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
                   {selectedEquipment.name}
                 </Dialog.Title>
                 <Dialog.Description
                   id="equipment-details-description"
-                  className="mb-4 text-sm text-muted-foreground"
+                  className="mb-3 sm:mb-4 text-xs sm:text-sm text-muted-foreground"
                 >
                   {selectedEquipment.type} • {selectedEquipment.equipmentLocation}
                 </Dialog.Description>
 
-                <div className="mb-4">
+                <div className="mb-3 sm:mb-4">
                   <img
                     src={selectedEquipment.img_location}
                     alt={selectedEquipment.name}
-                    className="w-full max-h-60 object-contain rounded-md mb-4"
+                    className="w-full max-h-48 sm:max-h-60 object-contain rounded-md mb-3 sm:mb-4"
                   />
-                  <p>
-                    <strong>Provider:</strong>{" "}
-                    {
-                      selectedEquipment.descriptionFields?.find(
-                        (f) => f.key === "provider"
-                      )?.value || "N/A"
-                    }
-                  </p>
-                  <p>
-                    <strong>Last Maintenance:</strong>{" "}
-                    {formatDate(selectedEquipment.lastMaintenance)}
-                  </p>
+                  <div className="space-y-2 text-sm sm:text-base">
+                    <p>
+                      <strong>Provider:</strong>{" "}
+                      {
+                        selectedEquipment.descriptionFields?.find(
+                          (f) => f.key === "provider"
+                        )?.value || "N/A"
+                      }
+                    </p>
+                    <p>
+                      <strong>Last Maintenance:</strong>{" "}
+                      {formatDate(selectedEquipment.lastMaintenance)}
+                    </p>
 
-                  <div className="mt-3">
-                    <strong>Affiliations:</strong>
-                    <ul className="list-disc list-inside ml-5 text-muted-foreground">
-                      {selectedEquipment.descriptionFields
-                        ?.find((f) => f.key === "affiliation")
-                        ?.value?.map((affil, i) => (
-                          <li key={i}>{affil}</li>
-                        )) || <li>N/A</li>}
-                    </ul>
+                    <div className="mt-3">
+                      <strong>Affiliations:</strong>
+                      <ul className="list-disc list-inside ml-3 sm:ml-5 text-muted-foreground text-xs sm:text-sm">
+                        {selectedEquipment.descriptionFields
+                          ?.find((f) => f.key === "affiliation")
+                          ?.value?.map((affil, i) => (
+                            <li key={i}>{affil}</li>
+                          )) || <li>N/A</li>}
+                      </ul>
+                    </div>
+
+                    <p className="mt-3">
+                      <strong>Available:</strong>{" "}
+                      <span className="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
+                        {selectedEquipment.available} / {selectedEquipment.quantity}
+                      </span>
+                    </p>
                   </div>
-
-                  <p className="mt-3">
-                    <strong>Available:</strong>{" "}
-                    <span className="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
-                      {selectedEquipment.available} / {selectedEquipment.quantity}
-                    </span>
-                  </p>
                 </div>
 
-                <div className="flex justify-end space-x-4 mt-6 flex-wrap">
+                <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4 mt-4 sm:mt-6">
                   {selectedEquipment.available > 0 ? (
-                    <Button onClick={() => navigate("/user/book-slots")}>
+                    <Button onClick={() => navigate("/user/book-slots")} className="w-full sm:w-auto text-sm sm:text-base">
                       <i className="fas fa-calendar-plus mr-2"></i> Book Now
                     </Button>
                   ) : (
-                    <Button disabled>
+                    <Button disabled className="w-full sm:w-auto text-sm sm:text-base">
                       <i className="fas fa-ban mr-2"></i> Not Available
                     </Button>
                   )}
                   <Button
                     variant="outline"
                     onClick={() => setSelectedEquipment(null)}
+                    className="w-full sm:w-auto text-sm sm:text-base"
                   >
                     Close
                   </Button>

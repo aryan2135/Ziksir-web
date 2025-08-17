@@ -252,7 +252,7 @@ export default function UserProfile() {
     <>
       {alert.message && (
         <div
-          className={`fixed top-4 right-4 px-4 py-2 rounded-md shadow-md text-white z-50 transition-opacity duration-300 ${
+          className={`fixed top-4 right-4 px-3 sm:px-4 py-2 rounded-md shadow-md text-white z-50 transition-opacity duration-300 text-sm sm:text-base ${
             alert.type === "success" ? "bg-green-600" : "bg-red-600"
           }`}
         >
@@ -260,20 +260,21 @@ export default function UserProfile() {
         </div>
       )}
 
-      <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-foreground">User Profile</h2>
+      <div className="space-y-4 sm:space-y-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-foreground">User Profile</h2>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card className="md:col-span-2">
-            <CardHeader className="flex items-center justify-between">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6">
+          <Card>
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
-                <CardTitle>Personal Information</CardTitle>
-                <CardDescription>Manage your account details</CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Personal Information</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Manage your account details</CardDescription>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={isEditing ? handleCancel : () => setIsEditing(true)}
+                className="w-full sm:w-auto text-xs sm:text-sm"
               >
                 <i
                   className={`fas ${isEditing ? "fa-times" : "fa-edit"} mr-2`}
@@ -282,7 +283,7 @@ export default function UserProfile() {
               </Button>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
                   label="Full Name"
                   name="name"
@@ -326,8 +327,8 @@ export default function UserProfile() {
                 />
               </div>
               {isEditing && (
-                <div className="mt-6">
-                  <Button onClick={handleUpdate}>
+                <div className="mt-4 sm:mt-6">
+                  <Button onClick={handleUpdate} className="w-full sm:w-auto text-sm sm:text-base">
                     <i className="fas fa-save mr-2"></i>Update Profile
                   </Button>
                 </div>
@@ -343,13 +344,13 @@ export default function UserProfile() {
 function InputField({ label, name, value, onChange, readOnly = false }) {
   return (
     <div>
-      <label className="text-sm font-medium block mb-2">{label}</label>
+      <label className="text-xs sm:text-sm font-medium block mb-2">{label}</label>
       <Input
         name={name}
         value={value}
         onChange={onChange}
         readOnly={readOnly}
-        className={readOnly ? "bg-muted" : ""}
+        className={`${readOnly ? "bg-muted" : ""} text-xs sm:text-sm`}
       />
     </div>
   );
