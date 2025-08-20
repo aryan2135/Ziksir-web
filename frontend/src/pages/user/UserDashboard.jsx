@@ -24,13 +24,18 @@ export default function UserDashboard() {
   const [formType, setFormType] = useState(""); // Consulting or Prototyping
   const [activeTab, setActiveTab] = useState("Consultancy");
 
+  const [loading, setLoading] = useState(false); // loader for button open
+  const [submitting, setSubmitting] = useState(false); // loader for submit
+  const [message, setMessage] = useState({ type: "", text: "" }); // success messages only (outside)
+  const [formError, setFormError] = useState(""); // error inside modal
+
   const [formData, setFormData] = useState({
     phone: "",
     organization: "",
     category: "",
+    description: "",
     timeline: "",
     budget: "",
-    description: "",
     prototypeType: "",
     materials: "",
     equipment: "",
@@ -102,30 +107,76 @@ export default function UserDashboard() {
   };
 
   const handleOpenForm = (type) => {
-    setFormType(type);
-    setIsModalOpen(true);
+    setLoading(true);
+    setTimeout(() => {
+      setFormType(type);
+      setIsModalOpen(true);
+      setLoading(false);
+    }, 1000); // loader for 1 sec before opening
   };
 
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", { formType, ...formData });
-    setIsModalOpen(false);
-    setFormData({
-      phone: "",
-      organization: "",
-      category: "",
-      timeline: "",
-      budget: "",
-      description: "",
-      prototypeType: "",
-      materials: "",
-      equipment: "",
-      requirements: "",
-      useCase: "",
-      scalability: "",
-      ip: "",
-      file: null,
-    });
+    setSubmitting(true);
+    setMessage({ type: "", text: "" });
+    setFormError("");
+
+    try {
+      if (formType === "Consulting") {
+        await axios.post(
+          import.meta.env.VITE_API_URI + "/api/consulting/addConsulting",
+          { ...formData }
+        );
+      } else if (formType === "Prototyping") {
+        const data = new FormData();
+        for (let key in formData) {
+          if (key === "file") {
+            if (formData.file) data.append("file", formData.file);
+          } else {
+            if (
+              formData[key] !== undefined &&
+              formData[key] !== null &&
+              formData[key] !== ""
+            ) {
+              data.append(key, formData[key]);
+            }
+          }
+        }
+        await axios.post(
+          import.meta.env.VITE_API_URI + "/api/prototyping/addPrototype",
+          data,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+      }
+
+      // ✅ Success
+      setFormData({
+        phone: "",
+        organization: "",
+        category: "",
+        description: "",
+        timeline: "",
+        budget: "",
+        prototypeType: "",
+        materials: "",
+        equipment: "",
+        requirements: "",
+        useCase: "",
+        scalability: "",
+        ip: "",
+        file: null,
+      });
+      setMessage({
+        type: "success",
+        text: `${formType} request submitted successfully!`,
+      });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.log(error.message);
+      setFormError(`Failed to submit ${formType} request. Try again.`);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -181,6 +232,13 @@ export default function UserDashboard() {
           </div>
         </header>
 
+        {/* Success Notification */}
+        {message.text && message.type === "success" && (
+          <div className={`mx-6 mt-4 p-3 rounded-lg text-white bg-green-600`}>
+            {message.text}
+          </div>
+        )}
+
         {/* Dashboard Content */}
         <main className="flex-1 p-6">
           {isDashboard ? (
@@ -232,7 +290,8 @@ export default function UserDashboard() {
                 <CardHeader>
                   <CardTitle>Consultancy & Prototyping</CardTitle>
                   <CardDescription>
-                    Get expert guidance, prototype support, and resources tailored to your research and innovation needs.
+                    Get expert guidance, prototype support, and resources
+                    tailored to your research and innovation needs.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -264,19 +323,28 @@ export default function UserDashboard() {
                   {activeTab === "Consultancy" && (
                     <div>
                       <p className="text-sm text-gray-700 leading-relaxed">
-                        Our consultancy services provide personalized guidance to
-                        strengthen your research outcomes:
+                        Our consultancy services provide personalized guidance
+                        to strengthen your research outcomes:
                       </p>
                       <ul className="list-disc list-inside text-sm text-gray-700 mt-2 space-y-1">
-                        <li>Proposal review, experiment design, and methodology selection.</li>
-                        <li>Funding advice, grant writing, and compliance support.</li>
-                        <li>Publication guidance, peer-review preparation, and collaboration strategies.</li>
+                        <li>
+                          Proposal review, experiment design, and methodology
+                          selection.
+                        </li>
+                        <li>
+                          Funding advice, grant writing, and compliance support.
+                        </li>
+                        <li>
+                          Publication guidance, peer-review preparation, and
+                          collaboration strategies.
+                        </li>
                       </ul>
                       <Button
                         onClick={() => handleOpenForm("Consulting")}
+                        disabled={loading}
                         className="mt-4 w-full bg-blue-800 hover:bg-blue-900 text-white"
                       >
-                        Request Consulting
+                        {loading ? "Opening..." : "Request Consulting"}
                       </Button>
                     </div>
                   )}
@@ -284,18 +352,25 @@ export default function UserDashboard() {
                   {activeTab === "Prototyping" && (
                     <div>
                       <p className="text-sm text-gray-700 leading-relaxed">
-                        Transform your ideas into working prototypes with expert support:
+                        Transform your ideas into working prototypes with expert
+                        support:
                       </p>
                       <ul className="list-disc list-inside text-sm text-gray-700 mt-2 space-y-1">
                         <li>Mechanical, Electrical, IoT device development.</li>
-                        <li>Software apps, platforms, and system integrations.</li>
-                        <li>Testing, scalability planning, and manufacturability guidance.</li>
+                        <li>
+                          Software apps, platforms, and system integrations.
+                        </li>
+                        <li>
+                          Testing, scalability planning, and manufacturability
+                          guidance.
+                        </li>
                       </ul>
                       <Button
                         onClick={() => handleOpenForm("Prototyping")}
+                        disabled={loading}
                         className="mt-4 w-full bg-violet-800 hover:bg-violet-900 text-white"
                       >
-                        Request Prototyping
+                        {loading ? "Opening..." : "Request Prototyping"}
                       </Button>
                     </div>
                   )}
@@ -321,7 +396,9 @@ export default function UserDashboard() {
             <h2 className="text-xl font-bold mb-4 text-blue-800">
               {formType} Request Form
             </h2>
-
+            {formError && (
+              <p className="text-red-500 text-sm mb-4">{formError}</p>
+            )}
             <form onSubmit={handleSubmitForm} className="space-y-4">
               {/* Shared Fields */}
               <div className="grid sm:grid-cols-2 gap-4">
@@ -479,6 +556,7 @@ export default function UserDashboard() {
 
               <Button
                 type="submit"
+                disabled={submitting}
                 className="w-full bg-blue-800 hover:bg-blue-900 text-white"
               >
                 Submit {formType} Request

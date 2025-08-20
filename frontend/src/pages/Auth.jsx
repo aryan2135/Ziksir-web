@@ -14,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "@/api/axios";
 
-
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showOtp, setShowOtp] = useState(false);
@@ -54,6 +53,7 @@ const Auth = () => {
         email: formData.email,
       });
       setShowOtp(true);
+      setSuccess("OTP sent to your email.");
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send OTP");
     } finally {
@@ -85,6 +85,7 @@ const Auth = () => {
     setError("");
     setSuccess("");
 
+    // Signup flow: first time -> generate OTP
     if (!isLogin) {
       if (!showOtp) {
         if (
@@ -109,6 +110,8 @@ const Auth = () => {
     }
 
     try {
+      setLoading(true);
+
       if (isLogin) {
         const res = await axios.post(
           import.meta.env.VITE_API_URI + "/api/user/login",
@@ -164,15 +167,32 @@ const Auth = () => {
           ? "Credentials mismatch."
           : backendError
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background font-poppins flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background font-poppins flex items-center justify-center px-4 relative">
+      {/* Global Loading Overlay */}
+      {loading && (
+        <div className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center gap-3">
+            <div className="w-10 h-10 rounded-full border-4 border-gray-300 border-t-transparent animate-spin" />
+            <p className="text-sm text-gray-700 font-medium">Please wait…</p>
+          </div>
+        </div>
+      )}
+
       <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
 
       <div className="absolute top-4 left-4">
-        <Button onClick={() => navigate("/")} variant="outline" size="sm">
+        <Button
+          onClick={() => navigate("/")}
+          variant="outline"
+          size="sm"
+          disabled={loading}
+        >
           <i className="fas fa-home mr-2"></i> Home
         </Button>
       </div>
@@ -226,6 +246,7 @@ const Auth = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
+                    disabled={loading}
                   />
                 </div>
               )}
@@ -260,7 +281,8 @@ const Auth = () => {
                   <button
                     type="button"
                     onClick={() => navigate("/forgot-password")}
-                    className="absolute top-0 right-0 text-[13px] text-blue-600 hover:underline"
+                    className="absolute top-0 right-0 text-[13px] text-blue-600 hover:underline disabled:opacity-50"
+                    disabled={loading}
                   >
                     Forgot password ?
                   </button>
@@ -270,7 +292,7 @@ const Auth = () => {
               {!isLogin && (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label> 
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
                     <Input
                       id="confirmPassword"
                       name="confirmPassword"
@@ -293,7 +315,7 @@ const Auth = () => {
                     className={`w-full text-lg py-3 mt-2 ${
                       otp.join("").length < 4 || loading
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-primary"
+                        : ""
                     }`}
                     disabled={otp.join("").length < 4 || loading}
                   >
@@ -328,7 +350,7 @@ const Auth = () => {
               )}
             </form>
 
-            <GoogleAuthButton onClick={handleGoogleAuth}>
+            <GoogleAuthButton onClick={handleGoogleAuth} disabled={loading}>
               {isLogin ? "Continue with Google" : "Sign Up with Google"}
             </GoogleAuthButton>
 
@@ -346,7 +368,8 @@ const Auth = () => {
                     setShowOtp(false);
                     setOtp(["", "", "", ""]);
                   }}
-                  className="text-accent hover:underline ml-1 font-semibold"
+                  className="text-accent hover:underline ml-1 font-semibold disabled:opacity-50"
+                  disabled={loading}
                 >
                   {isLogin ? "Sign Up" : "Sign In"}
                 </button>
