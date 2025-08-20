@@ -152,7 +152,8 @@ export default function BrowseEquipment() {
                           className="bg-indigo-600 hover:bg-indigo-700 flex items-center gap-2 w-full sm:w-auto text-xs sm:text-sm"
                           onClick={(e) => {
                             e.stopPropagation();
-                            navigate("/user/book-slots");
+                            navigate("/user/book-slots?equipmentId=" + equipment._id);
+                            setSelectedEquipment(equipment.name);
                           }}
                         >
                           <i className="fas fa-calendar-plus"></i> Book Now

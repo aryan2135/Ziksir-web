@@ -19,11 +19,12 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "@/api/axios";
 
 export default function BookSlots() {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const userId = user._id;
 
@@ -117,6 +118,17 @@ export default function BookSlots() {
       .then((res) => setEquipmentList(res.data))
       .catch((err) => console.error("Error fetching equipment list:", err));
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const equipmentIdFromQuery = params.get("equipmentId");
+    if (equipmentIdFromQuery) {
+      setBookingForm((prev) => ({
+        ...prev,
+        equipmentId: equipmentIdFromQuery,
+      }));
+    }
+  }, [location.search]);
 
   const handleBookingFormChange = (field, value) => {
     setBookingForm((prev) => ({ ...prev, [field]: value }));

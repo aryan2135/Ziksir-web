@@ -649,160 +649,199 @@ const ziksir = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-12 sm:py-16 px-4">
-        <SlideInSection>
-          <div className="container mx-auto">
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
-                Get In Touch
-              </h2>
-              <p className="text-lg sm:text-xl text-muted-foreground font-open-sans px-2">
-                Ready to transform your research infrastructure management?
+<section id="contact" className="py-9 sm:py-10 px-4">
+  <SlideInSection>
+    <div className="container mx-auto">
+      <div className="text-center mb-10 sm:mb-10">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
+          Get In Touch
+        </h2>
+        <p className="text-lg sm:text-xl text-muted-foreground font-open-sans px-2">
+          Ready to transform your research infrastructure management?
+        </p>
+      </div>
+
+      <div className="space-y-12 max-w-6xl mx-auto">
+        {/* ✅ Consultancy & Prototyping - Full Width */}
+        <Card className="p-4 sm:p-6">
+          <CardHeader className="pb-2 pt-0">
+            <CardTitle className="text-lg sm:text-xl font-semibold">
+              Consultancy & Prototyping Services
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-8">
+              {/* Intro */}
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed ">
+                Transform your vision into reality with our expert consultancy and prototyping services. 
+                Whether you’re a startup testing ideas or an enterprise innovating new solutions, 
+                we provide tailored support at every stage.
               </p>
-            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
-              {/* Contact Form */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Send us a message</CardTitle>
-                  <CardDescription className="text-sm sm:text-base">
-                    We'll get back to you within 24 hours
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form
-                    className="space-y-4"
-                    onSubmit={handleSubmit}>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Your full name"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
-                        placeholder="your.email@institution.edu"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Institution
-                      </label>
-                      <input
-                        type="text"
-                        name="institution"
-                        value={formData.institution}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
-                        placeholder="Your institution name"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Message
-                      </label>
-                      <textarea
-                        rows="4"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
-                        placeholder="Tell us about your research infrastructure needs..."
-                        required
-                      ></textarea>
-                    </div>
-                    <Button type="submit" className="w-full text-sm sm:text-base" disabled={loading}>
-                      <i className="fas fa-paper-plane mr-2"></i>
-                      {loading ? "Sending..." : "Send Message"}
-                    </Button>
-                  </form>
-                  {/* ✅ Custom Alerts */}
-                  {status === "success" && (
-                    <Alert className="mt-4 border-green-500 text-green-700">
-                      <AlertTitle>Success</AlertTitle>
-                      <AlertDescription>
-                        Message sent successfully! We'll get back to you within 24 hours.
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                  {status === "error" && (
-                    <Alert className="mt-4 border-red-500 text-red-700">
-                      <AlertTitle>Error</AlertTitle>
-                      <AlertDescription>
-                        Failed to send message. Please try again later.
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Contact Info & Calendly */}
-              <div className="space-y-6 sm:space-y-8">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg sm:text-xl">Other Ways to Reach Us</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
-                          <i className="fas fa-envelope text-accent-foreground text-sm"></i>
-                        </div>
-                        <div className="min-w-0">
-                          <div className="font-semibold text-sm sm:text-base">Email</div>
-                          <div className="text-muted-foreground text-xs sm:text-sm break-words">
-                            suyashkankane@kgpian.iitkgp.ac.in
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
-                          <i className="fas fa-phone text-accent-foreground text-sm"></i>
-                        </div>
-                        <div>
-                          <div className="font-semibold text-sm sm:text-base">Phone</div>
-                          <div className="text-muted-foreground text-xs sm:text-sm">
-                            +91 917 964 3101
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
-                          <i className="fas fa-map-marker-alt text-accent-foreground text-sm"></i>
-                        </div>
-                        <div>
-                          <div className="font-semibold text-sm sm:text-base">Office</div>
-                          <div className="text-muted-foreground text-xs sm:text-sm">
-                            IIT Kharagpur
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              {/* Feature grid */}
+              <div className="grid sm:grid-cols-2 gap-6">
+                {[
+                  { title: "Idea Validation", desc: "Expert feedback to refine and strengthen your concepts." },
+                  { title: "Rapid Prototyping", desc: "Quickly build functional prototypes to test feasibility." },
+                  { title: "Expert-Led Certification", desc: "Credentials endorsed by IIT professors to add credibility." },
+                  { title: "Scalable Solutions", desc: "A roadmap to turn prototypes into production-ready systems." }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-start space-x-3">
+                    <span className="text-accent text-lg font-bold mt-1">✔</span>
+                    <p className="leading-snug">
+                      <strong>{item.title}:</strong> {item.desc}
+                    </p>
+                  </div>
+                ))}
               </div>
+
+              {/* Outro */}
+              <p className="text-sm sm:text-base text-muted-foreground ">
+                Our team combines technical expertise with creative problem-solving to ensure your project not only works but thrives in real-world use cases.
+              </p>
+
+              {/* CTA */}
+              <button onClick={() => (window.location.href = "/auth")} className="w-full sm:w-auto px-6 py-3 bg-accent text-accent-foreground font-medium rounded-2xl shadow-md hover:shadow-lg transition">
+                Learn More
+              </button>
             </div>
-          </div>
-        </SlideInSection>
-      </section>
+          </CardContent>
+        </Card>
+
+        {/* ✅ Bottom Grid (Form + Other Ways to Reach Us) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Contact Form */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg sm:text-xl">Send us a message</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
+                We'll get back to you within 24 hours
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Your full name"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                    placeholder="your.email@institution.edu"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Institution</label>
+                  <input
+                    type="text"
+                    name="institution"
+                    value={formData.institution}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                    placeholder="Your institution name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Message</label>
+                  <textarea
+                    rows="4"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                    placeholder="Tell us about your research infrastructure needs..."
+                    required
+                  ></textarea>
+                </div>
+                <Button type="submit" className="w-full text-sm sm:text-base" disabled={loading}>
+                  <i className="fas fa-paper-plane mr-2"></i>
+                  {loading ? "Sending..." : "Send Message"}
+                </Button>
+              </form>
+
+              {/* ✅ Alerts */}
+              {status === "success" && (
+                <Alert className="mt-4 border-green-500 text-green-700">
+                  <AlertTitle>Success</AlertTitle>
+                  <AlertDescription>
+                    Message sent successfully! We'll get back to you within 24 hours.
+                  </AlertDescription>
+                </Alert>
+              )}
+              {status === "error" && (
+                <Alert className="mt-4 border-red-500 text-red-700">
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>
+                    Failed to send message. Please try again later.
+                  </AlertDescription>
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Other Ways to Reach Us */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg sm:text-xl">Other Ways to Reach Us</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                    <i className="fas fa-envelope text-accent-foreground text-sm"></i>
+                  </div>
+                  <div className="min-w-0">
+                    <div className="font-semibold text-sm sm:text-base">Email</div>
+                    <div className="text-muted-foreground text-xs sm:text-sm break-words">
+                      suyashkankane@kgpian.iitkgp.ac.in
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                    <i className="fas fa-phone text-accent-foreground text-sm"></i>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm sm:text-base">Phone</div>
+                    <div className="text-muted-foreground text-xs sm:text-sm">
+                      +91 917 964 3101
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                    <i className="fas fa-map-marker-alt text-accent-foreground text-sm"></i>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-sm sm:text-base">Office</div>
+                    <div className="text-muted-foreground text-xs sm:text-sm">
+                      IIT Kharagpur
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </SlideInSection>
+</section>
+
 
       {/* Footer */}
       <footer className="bg-navy py-8 sm:py-12 px-4">
