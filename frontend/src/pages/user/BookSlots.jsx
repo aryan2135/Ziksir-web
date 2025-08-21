@@ -188,6 +188,9 @@ export default function BookSlots() {
         Category: bookingForm.organizationCategory,
         sample: bookingForm.noOfSamples,
         totalCharge: bookingForm.totalCharge,
+
+        // 🔥 Added as you asked:
+        phone: bookingForm.contactNo,
       };
 
       await axios.post(

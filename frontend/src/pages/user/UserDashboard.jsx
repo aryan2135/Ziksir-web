@@ -1,5 +1,5 @@
 import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -24,58 +24,12 @@ export default function UserDashboard() {
   const [formType, setFormType] = useState(""); // Consulting or Prototyping
   const [activeTab, setActiveTab] = useState("Consultancy");
 
-  const [loading, setLoading] = useState(false); // loader for button open
+  const [loading, setLoading] = useState(false); // loader for opening modal
   const [submitting, setSubmitting] = useState(false); // loader for submit
-  const [message, setMessage] = useState({ type: "", text: "" }); // success messages only (outside)
+  const [message, setMessage] = useState({ type: "", text: "" }); // success messages
   const [formError, setFormError] = useState(""); // error inside modal
 
-  const [formData, setFormData] = useState({
-    phone: "",
-    organization: "",
-    category: "",
-    description: "",
-    timeline: "",
-    budget: "",
-    prototypeType: "",
-    materials: "",
-    equipment: "",
-    requirements: "",
-    useCase: "",
-    scalability: "",
-    ip: "",
-    file: null,
-  });
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const user = localStorage.getItem("currentUser");
-        const userId = JSON.parse(user)._id;
-        const res = await axios.get(
-          import.meta.env.VITE_API_URI + `/api/bookings/count/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setStats(res.data);
-      } catch (err) {
-        console.error("Failed to fetch booking stats:", err);
-      }
-    };
-
-    fetchStats();
-  }, []);
-
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [isModalOpen]);
+  const [statsLoading, setStatsLoading] = useState(false); // loader for stats refresh
 
   const menuItems = [
     { name: "Dashboard", path: "/user" },
@@ -87,6 +41,64 @@ export default function UserDashboard() {
   ];
 
   const isDashboard = location.pathname === "/user";
+
+  const fetchStats = useCallback(async () => {
+    try {
+      setStatsLoading(true);
+      const token = localStorage.getItem("token");
+      const user = localStorage.getItem("currentUser");
+      const userId = JSON.parse(user)._id;
+
+      const res = await axios.get(
+        import.meta.env.VITE_API_URI + `/api/bookings/count/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setStats(
+        res.data || {
+          totalBookings: 0,
+          pendingBookings: 0,
+          completedBookings: 0,
+        }
+      );
+    } catch (err) {
+      console.error("Failed to fetch booking stats:", err);
+    } finally {
+      setStatsLoading(false);
+    }
+  }, []);
+
+  // initial load
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
+  // refetch when returning to /user (route change without remount)
+  useEffect(() => {
+    if (location.pathname === "/user") {
+      fetchStats();
+    }
+  }, [location.pathname, fetchStats]);
+
+  // refetch on window focus & when tab becomes visible
+  useEffect(() => {
+    const onFocus = () => fetchStats();
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") fetchStats();
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [fetchStats]);
+
+  useEffect(() => {
+    if (isModalOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }, [isModalOpen]);
 
   const handleUserLogout = async () => {
     try {
@@ -112,7 +124,7 @@ export default function UserDashboard() {
       setFormType(type);
       setIsModalOpen(true);
       setLoading(false);
-    }, 1000); // loader for 1 sec before opening
+    }, 1000);
   };
 
   const handleSubmitForm = async (e) => {
@@ -149,7 +161,6 @@ export default function UserDashboard() {
         );
       }
 
-      // ✅ Success
       setFormData({
         phone: "",
         organization: "",
@@ -171,6 +182,9 @@ export default function UserDashboard() {
         text: `${formType} request submitted successfully!`,
       });
       setIsModalOpen(false);
+
+      // after submit, refresh stats (in case counts changed)
+      fetchStats();
     } catch (error) {
       console.log(error.message);
       setFormError(`Failed to submit ${formType} request. Try again.`);
@@ -178,6 +192,23 @@ export default function UserDashboard() {
       setSubmitting(false);
     }
   };
+
+  const [formData, setFormData] = useState({
+    phone: "",
+    organization: "",
+    category: "",
+    description: "",
+    timeline: "",
+    budget: "",
+    prototypeType: "",
+    materials: "",
+    equipment: "",
+    requirements: "",
+    useCase: "",
+    scalability: "",
+    ip: "",
+    file: null,
+  });
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -222,7 +253,7 @@ export default function UserDashboard() {
               Manage your research activities and bookings
             </p>
           </div>
-          <div className="flex space-x-4 items-center">
+          <div className="flex space-x-3 items-center">
             <button
               className="bg-white px-4 py-2 rounded hover:bg-blue-300 font-bold"
               onClick={handleUserLogout}
@@ -243,9 +274,21 @@ export default function UserDashboard() {
         <main className="flex-1 p-6">
           {isDashboard ? (
             <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-foreground">
-                Welcome to Your Research Hub
-              </h2>
+              <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                <h2 className="flex-1 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-snug">
+                  Welcome to Your Research Hub
+                </h2>
+
+                <Button
+                  variant="outline"
+                  onClick={fetchStats}
+                  disabled={statsLoading}
+                  aria-label="Refresh stats"
+                  className="shrink-0 border-blue-800 text-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/20 focus-visible:ring-2 focus-visible:ring-blue-600"
+                >
+                  {statsLoading ? "Refreshing..." : "Refresh"}
+                </Button>
+              </div>
 
               {/* Stats Section */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -274,7 +317,9 @@ export default function UserDashboard() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-gray-500 text-sm">{stat.title}</p>
-                          <p className="text-3xl font-bold">{stat.value}</p>
+                          <p className="text-3xl font-bold">
+                            {statsLoading ? "…" : stat.value}
+                          </p>
                         </div>
                         <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white">
                           <i className={`${stat.icon} text-xl`}></i>
@@ -508,10 +553,7 @@ export default function UserDashboard() {
                     rows={3}
                     value={formData.requirements}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        requirements: e.target.value,
-                      })
+                      setFormData({ ...formData, requirements: e.target.value })
                     }
                   />
                   <textarea
@@ -529,10 +571,7 @@ export default function UserDashboard() {
                     className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
                     value={formData.scalability}
                     onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        scalability: e.target.value,
-                      })
+                      setFormData({ ...formData, scalability: e.target.value })
                     }
                   />
                   <input
