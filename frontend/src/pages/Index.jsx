@@ -702,7 +702,7 @@ const ziksir = () => {
 
               {/* CTA */}
               <button onClick={() => (window.location.href = "/auth")} className="w-full sm:w-auto px-6 py-3 bg-accent text-accent-foreground font-medium rounded-2xl shadow-md hover:shadow-lg transition">
-                Learn More
+                Get Started
               </button>
             </div>
           </CardContent>
