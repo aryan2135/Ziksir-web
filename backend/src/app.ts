@@ -21,6 +21,7 @@ dotenv.config();
 const app = express();
 
 console.log("client url: ", process.env.CLIENT_URL);
+console.log("database url: ", process.env.MONGO_URI);
 
 app.use(
   cors({
