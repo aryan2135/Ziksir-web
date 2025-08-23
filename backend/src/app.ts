@@ -42,6 +42,9 @@ app.use("/api/requests", requestRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/consulting", consultingRouer);
 app.use("/api/prototyping", prototypingRouter);
+app.use('/api/testing', (req, res) => {
+  res.json({ message: "Testing endpoint" });
+})
 
 // Basic health check route
 app.get("/health", (req, res) => {
