@@ -23,12 +23,14 @@ const app = express();
 console.log("client url: ", process.env.CLIENT_URL);
 console.log("database url: ", process.env.MONGO_URI);
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-  })
-);
+app.use(cors());
+
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL,
+//     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+//   })
+// );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
