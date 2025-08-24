@@ -17,7 +17,7 @@ export default function RequestEquipment() {
     type: "",
     model: "",
     link: "",
-    image: null,
+    imageUrl: null,
   });
 
   const [loading, setLoading] = useState(false);
@@ -35,6 +35,7 @@ export default function RequestEquipment() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setMessage("");
 
     try {
       const formData = new FormData();
@@ -42,14 +43,21 @@ export default function RequestEquipment() {
         if (value) formData.append(key, value);
       });
 
-      await axios.post(import.meta.env.VITE_API_URI + "/request-equipment", formData, {
+      await axios.post(`${import.meta.env.VITE_API_URI}/api/requests`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       setMessage("Request submitted successfully!");
-      setForm({ name: "", type: "", model: "", link: "", image: null });
+      setForm({
+        name: "",
+        type: "",
+        model: "",
+        link: "",
+        imageUrl: null,
+      });
     } catch (error) {
-      setMessage("Failed to submit request. Please try again.");
+      console.log(error);
+      setMessage("❌ Failed to submit request. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -81,7 +89,7 @@ export default function RequestEquipment() {
                 <div>
                   <Label className="text-sm sm:text-base text-gray-700 font-medium">Equipment Name</Label>
                   <Input
-                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-sm sm:text-base"
+                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
                     name="name"
                     value={form.name}
                     onChange={handleChange}
@@ -94,7 +102,7 @@ export default function RequestEquipment() {
                 <div>
                   <Label className="text-sm sm:text-base text-gray-700 font-medium">Type</Label>
                   <Input
-                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-sm sm:text-base"
+                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
                     name="type"
                     value={form.type}
                     onChange={handleChange}
@@ -107,7 +115,7 @@ export default function RequestEquipment() {
                 <div>
                   <Label className="text-sm sm:text-base text-gray-700 font-medium">Model</Label>
                   <Input
-                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-sm sm:text-base"
+                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
                     name="model"
                     value={form.model}
                     onChange={handleChange}
@@ -117,11 +125,9 @@ export default function RequestEquipment() {
 
                 {/* Reference Link */}
                 <div>
-                  <Label className="text-sm sm:text-base text-gray-700 font-medium">
-                    Reference Link (optional)
-                  </Label>
+                  <Label className="text-gray-700 font-medium">Reference Link (optional)</Label>
                   <Input
-                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-sm sm:text-base"
+                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
                     name="link"
                     value={form.link}
                     onChange={handleChange}
@@ -131,14 +137,12 @@ export default function RequestEquipment() {
 
                 {/* Upload Image */}
                 <div>
-                  <Label className="text-sm sm:text-base text-gray-700 font-medium">
-                    Upload Image (optional)
-                  </Label>
+                  <Label className="text-gray-700 font-medium">Upload Image (optional)</Label>
                   <Input
                     type="file"
                     accept="image/*"
                     name="image"
-                    className="mt-2 sm:mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all text-xs sm:text-sm"
+                    className="mt-1 border-gray-300 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 rounded-xl transition-all"
                     onChange={handleChange}
                   />
                 </div>
@@ -146,7 +150,7 @@ export default function RequestEquipment() {
                 {/* Submit Button */}
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-violet-400 hover:from-purple-600 hover:via-pink-600 hover:to-violet-500 text-white shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl text-sm sm:text-base py-2 sm:py-3"
+                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-violet-400 hover:from-purple-600 hover:via-pink-600 hover:to-violet-500 text-white shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl"
                   disabled={loading}
                 >
                   {loading ? "Submitting..." : "Submit Request"}
@@ -156,8 +160,9 @@ export default function RequestEquipment() {
               {/* Message Display */}
               {message && (
                 <p
-                  className={`mt-4 sm:mt-6 text-center text-xs sm:text-sm font-medium ${message.includes("✅") ? "text-green-600" : "text-red-500"
-                    }`}
+                  className={`mt-6 text-center text-sm font-medium ${
+                    message.startsWith("✅") ? "text-green-600" : "text-red-500"
+                  }`}
                 >
                   {message}
                 </p>

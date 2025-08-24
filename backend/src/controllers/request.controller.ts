@@ -10,17 +10,30 @@ class RequestController {
 
       if ((req as any).file) {
         const file = (req as any).file as Express.Multer.File;
-        imageUrl = `${req.protocol}://${req.get("host")}/uploads/requests/${file.filename}`;
+        imageUrl = `${req.protocol}://${req.get("host")}/uploads/${file.filename}`;
       }
 
+      // Map the form data to match the model schema
+      const requestData = {
+        name: req.body.name, // Equipment name
+        type: req.body.type, // Equipment type
+        model: req.body.model || undefined, // Equipment model (optional)
+        link: req.body.link || undefined, // Reference link (optional)
+        imageUrl: imageUrl, // Image if uploaded
+        status: "pending" // Default status
+      };
+
       const newRequest = await requestService.createRequest({
-        ...req.body,
+        ...requestData as RequestInterface,
         ...(imageUrl ? { imageUrl } : {}),
       } as RequestInterface);
 
+
       res.status(201).json(newRequest);
     } catch (error) {
-      res.status(500).json({ message: "Error creating request", error });
+      console.error("Error in createRequest:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+      res.status(500).json({ message: "Error creating request", error: errorMessage });
     }
   }
 

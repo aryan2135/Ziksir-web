@@ -55,6 +55,12 @@ const AdminDas = () => {
       path: "/admin/bookings",
     },
     {
+      id: "requests",
+      icon: "fas fa-cogs",
+      label: "Equipment Requests",
+      path: "/admin/requests",
+    },
+    {
       id: "users",
       icon: "fas fa-users",
       label: "User Management",

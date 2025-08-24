@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-const uploadRoot = path.resolve(process.cwd(), "uploads", "requests");
+const uploadRoot = path.resolve(process.cwd(), "uploads");
 
 // Ensure upload folder exists
 if (!fs.existsSync(uploadRoot)) {
@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadRoot),
   filename: (_req, file, cb) => {
     const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, "request-image-" + unique + path.extname(file.originalname).toLowerCase());
+    cb(null, unique + path.extname(file.originalname).toLowerCase());
   },
 });
 
@@ -29,5 +29,5 @@ const fileFilter: multer.Options["fileFilter"] = (_req, file, cb) => {
 export const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  limits: { fileSize: 3* 1024 * 1024 }, // 3 MB
 });

@@ -85,7 +85,7 @@ export default function MyBookings() {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <h2 className="text-2xl sm:text-3xl font-bold text-poppins">
           My Bookings

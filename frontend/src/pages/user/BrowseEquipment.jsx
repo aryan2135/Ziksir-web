@@ -190,8 +190,8 @@ export default function BrowseEquipment() {
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50 z-40" />
           <Dialog.Content
-            className="fixed top-1/2 left-1/2 max-w-lg w-[95vw] sm:w-[90vw] max-h-[90vh] overflow-auto rounded-lg bg-white p-4 sm:p-6 shadow-lg
-              -translate-x-1/2 -translate-y-1/2 z-50 focus:outline-none"
+            className="fixed top-1/2 left-1/2 w-full max-w-lg sm:max-w-2xl max-h-[90vh] overflow-auto rounded-lg bg-white p-4 sm:p-6 shadow-lg
+    -translate-x-1/2 -translate-y-1/2 z-50 focus:outline-none"
             aria-describedby="equipment-details-description"
           >
             {selectedEquipment && (

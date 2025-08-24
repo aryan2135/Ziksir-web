@@ -30,6 +30,7 @@ export default function UserDashboard() {
   const [formError, setFormError] = useState(""); // error inside modal
 
   const [statsLoading, setStatsLoading] = useState(false); // loader for stats refresh
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
     { name: "Dashboard", path: "/user" },
@@ -100,22 +101,10 @@ export default function UserDashboard() {
     else document.body.style.overflow = "auto";
   }, [isModalOpen]);
 
-  const handleUserLogout = async () => {
-    try {
-      await axios.post(
-        import.meta.env.VITE_API_URI + "/api/user/logout",
-        {},
-        { withCredentials: true }
-      );
-      localStorage.removeItem("userProfile");
-      localStorage.removeItem("currentUser");
-      localStorage.removeItem("savedProfile");
-      localStorage.setItem("isAuthenticated", "false");
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-      console.log("error while logout ...");
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("currentUser");
+    navigate("/auth");
   };
 
   const handleOpenForm = (type) => {
@@ -211,9 +200,61 @@ export default function UserDashboard() {
   });
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className="hidden w-64 bg-white shadow md:flex flex-col">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
+      {/* Mobile Nav */}
+      <nav className="md:hidden bg-white shadow px-4 py-2 flex justify-between items-center">
+        <button
+          className="text-2xl font-bold"
+          onClick={() => navigate("/user")}
+        >
+          ziksir
+        </button>
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center space-x-2">
+          <Button
+            onClick={handleLogout}
+            variant="default"
+            size="sm"
+            className="text-xs px-3 py-1"
+          >
+            <i className="fas fa-sign-out-alt"></i>
+          </Button>
+          <Button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            variant="outline"
+            size="sm"
+            className="text-xs px-3 py-1"
+          >
+            <i
+              className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}
+            ></i>
+          </Button>
+        </div>
+      </nav>
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-end">
+          <div className="bg-background w-64 h-full shadow-lg border-l border-border flex flex-col">
+            <div className="container mx-auto px-4 py-4 space-y-3">
+              {menuItems.map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    navigate(item.path);
+                  }}
+                  className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary flex items-center gap-2"
+                >
+                  <i className={`${item.icon} mr-2`}></i>
+                  {item.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Sidebar for desktop */}
+      <aside className="hidden md:flex w-64 bg-white shadow flex-col">
         <button
           className="py-6 text-3xl font-bold text-black focus:outline-none"
           onClick={() => {
@@ -242,7 +283,6 @@ export default function UserDashboard() {
           </ul>
         </nav>
       </aside>
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
@@ -256,7 +296,7 @@ export default function UserDashboard() {
           <div className="flex space-x-3 items-center">
             <button
               className="bg-white px-4 py-2 rounded hover:bg-blue-300 font-bold"
-              onClick={handleUserLogout}
+              onClick={handleLogout}
             >
               Logout
             </button>
@@ -271,7 +311,7 @@ export default function UserDashboard() {
         )}
 
         {/* Dashboard Content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-3 sm:p-6">
           {isDashboard ? (
             <div className="space-y-6">
               <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
@@ -430,8 +470,8 @@ export default function UserDashboard() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 relative overflow-y-auto max-h-[90vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-2 sm:p-4">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-lg sm:max-w-2xl p-4 sm:p-6 relative overflow-y-auto max-h-[90vh]">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
