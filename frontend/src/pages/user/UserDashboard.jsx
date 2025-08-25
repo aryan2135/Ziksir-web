@@ -101,10 +101,16 @@ export default function UserDashboard() {
     else document.body.style.overflow = "auto";
   }, [isModalOpen]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("currentUser");
-    navigate("/auth");
+  const handleLogout = async () => {
+    try {
+      await axios.post(import.meta.env.VITE_API_URI + "/api/user/logout");
+    } catch (error) {
+      console.log(error);
+    }
+
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("currentUser");
+    navigate("/");
   };
 
   const handleOpenForm = (type) => {
@@ -225,9 +231,7 @@ export default function UserDashboard() {
             size="sm"
             className="text-xs px-3 py-1"
           >
-            <i
-              className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}
-            ></i>
+            <i className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}></i>
           </Button>
         </div>
       </nav>

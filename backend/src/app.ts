@@ -23,14 +23,14 @@ const app = express();
 console.log("client url: ", process.env.CLIENT_URL);
 console.log("database url: ", process.env.MONGO_URI);
 
-app.use(cors());
+// app.use(cors());
 
-// app.use(
-//   cors({
-//     origin: process.env.CLIENT_URL,
-//     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-//   })
-// );
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -45,9 +45,9 @@ app.use("/api/requests", requestRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/consulting", consultingRouer);
 app.use("/api/prototyping", prototypingRouter);
-app.use('/api/testing', (req, res) => {
+app.use("/api/testing", (req, res) => {
   res.json({ message: "Testing endpoint" });
-})
+});
 
 // Basic health check route
 app.get("/health", (req, res) => {

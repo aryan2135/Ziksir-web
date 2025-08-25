@@ -8,6 +8,9 @@ import { GenertateRandomString, generateOtp4 } from "../utils/generateCodes";
 import { sendResetLinkEmail } from "../utils/emails/sendResetlinkEmail";
 import { sendOtpEmail } from "../utils/emails/sendOTPemail";
 
+// ⬇️ cookie helpers (tumhari cookie config file se)
+import { setAuthCookie, clearAuthCookie } from "../config/cookie";
+
 class AuthController {
   async signup(req: Request, res: Response): Promise<void> {
     try {
@@ -22,11 +25,11 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const { token, user } = await authService.login(email, password);
-      res.cookie("authToken", token, {
-        httpOnly: true,
-        secure: false,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      });
+
+      // 🔄 replaced with helper
+      setAuthCookie(res, token);
+
+      // NOTE: tumne bola baki changes nahi chahiye — isliye token JSON me waisa hi bhej raha hun
       res.status(200).json({ message: "Login successful", token, user });
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -131,11 +134,8 @@ class AuthController {
         }
         const token = generateToken(user.id);
 
-        res.cookie("authToken", token, {
-          httpOnly: true,
-          secure: false,
-          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        });
+        // 🔄 replaced with helper
+        setAuthCookie(res, token);
 
         res.redirect(`${env.CLIENT_URL}/user`);
       }
@@ -143,19 +143,21 @@ class AuthController {
   };
 
   authorization = async (req: Request, res: Response) => {
-    if (!req.user?.id) {
-      return res.status(400).json({ error: "User ID is missing" });
-    }
+    if (!req.user?.id) return res.status(401).json({ error: "Unauthorized" });
+
     const user = await authService.getUserById(req.user.id);
-    res.status(200).json({ message: "completed", user });
+    if (!user) {
+      // stale cookie/session — clean & reject
+      clearAuthCookie(res);
+      return res.status(401).json({ error: "Session expired" });
+    }
+    return res.status(200).json({ message: "completed", user });
   };
 
   logout = (req: Request, res: Response) => {
-    res.clearCookie("authToken", {
-      httpOnly: true,
-      secure: false,
-      path: "/",
-    });
+    // 🔄 replaced with helper
+    clearAuthCookie(res);
+
     return res.status(200).json({ message: "logout successfully" });
   };
 
@@ -185,6 +187,7 @@ class AuthController {
       res.status(400).json({ message: error.message });
     }
   };
+
   sendOTP = async (req: Request, res: Response) => {
     try {
       const { email } = req.body;
@@ -232,4 +235,5 @@ class AuthController {
     }
   };
 }
+
 export const authController = new AuthController();
