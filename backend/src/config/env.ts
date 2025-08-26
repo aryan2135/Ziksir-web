@@ -19,4 +19,5 @@ export const env = {
   SMTP_PASS: getEnvVariable("SMTP_PASS"),
   NODE_ENV: getEnvVariable("NODE_ENV"),
   IS_CROSS_SITE: getEnvVariable("IS_CROSS_SITE"),
+  SERVER_URL: getEnvVariable("SERVER_URL"),
 };
