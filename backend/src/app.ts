@@ -7,7 +7,7 @@ import passport from "passport";
 import path from "path";
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware";
 import { env } from "./config/env";
-import "../src/config/passport/googleStrategy";
+import "./config/passport/googleStrategy";
 
 import userRoutes from "./routes/user.routes";
 import bookingRoutes from "./routes/booking.routes";
