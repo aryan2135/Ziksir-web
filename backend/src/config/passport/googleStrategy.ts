@@ -28,7 +28,7 @@ passport.use(
     {
       clientID: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:4000/api/user/auth/google/callback",
+      callbackURL: `${env.SERVER_URL}/api/user/auth/google/callback`,
       passReqToCallback: false,
     },
     verifyCallback
