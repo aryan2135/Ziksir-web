@@ -59,14 +59,18 @@ export default function BrowseEquipment() {
   };
 
   if (loading) {
-    return <p className="text-center text-sm sm:text-base">Loading equipment...</p>;
+    return (
+      <p className="text-center text-sm sm:text-base">Loading equipment...</p>
+    );
   }
 
   return (
     <>
       <div className="space-y-4 sm:space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Browse Equipment</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+            Browse Equipment
+          </h2>
           <Input
             type="text"
             placeholder="Search equipment..."
@@ -85,8 +89,8 @@ export default function BrowseEquipment() {
                 availabilityPercent > 50
                   ? "bg-green-500"
                   : availabilityPercent > 0
-                    ? "bg-yellow-500"
-                    : "bg-red-500";
+                  ? "bg-yellow-500"
+                  : "bg-red-500";
 
               return (
                 <Card
@@ -125,20 +129,22 @@ export default function BrowseEquipment() {
                       {/* Availability Badge */}
                       <div
                         className={`flex items-center gap-2 px-2 sm:px-3 py-1 rounded-full border text-xs sm:text-sm font-medium shadow-sm w-full sm:w-auto
-        ${availabilityPercent > 50
-                            ? "bg-green-50 text-green-700 border-green-200"
-                            : availabilityPercent > 0
-                              ? "bg-yellow-50 text-yellow-700 border-yellow-200"
-                              : "bg-red-50 text-red-700 border-red-200"
-                          }`}
+        ${
+          availabilityPercent > 50
+            ? "bg-green-50 text-green-700 border-green-200"
+            : availabilityPercent > 0
+            ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+            : "bg-red-50 text-red-700 border-red-200"
+        }`}
                       >
                         <span
-                          className={`w-2 h-2 rounded-full ${availabilityPercent > 50
+                          className={`w-2 h-2 rounded-full ${
+                            availabilityPercent > 50
                               ? "bg-green-500"
                               : availabilityPercent > 0
-                                ? "bg-yellow-500"
-                                : "bg-red-500"
-                            }`}
+                              ? "bg-yellow-500"
+                              : "bg-red-500"
+                          }`}
                         ></span>
                         <span className="truncate">
                           {equipment.available} / {equipment.quantity} Available
@@ -152,7 +158,9 @@ export default function BrowseEquipment() {
                           className="bg-indigo-600 hover:bg-indigo-700 flex items-center gap-2 w-full sm:w-auto text-xs sm:text-sm"
                           onClick={(e) => {
                             e.stopPropagation();
-                            navigate("/user/book-slots?equipmentId=" + equipment._id);
+                            navigate(
+                              "/user/book-slots?equipmentId=" + equipment._id
+                            );
                             setSelectedEquipment(equipment.name);
                           }}
                         >
@@ -170,7 +178,6 @@ export default function BrowseEquipment() {
                       )}
                     </div>
                   </CardContent>
-
                 </Card>
               );
             })
@@ -203,7 +210,8 @@ export default function BrowseEquipment() {
                   id="equipment-details-description"
                   className="mb-3 sm:mb-4 text-xs sm:text-sm text-muted-foreground"
                 >
-                  {selectedEquipment.type} • {selectedEquipment.equipmentLocation}
+                  {selectedEquipment.type} •{" "}
+                  {selectedEquipment.equipmentLocation}
                 </Dialog.Description>
 
                 <div className="mb-3 sm:mb-4">
@@ -213,13 +221,15 @@ export default function BrowseEquipment() {
                     className="w-full max-h-48 sm:max-h-60 object-contain rounded-md mb-3 sm:mb-4"
                   />
                   <div className="space-y-2 text-sm sm:text-base">
-                    <p>
-                      <strong>Provider:</strong>{" "}
-                      {
-                        selectedEquipment.descriptionFields?.find(
-                          (f) => f.key === "provider"
-                        )?.value || "N/A"
-                      }
+                    <p style={{ display: "flex", alignItems: "flex-start" }}>
+                      <strong style={{ minWidth: "100px" }}>
+                        Description:
+                      </strong>
+                      <span>
+                        {selectedEquipment.descriptionFields?.find(
+                          (f) => f.key === "description"
+                        )?.value || "N/A"}
+                      </span>
                     </p>
                     <p>
                       <strong>Last Maintenance:</strong>{" "}
@@ -240,7 +250,8 @@ export default function BrowseEquipment() {
                     <p className="mt-3">
                       <strong>Available:</strong>{" "}
                       <span className="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
-                        {selectedEquipment.available} / {selectedEquipment.quantity}
+                        {selectedEquipment.available} /{" "}
+                        {selectedEquipment.quantity}
                       </span>
                     </p>
                   </div>
@@ -248,11 +259,17 @@ export default function BrowseEquipment() {
 
                 <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4 mt-4 sm:mt-6">
                   {selectedEquipment.available > 0 ? (
-                    <Button onClick={() => navigate("/user/book-slots")} className="w-full sm:w-auto text-sm sm:text-base">
+                    <Button
+                      onClick={() => navigate("/user/book-slots")}
+                      className="w-full sm:w-auto text-sm sm:text-base"
+                    >
                       <i className="fas fa-calendar-plus mr-2"></i> Book Now
                     </Button>
                   ) : (
-                    <Button disabled className="w-full sm:w-auto text-sm sm:text-base">
+                    <Button
+                      disabled
+                      className="w-full sm:w-auto text-sm sm:text-base"
+                    >
                       <i className="fas fa-ban mr-2"></i> Not Available
                     </Button>
                   )}
