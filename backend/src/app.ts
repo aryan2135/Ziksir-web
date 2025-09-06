@@ -1,13 +1,13 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import path from "path";
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware";
-
-import "../src/config/passport/googleStrategy";
+import { env } from "./config/env";
+import "./config/passport/googleStrategy";
 
 import userRoutes from "./routes/user.routes";
 import bookingRoutes from "./routes/booking.routes";
@@ -17,20 +17,36 @@ import messageRoutes from "./routes/message.routes";
 import consultingRouer from "./routes/consulting.routes";
 import prototypingRouter from "./routes/prototyping.routes";
 
-dotenv.config();
 const app = express();
 
 console.log("client url: ", process.env.CLIENT_URL);
 console.log("database url: ", process.env.MONGO_URI);
 
-// app.use(cors());
+app.set("trust proxy", 1);
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-  })
-);
+const allowOrigin = env.CLIENT_URL;
+
+// ✅ All-in-one CORS middleware (Express 5 safe)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", allowOrigin);
+  res.header("Vary", "Origin"); // good practice
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, X-Requested-With"
+  );
+
+  // Preflight ko yahin end kar do
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
