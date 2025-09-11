@@ -464,6 +464,56 @@ const ziksir = () => {
         </div>
       </section>
 
+      {/*Testimonials Section - Client Logos & Feedback */}
+      <section className="py-12 sm:py-16 px-4 bg-gradient-to-br from-blue-50 via-white to-blue-100">
+        <div className="container mx-auto">
+          <div className="text-center mb-5">
+            <p className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
+              What Our Clients Say
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Maribus Solar */}
+            <div className="bg-[#e3f0fa] rounded-2xl shadow-lg p-6 flex flex-col relative">
+              <div className="flex items-center mb-4">
+                <span className="text-2xl font-bold text-blue-900 mr-3">Maribus Solar</span>
+                <img
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAATCAMAAAC0hZ1zAAAA3lBMVEX////u9Pe85vWb3vaP2/a05Pbk8fb8/Pyl4PVz3f953v9/3//3+fqB2/ya39St47iM3PuS4ODB4IHS52XP52rP6/eA3e/O5myw36LG4XvQ53PM53R+4f/Y6/PK7Yr//wDu7gDd3QCsyHFryeu9u7re3t7R0dHY19bp6emHvOnBoRrfvAbv0Bvnyhy1x+ePuPiZtubhvl3/yQCWtu2iuuXM1+OpscDAy9eep7h8n9d7mMefs9J5pOtvm+ZkleaDl7s8ZqA2UZQvXJqvu9FKbaR+pOKIpMRPgK7F0uzY3+2LdE8rAAAA2klEQVR4AaXNQ4JDURBA0fq2jXZs287+N9Sv2kZyprcAZ6NohmU4/qskiJIsK4osMernpkm6oZNKOvUxmpbtuI5tYdWE983zXTcIAtf1cZX7sBg6AXJCGVfff5Si+FGEUXr3lZLs5JGd4t0LMo8AqdLl1fUNur1LCT6TzeVz2cLjarFYKleIavFBNpvLkZx9jLV6o9lqtZqNNurw3V6vP+h3n54OR/X2eDiZTIkZP18sF6t+fw2PupvtFgO2Duz2my4Frw6z2VOrAazH8B7VmKHhEb52PB4F+Id7IhMgcyIsOzIAAAAASUVORK5CYII=" 
+                  alt="Maribus Solar"
+                  className="w-10 h-10 rounded-full border-2 border-blue-300 bg-white object-cover"
+                />
+              </div>
+              <div className="flex-1 flex flex-col justify-between">
+                <div className="text-5xl text-blue-400 mb-2 leading-none">“</div>
+                <p className="text-blue-900 font-medium text-base sm:text-lg mb-4">
+                  Ziksir made R&amp;D equipment access easy – zero compliance and no massive upfront costs.<br />
+                  Ziksir cut down our approval setup time by 2 months and saved 5 lakhs of rupees.
+                </p>
+                <div className="text-5xl text-blue-400 self-end leading-none">”</div>
+              </div>
+            </div>
+            {/* Revoltaero Systems Pvt Ltd */}
+            <div className="bg-[#e3f0fa] rounded-2xl shadow-lg p-6 flex flex-col relative">
+              <div className="flex items-center mb-4">
+                <span className="text-2xl font-bold text-blue-900 mr-3">Revoltaero Systems Pvt Ltd</span>
+                <img
+                  src="https://i.imgur.com/5Qw2y5R.png" 
+                  alt="Revoltaero"
+                  className="w-10 h-10 rounded-full border-2 border-blue-300 bg-white object-cover"
+                />
+              </div>
+              <div className="flex-1 flex flex-col justify-between">
+                <div className="text-5xl text-blue-400 mb-2 leading-none">“</div>
+                <p className="text-blue-900 font-medium text-base sm:text-lg mb-4">
+                  We could easily access high-quality research facilities through Ziksir. It saved nearly ₹8 lakhs and gave us the freedom to focus on innovation.<br />
+                  The ease of access cut down our expected research time by 4 months.
+                </p>
+                <div className="text-5xl text-blue-400 self-end leading-none">”</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Process Section */}
       <section id="process" className="py-12 sm:py-16 px-4 bg-gray-900">
         <SlideInSection>
