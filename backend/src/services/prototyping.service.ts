@@ -9,4 +9,8 @@ export class PrototypingService {
   async deletePrototyping(id: string) {
     return await PrototypingModel.findByIdAndDelete(id);
   }
+
+  async getAllPrototyping() {
+    return await PrototypingModel.find().sort({ createdAt: -1 });
+  }
 }

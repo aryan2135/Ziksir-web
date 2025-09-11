@@ -18,13 +18,18 @@ import BookSlots from "./pages/user/BookSlots.jsx";
 import BrowseEquipment from "./pages/user/BrowseEquipment.jsx";
 import MyBookings from "./pages/user/MyBookings.jsx";
 import RequestEquipment from "./pages/user/RequestEquipment.jsx";
-import ResearchAssistant from "./pages/user/ResearchAssistant.jsx";
+// import ResearchAssistant from "./pages/user/ResearchAssistant.jsx";
 import UserProfile from "./pages/user/UserProfile.jsx";
 import ForgotPassword from "./pages/forgotPassword";
 import ResetPassword from "./pages/resetPassword";
 import ProtectedRoute from "./components/hoc/protectedRoute.js";
 import EquipmentRequestPage from "./pages/EquipmentRequest.jsx";
 import MessagesPage from "./pages/Messages.jsx";
+import SearchPage from "./pages/search.jsx";
+import ConsultPage from "./pages/user/Consultancy.jsx";
+import PrototypingPage from "./pages/user/Prototyping.jsx";
+import IndustryInfo from "./pages/industries.jsx";
+import ConsultPrototypePage from "./pages/ConsultPrototype.jsx";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +42,8 @@ const App = () => (
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Index />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/industries" element={<IndustryInfo />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
@@ -57,7 +64,8 @@ const App = () => (
             <Route path="browse-equipment" element={<BrowseEquipment />} />
             <Route path="my-bookings" element={<MyBookings />} />
             <Route path="request-equipment" element={<RequestEquipment />} />
-            <Route path="research-assistant" element={<ResearchAssistant />} />
+            <Route path="consultancy" element={<ConsultPage />} />
+            <Route path="prototyping" element={<PrototypingPage />} />
             <Route path="profile" element={<UserProfile />} />
           </Route>
 
@@ -74,6 +82,7 @@ const App = () => (
             <Route path="equipment" element={<EquipmentPage />} />
             <Route path="bookings" element={<BookingsPage />} />
             <Route path="users" element={<UsersPage />} />
+            <Route path="consult-prototype" element={<ConsultPrototypePage />} />
             <Route path="requests" element={<EquipmentRequestPage/>} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="settings" element={<SettingsPage />} />

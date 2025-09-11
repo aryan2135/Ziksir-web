@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import * as Dialog from "@radix-ui/react-dialog";
+import { Helmet } from "react-helmet";
 import {
   Card,
   CardHeader,
@@ -66,6 +67,16 @@ export default function BrowseEquipment() {
 
   return (
     <>
+      <Helmet>
+        <title>Browse Equipment | Ziksir</title>
+        <meta name="description" content="Browse and search scientific equipment available for booking on Ziksir." />
+        <meta name="keywords" content="equipment, browse, booking, ziksir, research" />
+        <meta name="author" content="Ziksir" />
+        <meta property="og:title" content="Browse Equipment | Ziksir" />
+        <meta property="og:description" content="Browse and search scientific equipment available for booking on Ziksir." />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       <div className="space-y-4 sm:space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
@@ -194,7 +205,7 @@ export default function BrowseEquipment() {
         open={!!selectedEquipment}
         onOpenChange={(open) => !open && setSelectedEquipment(null)}
       >
-        <Dialog.Portal>
+        <Dialog.Portal>  
           <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50 z-40" />
           <Dialog.Content
             className="fixed top-1/2 left-1/2 w-full max-w-lg sm:max-w-2xl max-h-[90vh] overflow-auto rounded-lg bg-white p-4 sm:p-6 shadow-lg

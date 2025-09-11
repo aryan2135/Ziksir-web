@@ -25,6 +25,22 @@ import {
 } from "@/components/ui/select";
 import axios from "@/api/axios";
 
+const PLACEHOLDER_IMG =
+  "https://via.placeholder.com/80x80.png?text=No+Image";
+
+const getEquipmentImage = (equipment) => {
+  if (equipment.images && Array.isArray(equipment.images) && equipment.images[0]?.url) {
+    return equipment.images[0].url;
+  }
+  if (equipment.image && typeof equipment.image === "string" && equipment.image.trim()) {
+    return equipment.image;
+  }
+  if (equipment.imageUrl && typeof equipment.imageUrl === "string" && equipment.imageUrl.trim()) {
+    return equipment.imageUrl;
+  }
+  return PLACEHOLDER_IMG;
+};
+
 const Equipment = () => {
   const [equipmentList, setEquipmentList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,6 +52,7 @@ const Equipment = () => {
     quantity: 1,
     available: 1,
     descriptionFields: [],
+    imageUrl: "",
   });
   const [dialogMode, setDialogMode] = useState("add");
   const [selectedId, setSelectedId] = useState(null);
@@ -75,7 +92,7 @@ const Equipment = () => {
         await axios.post(API_BASE, payload);
       } else {
         await axios.put(`${API_BASE}/${selectedId}`, payload);
-        setEditDialogOpen(false); // close dialog after editing
+        setEditDialogOpen(false);
       }
 
       resetForm();
@@ -94,6 +111,7 @@ const Equipment = () => {
       quantity: 1,
       available: 1,
       descriptionFields: [],
+      imageUrl: "",
     });
     setSelectedId(null);
   };
@@ -122,9 +140,9 @@ const Equipment = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-foreground">Equipment Management</h2>
+    <div className="space-y-8 max-w-4xl mx-auto py-8">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <h2 className="text-3xl font-bold text-primary">Equipment Management</h2>
         <Dialog>
           <DialogTrigger asChild>
             <Button
@@ -132,22 +150,36 @@ const Equipment = () => {
                 setDialogMode("add");
                 resetForm();
               }}
+              className="bg-primary text-white"
             >
               <i className="fas fa-plus mr-2" /> Add New Equipment
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add New Equipment</DialogTitle>
+              <DialogTitle>
+                {dialogMode === "add" ? "Add New Equipment" : "Edit Equipment"}
+              </DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              {["name", "type", "equipmentLocation"].map((field) => (
+              {["name", "type", "equipmentLocation", "imageUrl"].map((field) => (
                 <div key={field}>
-                  <Label>{field === "equipmentLocation" ? "Location" : field.charAt(0).toUpperCase() + field.slice(1)}</Label>
+                  <Label>
+                    {field === "equipmentLocation"
+                      ? "Location"
+                      : field === "imageUrl"
+                      ? "Image URL"
+                      : field.charAt(0).toUpperCase() + field.slice(1)}
+                  </Label>
                   <Input
                     name={field}
                     value={formData[field]}
                     onChange={handleInputChange}
+                    placeholder={
+                      field === "imageUrl"
+                        ? "https://example.com/image.jpg"
+                        : undefined
+                    }
                   />
                 </div>
               ))}
@@ -189,8 +221,8 @@ const Equipment = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <Button className="w-full" onClick={handleAddOrEdit}>
-                Add Equipment
+              <Button className="w-full bg-primary text-white" onClick={handleAddOrEdit}>
+                {dialogMode === "add" ? "Add Equipment" : "Update Equipment"}
               </Button>
             </div>
           </DialogContent>
@@ -225,111 +257,130 @@ const Equipment = () => {
                 return (
                   <div
                     key={equipment._id}
-                    className="flex flex-col p-5 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
+                    className="flex flex-col sm:flex-row items-center sm:items-start p-5 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 gap-4"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center text-2xl">
-                          🧪
-                        </div>
+                    {/* Equipment Image */}
+                    <img
+                      src={getEquipmentImage(equipment)}
+                      alt={equipment.name}
+                      className="w-20 h-20 object-cover rounded-lg border bg-gray-100"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = PLACEHOLDER_IMG;
+                      }}
+                    />
+                    {/* Equipment Info */}
+                    <div className="flex-1 w-full">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                          <h4 className="font-semibold text-foreground">{equipment.name}</h4>
+                          <h4 className="font-semibold text-foreground text-lg">{equipment.name}</h4>
                           <p className="text-sm text-muted-foreground">
                             {equipment.type} • {equipment.equipmentLocation}
                           </p>
                         </div>
+                        <span className={`mt-2 sm:mt-0 px-4 py-1 rounded-full text-sm font-semibold ${statusClasses[effectiveStatus]}`}>
+                          {effectiveStatus}
+                        </span>
                       </div>
-                      <span className={`px-4 py-1 rounded-full text-sm font-semibold ${statusClasses[effectiveStatus]}`}>
-                        {effectiveStatus}
-                      </span>
-                    </div>
-
-                    <div className="mt-3 flex space-x-8 text-sm text-muted-foreground">
-                      <div><strong>Quantity:</strong> {equipment.quantity}</div>
-                      <div><strong>Available:</strong> {equipment.available}</div>
-                    </div>
-
-                    <div className="mt-4 flex items-center space-x-3">
-                      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              setDialogMode("edit");
-                              setFormData(equipment);
-                              setSelectedId(equipment._id);
-                              setEditDialogOpen(true);
-                            }}
-                          >
-                            <i className="fas fa-edit" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Edit Equipment</DialogTitle>
-                          </DialogHeader>
-                          <div className="space-y-4">
-                            {["name", "type", "equipmentLocation"].map((field) => (
-                              <div key={field}>
-                                <Label>{field === "equipmentLocation" ? "Location" : field.charAt(0).toUpperCase() + field.slice(1)}</Label>
-                                <Input
-                                  name={field}
-                                  value={formData[field]}
-                                  onChange={handleInputChange}
-                                />
-                              </div>
-                            ))}
-                            <div className="flex gap-4">
-                              <div>
-                                <Label>Quantity</Label>
-                                <Input
-                                  name="quantity"
-                                  type="number"
-                                  value={formData.quantity}
-                                  onChange={handleInputChange}
-                                />
-                              </div>
-                              <div>
-                                <Label>Available</Label>
-                                <Input
-                                  name="available"
-                                  type="number"
-                                  value={formData.available}
-                                  onChange={handleInputChange}
-                                />
-                              </div>
-                            </div>
-                            <div>
-                              <Label>Status</Label>
-                              <Select
-                                value={formData.status}
-                                onValueChange={(value) => setFormData({ ...formData, status: value })}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select Status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="available">available</SelectItem>
-                                  <SelectItem value="unavailable">unavailable</SelectItem>
-                                  <SelectItem value="maintenance">maintenance</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <Button className="w-full" onClick={handleAddOrEdit}>
-                              Update Equipment
+                      <div className="mt-3 flex flex-wrap gap-6 text-sm text-muted-foreground">
+                        <div><strong>Quantity:</strong> {equipment.quantity}</div>
+                        <div><strong>Available:</strong> {equipment.available}</div>
+                      </div>
+                      <div className="mt-4 flex items-center gap-3">
+                        <Dialog open={editDialogOpen && selectedId === equipment._id} onOpenChange={setEditDialogOpen}>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setDialogMode("edit");
+                                setFormData({
+                                  ...equipment,
+                                  imageUrl: equipment.imageUrl || "",
+                                });
+                                setSelectedId(equipment._id);
+                                setEditDialogOpen(true);
+                              }}
+                            >
+                              <i className="fas fa-edit" />
                             </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(equipment._id)}
-                      >
-                        <i className="fas fa-trash" />
-                      </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Edit Equipment</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              {["name", "type", "equipmentLocation", "imageUrl"].map((field) => (
+                                <div key={field}>
+                                  <Label>
+                                    {field === "equipmentLocation"
+                                      ? "Location"
+                                      : field === "imageUrl"
+                                      ? "Image URL"
+                                      : field.charAt(0).toUpperCase() + field.slice(1)}
+                                  </Label>
+                                  <Input
+                                    name={field}
+                                    value={formData[field]}
+                                    onChange={handleInputChange}
+                                    placeholder={
+                                      field === "imageUrl"
+                                        ? "https://example.com/image.jpg"
+                                        : undefined
+                                    }
+                                  />
+                                </div>
+                              ))}
+                              <div className="flex gap-4">
+                                <div>
+                                  <Label>Quantity</Label>
+                                  <Input
+                                    name="quantity"
+                                    type="number"
+                                    value={formData.quantity}
+                                    onChange={handleInputChange}
+                                  />
+                                </div>
+                                <div>
+                                  <Label>Available</Label>
+                                  <Input
+                                    name="available"
+                                    type="number"
+                                    value={formData.available}
+                                    onChange={handleInputChange}
+                                  />
+                                </div>
+                              </div>
+                              <div>
+                                <Label>Status</Label>
+                                <Select
+                                  value={formData.status}
+                                  onValueChange={(value) => setFormData({ ...formData, status: value })}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Select Status" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="available">available</SelectItem>
+                                    <SelectItem value="unavailable">unavailable</SelectItem>
+                                    <SelectItem value="maintenance">maintenance</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <Button className="w-full bg-primary text-white" onClick={handleAddOrEdit}>
+                                Update Equipment
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(equipment._id)}
+                        >
+                          <i className="fas fa-trash" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 );

@@ -54,8 +54,6 @@ const Overview = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-foreground">Admin Dashboard Overview</h2>
-
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((stat, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow">

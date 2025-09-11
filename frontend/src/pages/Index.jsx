@@ -17,15 +17,20 @@ import axios from "@/api/axios";
 import SlideInSection from "@/components/ui/slidein";
 import { Outlet, useNavigate, NavLink } from "react-router-dom";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Helmet } from "react-helmet";
 
 const ziksir = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const [equipments, setEquipments] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
   useEffect(() => {
     const isUserLogin = async () => {
       try {
-        const response = await axios.get(
+        await axios.get(
           import.meta.env.VITE_API_URI + "/api/user/auth/verification",
           { withCredentials: true }
         );
@@ -35,6 +40,19 @@ const ziksir = () => {
       }
     };
     isUserLogin();
+  }, []);
+
+  // Fetch equipment suggestions for search
+  useEffect(() => {
+    const fetchEquipments = async () => {
+      try {
+        const res = await axios.get(import.meta.env.VITE_API_URI + "/api/equipment");
+        setEquipments(res.data || []);
+      } catch (err) {
+        console.error("Error fetching equipments:", err);
+      }
+    };
+    fetchEquipments();
   }, []);
 
   const toggleTheme = () => {
@@ -60,6 +78,7 @@ const ziksir = () => {
     }
     setMobileMenuOpen(false);
   };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -93,45 +112,103 @@ const ziksir = () => {
 
   return (
     <div className="min-h-screen bg-background font-poppins">
+      <Helmet>
+        <title>Ziksir | World class services & equipment on demand</title>
+        <meta name="description" content="World class services & equipment on demand. Book research equipment, consultancy, and prototyping services easily with Ziksir." />
+        <meta name="keywords" content="equipment, research, booking, ziksir, consultancy, prototyping, services" />
+        <meta name="author" content="Ziksir" />
+        <meta property="og:title" content="Ziksir | World class services & equipment on demand" />
+        <meta property="og:description" content="Book research equipment, consultancy, and prototyping services easily with Ziksir." />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       {/* Fixed Header */}
       <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
-        <nav className="container mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
+        <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+          {/* Logo */}
           <button
             onClick={() => {
               navigate("/");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="ml-2 sm:ml-4 font-sans transition-blue text-2xl sm:text-3xl md:text-4xl font-bold text-primary text-accent font-open-sans"
+            className="ml-2 sm:ml-4 font-sans text-2xl sm:text-3xl md:text-4xl font-bold text-primary font-open-sans"
           >
             ziksir
           </button>
 
+          {/* Search Bar */}
+          <div className="relative hidden md:flex items-center w-full max-w-2xl mx-8">
+            <div className="flex items-center w-full rounded-full border border-gray-300 shadow-sm hover:shadow-md transition bg-white px-2 py-1">
+              <input
+                type="text"
+                placeholder="Search equipments..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setShowSearchSuggestions(true)}
+                className="flex-1 px-4 py-2 bg-transparent focus:outline-none text-gray-700"
+              />
+              <button
+                className="bg-primary text-white px-6 py-2 rounded-full ml-2 hover:bg-primary/90 transition"
+                onClick={() => {
+                  navigate(`/search?query=${searchQuery}`);
+                  setShowSearchSuggestions(false);
+                }}
+              >
+                Search
+              </button>
+            </div>
+
+            {/* Suggestions Dropdown */}
+            {showSearchSuggestions && (
+              <div className="absolute top-full mt-2 bg-white border rounded-xl shadow-xl w-full z-50">
+                <ul className="divide-y divide-gray-100">
+                  <li
+                    className="px-4 py-3 flex items-center gap-3 hover:bg-gray-50 cursor-pointer"
+                    onClick={() => {
+                      navigator.geolocation.getCurrentPosition((pos) => {
+                        navigate(
+                          `/search?lat=${pos.coords.latitude}&lng=${pos.coords.longitude}`
+                        );
+                      });
+                      setShowSearchSuggestions(false);
+                    }}
+                  >
+                    <i className="fas fa-location-dot text-primary"></i>
+                    <span>Nearby – Find equipments around you</span>
+                  </li>
+                  {equipments
+                    .filter((eq) =>
+                      eq.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .slice(0, 5)
+                    .map((eq) => (
+                      <li
+                        key={eq._id}
+                        className="px-4 py-3 hover:bg-gray-50 cursor-pointer"
+                        onClick={() => {
+                          navigate(`/search?equipment=${eq._id}`);
+                          setShowSearchSuggestions(false);
+                        }}
+                      >
+                        {eq.name} – {eq.location}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={() => scrollToSection("features")}
-              className="text-foreground hover:text-accent transition-colors"
-            >
-              Features
-            </button>
-            <button
-              onClick={() => scrollToSection("process")}
-              className="text-foreground hover:text-accent transition-colors"
-            >
-              Process
-            </button>
-            <button
-              onClick={() => scrollToSection("pricing")}
-              className="text-foreground hover:text-accent transition-colors"
-            >
-              Pricing
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="text-foreground hover:text-accent transition-colors"
-            >
-              Contact
-            </button>
+            {["features", "process", "pricing", "contact"].map((sec) => (
+              <button
+                key={sec}
+                onClick={() => scrollToSection(sec)}
+                className="text-foreground hover:text-accent transition-colors"
+              >
+                {sec.charAt(0).toUpperCase() + sec.slice(1)}
+              </button>
+            ))}
             <Button
               onClick={() => (window.location.href = "/auth")}
               variant="default"
@@ -158,9 +235,7 @@ const ziksir = () => {
               size="sm"
               className="text-xs px-3 py-1"
             >
-              <i
-                className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}
-              ></i>
+              <i className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}></i>
             </Button>
           </div>
         </nav>
@@ -169,30 +244,15 @@ const ziksir = () => {
         {mobileMenuOpen && (
           <div className="md:hidden bg-background border-t border-border">
             <div className="container mx-auto px-4 py-4 space-y-3">
-              <button
-                onClick={() => scrollToSection("features")}
-                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
-              >
-                Features
-              </button>
-              <button
-                onClick={() => scrollToSection("process")}
-                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
-              >
-                Process
-              </button>
-              <button
-                onClick={() => scrollToSection("pricing")}
-                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
-              >
-                Pricing
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
-              >
-                Contact
-              </button>
+              {["features", "process", "pricing", "contact"].map((sec) => (
+                <button
+                  key={sec}
+                  onClick={() => scrollToSection(sec)}
+                  className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
+                >
+                  {sec.charAt(0).toUpperCase() + sec.slice(1)}
+                </button>
+              ))}
               <button
                 onClick={() => (window.location.href = "/auth")}
                 className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary"
@@ -204,6 +264,7 @@ const ziksir = () => {
           </div>
         )}
       </header>
+
 
       {/* Hero Section */}
       <section className="pt-20 sm:pt-24 pb-8 sm:pb-10 px-4">
@@ -304,76 +365,101 @@ const ziksir = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-12 sm:py-16 px-4">
+      <section id="features" className="py-12 sm:py-16 px-4 bg-gradient-to-br from-blue-50 via-white to-violet-100">
         <div className="container mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
-              Search thousands of scientific services and instruments
+              Why Choose Ziksir?
             </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-6 font-open-sans px-2">
+              Discover how Ziksir transforms your research experience.
+            </p>
           </div>
-        </div>
-
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-8 lg:px-20">
-            {[
-              {
-                icon: "fas fa-search",
-                title: "Smart Discovery",
-                description:
-                  "Find the exact equipment and facilities you need with our advanced search and filtering system.",
-              },
-              {
-                icon: "fas fa-calendar-check",
-                title: "Easy Booking",
-                description:
-                  "Schedule equipment time slots and facility access with our intuitive booking interface.",
-              },
-              {
-                icon: "fas fa-chart-line",
-                title: "Analytics & Insights",
-                description:
-                  "Track usage patterns, optimize resource allocation, and make data-driven decisions.",
-              },
-              {
-                icon: "fas fa-users",
-                title: "Collaboration Tools",
-                description:
-                  "Share resources, coordinate with team members, and manage multi-user projects.",
-              },
-              {
-                icon: "fas fa-shield-alt",
-                title: "Secure Access",
-                description:
-                  "Role-based permissions and secure authentication ensure proper resource management.",
-              },
-              {
-                icon: "fas fa-cog",
-                title: "Integration Ready",
-                description:
-                  "Connect with existing lab management systems and research workflows seamlessly.",
-              },
-            ].map((feature, index) => (
-              <Card
-                key={index}
-                className="shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 h-full"
+          {/* Attractive Feature Highlights */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+              <i className="fas fa-rocket text-4xl text-accent mb-4"></i>
+              <h3 className="font-bold text-xl mb-2 text-black">Instant Access</h3>
+              <p className="text-muted-foreground mb-4">
+                Get immediate access to thousands of instruments and services from top institutions.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                onClick={() => navigate("/search")}
               >
-                <CardHeader className="pb-2">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-lg flex items-center justify-center mb-3 sm:mb-4">
-                    <i
-                      className={`${feature.icon} text-lg sm:text-xl text-accent-foreground`}
-                    ></i>
-                  </div>
-                  <CardTitle className="text-lg sm:text-xl font-bold">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="font-open-sans font-semibold text-sm sm:text-base">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
+                Explore Equipments
+              </Button>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+              <i className="fas fa-comments text-4xl text-accent mb-4"></i>
+              <h3 className="font-bold text-xl mb-2 text-black">Expert Support</h3>
+              <p className="text-muted-foreground mb-4">
+                Connect with IIT professors and certified experts for consultancy and prototyping.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                onClick={() => navigate("/user/consultancy")}
+              >
+                Get Consultancy
+              </Button>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+              <i className="fas fa-calendar-alt text-4xl text-accent mb-4"></i>
+              <h3 className="font-bold text-xl mb-2 text-black">Flexible Booking</h3>
+              <p className="text-muted-foreground mb-4">
+                Book slots, request equipment, and manage your bookings with ease and transparency.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                onClick={() => navigate("/user/book-slots")}
+              >
+                Book Now
+              </Button>
+            </div>
+          </div>
+
+          {/* NEW: Research Industries & Startups Info Section */}
+          <div className="mt-16 bg-white rounded-2xl shadow-lg border border-blue-100 p-8 flex flex-col md:flex-row items-center md:items-start gap-8">
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-4">
+                For Research Industries & Startups
+              </h3>
+              <p className="text-muted-foreground mb-4 text-base">
+                Ziksir empowers research-driven industries and innovative startups by providing seamless access to world-class scientific infrastructure, expert consultancy, and rapid prototyping services.
+                <br /><br />
+                Whether you need to validate your ideas, scale up production, or collaborate with top institutions, Ziksir is your gateway to success.
+                <br /><br />
+                <span className="font-semibold text-black">What we offer:</span>
+                <ul className="list-disc ml-6 mt-2 text-muted-foreground">
+                  <li>On-demand booking of advanced equipment and labs</li>
+                  <li>Direct collaboration with IIT professors and certified experts</li>
+                  <li>Custom prototyping and product development support</li>
+                  <li>Flexible plans for startups, SMEs, and enterprises</li>
+                  <li>Analytics and reporting to optimize your R&D</li>
+                </ul>
+              </p>
+              <Button
+                variant="default"
+                size="lg"
+                className="w-full sm:w-auto px-6 py-3 bg-accent text-accent-foreground font-medium rounded-2xl shadow-md hover:shadow-lg hover:text-white"
+                onClick={() => navigate("/industries")}
+              >
+                Learn More
+              </Button>
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <img
+                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+                alt="Research Industry"
+                className="rounded-xl shadow-lg w-full max-w-xs md:max-w-sm"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -412,17 +498,13 @@ const ziksir = () => {
                   icon: "fas fa-microscope",
                 },
               ].map((step, index) => (
-                <div key={index} className="text-center">
-                  <div className="relative flex flex-col sm:flex-row items-center justify-center">
-                    <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                      <i
-                        className={`${step.icon} text-xl sm:text-2xl text-accent-foreground`}
-                      ></i>
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-accent">
-                      {step.title}
-                    </h3>
+                <div key={index} className="flex flex-col items-center text-center h-full justify-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-accent rounded-full flex items-center justify-center mb-4 sm:mb-6">
+                    <i className={`${step.icon} text-2xl sm:text-3xl text-accent-foreground`}></i>
                   </div>
+                  <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-white">
+                    {step.title}
+                  </h3>
                   <p className="text-gray-300 font-open-sans font-semibold text-sm sm:text-base px-2">
                     {step.description}
                   </p>
@@ -588,11 +670,10 @@ const ziksir = () => {
               ].map((plan, index) => (
                 <Card
                   key={index}
-                  className={`relative shadow hover:shadow-xl hover:scale-105 transition-all duration-300 h-full ${
-                    plan.popular
+                  className={`relative shadow hover:shadow-xl hover:scale-105 transition-all duration-300 h-full ${plan.popular
                       ? "shadow-lg hover:shadow-2xl hover:scale-110 ring-2 ring-accent scale-105"
                       : ""
-                  }`}
+                    }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
@@ -649,198 +730,198 @@ const ziksir = () => {
       </section>
 
       {/* Contact Section */}
-<section id="contact" className="py-9 sm:py-10 px-4">
-  <SlideInSection>
-    <div className="container mx-auto">
-      <div className="text-center mb-10 sm:mb-10">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
-          Get In Touch
-        </h2>
-        <p className="text-lg sm:text-xl text-muted-foreground font-open-sans px-2">
-          Ready to transform your research infrastructure management?
-        </p>
-      </div>
-
-      <div className="space-y-12 max-w-6xl mx-auto">
-        {/* ✅ Consultancy & Prototyping - Full Width */}
-        <Card className="p-4 sm:p-6">
-          <CardHeader className="pb-2 pt-0">
-            <CardTitle className="text-lg sm:text-xl font-semibold">
-              Consultancy & Prototyping Services
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-8">
-              {/* Intro */}
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed ">
-                Transform your vision into reality with our expert consultancy and prototyping services. 
-                Whether you’re a startup testing ideas or an enterprise innovating new solutions, 
-                we provide tailored support at every stage.
+      <section id="contact" className="py-9 sm:py-10 px-4">
+        <SlideInSection>
+          <div className="container mx-auto">
+            <div className="text-center mb-10 sm:mb-10">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
+                Get In Touch
+              </h2>
+              <p className="text-lg sm:text-xl text-muted-foreground font-open-sans px-2">
+                Ready to transform your research infrastructure management?
               </p>
-
-              {/* Feature grid */}
-              <div className="grid sm:grid-cols-2 gap-6">
-                {[
-                  { title: "Idea Validation", desc: "Expert feedback to refine and strengthen your concepts." },
-                  { title: "Rapid Prototyping", desc: "Quickly build functional prototypes to test feasibility." },
-                  { title: "Expert-Led Certification", desc: "Credentials endorsed by IIT professors to add credibility." },
-                  { title: "Scalable Solutions", desc: "A roadmap to turn prototypes into production-ready systems." }
-                ].map((item, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <span className="text-accent text-lg font-bold mt-1">✔</span>
-                    <p className="leading-snug">
-                      <strong>{item.title}:</strong> {item.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Outro */}
-              <p className="text-sm sm:text-base text-muted-foreground ">
-                Our team combines technical expertise with creative problem-solving to ensure your project not only works but thrives in real-world use cases.
-              </p>
-
-              {/* CTA */}
-              <button onClick={() => (window.location.href = "/auth")} className="w-full sm:w-auto px-6 py-3 bg-accent text-accent-foreground font-medium rounded-2xl shadow-md hover:shadow-lg transition">
-                Get Started
-              </button>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* ✅ Bottom Grid (Form + Other Ways to Reach Us) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Contact Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">Send us a message</CardTitle>
-              <CardDescription className="text-sm sm:text-base">
-                We'll get back to you within 24 hours
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form className="space-y-4" onSubmit={handleSubmit}>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your full name"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
-                    placeholder="your.email@institution.edu"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Institution</label>
-                  <input
-                    type="text"
-                    name="institution"
-                    value={formData.institution}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
-                    placeholder="Your institution name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Message</label>
-                  <textarea
-                    rows="4"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
-                    placeholder="Tell us about your research infrastructure needs..."
-                    required
-                  ></textarea>
-                </div>
-                <Button type="submit" className="w-full text-sm sm:text-base" disabled={loading}>
-                  <i className="fas fa-paper-plane mr-2"></i>
-                  {loading ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
+            <div className="space-y-12 max-w-6xl mx-auto">
+              {/* ✅ Consultancy & Prototyping - Full Width */}
+              <Card className="p-4 sm:p-6">
+                <CardHeader className="pb-2 pt-0">
+                  <CardTitle className="text-lg sm:text-xl font-semibold">
+                    Consultancy & Prototyping Services
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-8">
+                    {/* Intro */}
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed ">
+                      Transform your vision into reality with our expert consultancy and prototyping services.
+                      Whether you’re a startup testing ideas or an enterprise innovating new solutions,
+                      we provide tailored support at every stage.
+                    </p>
 
-              {/* ✅ Alerts */}
-              {status === "success" && (
-                <Alert className="mt-4 border-green-500 text-green-700">
-                  <AlertTitle>Success</AlertTitle>
-                  <AlertDescription>
-                    Message sent successfully! We'll get back to you within 24 hours.
-                  </AlertDescription>
-                </Alert>
-              )}
-              {status === "error" && (
-                <Alert className="mt-4 border-red-500 text-red-700">
-                  <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>
-                    Failed to send message. Please try again later.
-                  </AlertDescription>
-                </Alert>
-              )}
-            </CardContent>
-          </Card>
+                    {/* Feature grid */}
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      {[
+                        { title: "Idea Validation", desc: "Expert feedback to refine and strengthen your concepts." },
+                        { title: "Rapid Prototyping", desc: "Quickly build functional prototypes to test feasibility." },
+                        { title: "Expert-Led Certification", desc: "Credentials endorsed by IIT professors to add credibility." },
+                        { title: "Scalable Solutions", desc: "A roadmap to turn prototypes into production-ready systems." }
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-start space-x-3">
+                          <span className="text-accent text-lg font-bold mt-1">✔</span>
+                          <p className="leading-snug">
+                            <strong>{item.title}:</strong> {item.desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
 
-          {/* Other Ways to Reach Us */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">Other Ways to Reach Us</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
-                    <i className="fas fa-envelope text-accent-foreground text-sm"></i>
+                    {/* Outro */}
+                    <p className="text-sm sm:text-base text-muted-foreground ">
+                      Our team combines technical expertise with creative problem-solving to ensure your project not only works but thrives in real-world use cases.
+                    </p>
+
+                    {/* CTA */}
+                    <button onClick={() => (window.location.href = "/auth")} className="w-full sm:w-auto px-6 py-3 bg-accent text-accent-foreground font-medium rounded-2xl shadow-md hover:shadow-lg transition">
+                      Get Started
+                    </button>
                   </div>
-                  <div className="min-w-0">
-                    <div className="font-semibold text-sm sm:text-base">Email</div>
-                    <div className="text-muted-foreground text-xs sm:text-sm break-words">
-                      suyashkankane@kgpian.iitkgp.ac.in
+                </CardContent>
+              </Card>
+
+              {/* ✅ Bottom Grid (Form + Other Ways to Reach Us) */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                {/* Contact Form */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl">Send us a message</CardTitle>
+                    <CardDescription className="text-sm sm:text-base">
+                      We'll get back to you within 24 hours
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <form className="space-y-4" onSubmit={handleSubmit}>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Name</label>
+                        <input
+                          type="text"
+                          name="name"
+                          className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="Your full name"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Email</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                          placeholder="your.email@institution.edu"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Institution</label>
+                        <input
+                          type="text"
+                          name="institution"
+                          value={formData.institution}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                          placeholder="Your institution name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Message</label>
+                        <textarea
+                          rows="4"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
+                          placeholder="Tell us about your research infrastructure needs..."
+                          required
+                        ></textarea>
+                      </div>
+                      <Button type="submit" className="w-full text-sm sm:text-base" disabled={loading}>
+                        <i className="fas fa-paper-plane mr-2"></i>
+                        {loading ? "Sending..." : "Send Message"}
+                      </Button>
+                    </form>
+
+                    {/* ✅ Alerts */}
+                    {status === "success" && (
+                      <Alert className="mt-4 border-green-500 text-green-700">
+                        <AlertTitle>Success</AlertTitle>
+                        <AlertDescription>
+                          Message sent successfully! We'll get back to you within 24 hours.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    {status === "error" && (
+                      <Alert className="mt-4 border-red-500 text-red-700">
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>
+                          Failed to send message. Please try again later.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Other Ways to Reach Us */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl">Other Ways to Reach Us</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                          <i className="fas fa-envelope text-accent-foreground text-sm"></i>
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-semibold text-sm sm:text-base">Email</div>
+                          <div className="text-muted-foreground text-xs sm:text-sm break-words">
+                            suyashkankane@kgpian.iitkgp.ac.in
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                          <i className="fas fa-phone text-accent-foreground text-sm"></i>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-sm sm:text-base">Phone</div>
+                          <div className="text-muted-foreground text-xs sm:text-sm">
+                            +91 917 964 3101
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+                          <i className="fas fa-map-marker-alt text-accent-foreground text-sm"></i>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-sm sm:text-base">Office</div>
+                          <div className="text-muted-foreground text-xs sm:text-sm">
+                            IIT Kharagpur
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
-                    <i className="fas fa-phone text-accent-foreground text-sm"></i>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-sm sm:text-base">Phone</div>
-                    <div className="text-muted-foreground text-xs sm:text-sm">
-                      +91 917 964 3101
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
-                    <i className="fas fa-map-marker-alt text-accent-foreground text-sm"></i>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-sm sm:text-base">Office</div>
-                    <div className="text-muted-foreground text-xs sm:text-sm">
-                      IIT Kharagpur
-                    </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
-  </SlideInSection>
-</section>
+            </div>
+          </div>
+        </SlideInSection>
+      </section>
 
 
       {/* Footer */}
@@ -855,6 +936,36 @@ const ziksir = () => {
                 Connecting researchers with the infrastructure they need to
                 advance science.
               </p>
+              {/* Social Media Icons */}
+              <div className="flex items-center gap-4 mt-4">
+                <a
+                  href="https://www.instagram.com/yourprofile"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-foreground transition"
+                  aria-label="Instagram"
+                >
+                  <i className="fab fa-instagram text-2xl"></i>
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/yourcompany"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-foreground transition"
+                  aria-label="LinkedIn"
+                >
+                  <i className="fab fa-linkedin text-2xl"></i>
+                </a>
+                <a
+                  href="https://www.facebook.com/yourpage"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-foreground transition"
+                  aria-label="Facebook"
+                >
+                  <i className="fab fa-facebook text-2xl"></i>
+                </a>
+              </div>
             </div>
             <div>
               <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">Product</h4>

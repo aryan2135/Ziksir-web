@@ -15,4 +15,10 @@ router.delete(
   consultingController.deleteConsultingRequest.bind(consultingController)
 );
 
+// GET all consulting requests (for admin)
+router.get(
+  "/allConsulting",
+  consultingController.getAllConsultingRequests.bind(consultingController)
+);
+
 export default router;

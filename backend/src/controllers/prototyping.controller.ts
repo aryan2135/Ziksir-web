@@ -9,7 +9,6 @@ export class PrototypingController {
       // File info from multer
       let fileUrl = null;
       if (req.file) {
-        // You can construct URL as per your server setup
         fileUrl = `/uploads/requests/${req.file.filename}`;
       }
 
@@ -43,6 +42,17 @@ export class PrototypingController {
       res
         .status(500)
         .json({ message: "Error deleting prototyping data", error: err });
+    }
+  }
+
+  async getAllPrototyping(req: Request, res: Response) {
+    try {
+      const requests = await prototypingService.getAllPrototyping();
+      res.status(200).json(requests);
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Error fetching prototyping data", error: err });
     }
   }
 }

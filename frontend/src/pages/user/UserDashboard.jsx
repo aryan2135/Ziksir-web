@@ -1,14 +1,9 @@
 import { Link, useNavigate, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import axios from "@/api/axios";
+import { Helmet } from "react-helmet";
 
 export default function UserDashboard() {
   const location = useLocation();
@@ -19,25 +14,18 @@ export default function UserDashboard() {
     pendingBookings: 0,
     completedBookings: 0,
   });
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formType, setFormType] = useState(""); // Consulting or Prototyping
-  const [activeTab, setActiveTab] = useState("Consultancy");
-
-  const [loading, setLoading] = useState(false); // loader for opening modal
-  const [submitting, setSubmitting] = useState(false); // loader for submit
-  const [message, setMessage] = useState({ type: "", text: "" }); // success messages
-  const [formError, setFormError] = useState(""); // error inside modal
-
-  const [statsLoading, setStatsLoading] = useState(false); // loader for stats refresh
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
     { name: "Dashboard", path: "/user" },
     { name: "Book Slots", path: "/user/book-slots" },
     { name: "Browse Equipment", path: "/user/browse-equipment" },
-    { name: "My Bookings", path: "/user/my-bookings" },
     { name: "Request Equipment", path: "/user/request-equipment" },
+    { name: "My Bookings", path: "/user/my-bookings" },
+    { name: "Consultancy", path: "/user/consultancy" },
+    { name: "Prototyping", path: "/user/prototyping" },
     { name: "Profile", path: "/user/profile" },
   ];
 
@@ -70,19 +58,16 @@ export default function UserDashboard() {
     }
   }, []);
 
-  // initial load
   useEffect(() => {
     fetchStats();
   }, [fetchStats]);
 
-  // refetch when returning to /user (route change without remount)
   useEffect(() => {
     if (location.pathname === "/user") {
       fetchStats();
     }
   }, [location.pathname, fetchStats]);
 
-  // refetch on window focus & when tab becomes visible
   useEffect(() => {
     const onFocus = () => fetchStats();
     const onVisibility = () => {
@@ -96,245 +81,208 @@ export default function UserDashboard() {
     };
   }, [fetchStats]);
 
-  useEffect(() => {
-    if (isModalOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "auto";
-  }, [isModalOpen]);
-
   const handleLogout = async () => {
     try {
       await axios.post(import.meta.env.VITE_API_URI + "/api/user/logout");
     } catch (error) {
       console.log(error);
     }
-
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("currentUser");
     navigate("/");
   };
 
-  const handleOpenForm = (type) => {
-    setLoading(true);
-    setTimeout(() => {
-      setFormType(type);
-      setIsModalOpen(true);
-      setLoading(false);
-    }, 1000);
-  };
+  // Example: Announcements, Quick Links, and Tips
+  const announcements = [
+    {
+      title: "🎉 New Equipment Added!",
+      desc: "Check out the latest additions to our research equipment inventory.",
+      link: "/user/browse-equipment",
+      linkText: "Browse Equipment",
+    },
+    {
+      title: "📢 Consultancy Open",
+      desc: "Get expert advice for your research or startup. Submit your request today.",
+      link: "/user/consultancy",
+      linkText: "Request Consultancy",
+    },
+    {
+      title: "🛠️ Prototyping Support",
+      desc: "Transform your ideas into reality with our prototyping services.",
+      link: "/user/prototyping",
+      linkText: "Prototyping Info",
+    },
+  ];
 
-  const handleSubmitForm = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setMessage({ type: "", text: "" });
-    setFormError("");
-
-    try {
-      if (formType === "Consulting") {
-        await axios.post(
-          import.meta.env.VITE_API_URI + "/api/consulting/addConsulting",
-          { ...formData }
-        );
-      } else if (formType === "Prototyping") {
-        const data = new FormData();
-        for (let key in formData) {
-          if (key === "file") {
-            if (formData.file) data.append("file", formData.file);
-          } else {
-            if (
-              formData[key] !== undefined &&
-              formData[key] !== null &&
-              formData[key] !== ""
-            ) {
-              data.append(key, formData[key]);
-            }
-          }
-        }
-        await axios.post(
-          import.meta.env.VITE_API_URI + "/api/prototyping/addPrototype",
-          data,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
-      }
-
-      setFormData({
-        phone: "",
-        organization: "",
-        category: "",
-        description: "",
-        timeline: "",
-        budget: "",
-        prototypeType: "",
-        materials: "",
-        equipment: "",
-        requirements: "",
-        useCase: "",
-        scalability: "",
-        ip: "",
-        file: null,
-      });
-      setMessage({
-        type: "success",
-        text: `${formType} request submitted successfully!`,
-      });
-      setIsModalOpen(false);
-
-      // after submit, refresh stats (in case counts changed)
-      fetchStats();
-    } catch (error) {
-      console.log(error.message);
-      setFormError(`Failed to submit ${formType} request. Try again.`);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const [formData, setFormData] = useState({
-    phone: "",
-    organization: "",
-    category: "",
-    description: "",
-    timeline: "",
-    budget: "",
-    prototypeType: "",
-    materials: "",
-    equipment: "",
-    requirements: "",
-    useCase: "",
-    scalability: "",
-    ip: "",
-    file: null,
-  });
+  const tips = [
+    "Tip: You can track all your bookings and requests from 'My Bookings'.",
+    "Tip: Use the 'Browse Equipment' page to find the best tools for your research.",
+    "Tip: Need help? Reach out via Consultancy for expert guidance.",
+  ];
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
-      {/* Mobile Nav */}
-      <nav className="md:hidden bg-white shadow px-4 py-2 flex justify-between items-center">
-        <button
-          className="text-2xl font-bold"
-          onClick={() => navigate("/user")}
-        >
-          ziksir
-        </button>
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center space-x-2">
+    <>
+      <Helmet>
+        <title>User Dashboard | Ziksir</title>
+        <meta
+          name="description"
+          content="Manage your research activities, bookings, and profile on Ziksir's user dashboard."
+        />
+        <meta
+          name="keywords"
+          content="research, dashboard, bookings, ziksir, equipment, consultancy, prototyping"
+        />
+        <meta name="author" content="Ziksir" />
+        <meta property="og:title" content="User Dashboard | Ziksir" />
+        <meta
+          property="og:description"
+          content="Manage your research activities, bookings, and profile on Ziksir's user dashboard."
+        />
+        <meta property="og:type" content="website" />
+      </Helmet>
+      {/* Responsive Navbar */}
+      <header className="w-full bg-white shadow sticky top-0 z-50">
+        <nav className="container mx-auto px-2 sm:px-4 py-5 flex items-center justify-between">
+          {/* Logo */}
+          <button
+            className="text-3xl sm:text-4xl font-bold text-primary"
+            onClick={() => navigate("/user")}
+          >
+            ziksir
+          </button>
+          {/* Desktop: Logout */}
           <Button
             onClick={handleLogout}
-            variant="default"
+            variant="outline"
             size="sm"
-            className="text-xs px-3 py-1"
+            className="font-semibold hidden md:inline-flex"
           >
             <i className="fas fa-sign-out-alt"></i>
+            Logout
           </Button>
+          {/* Mobile: Menu Button */}
           <Button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             variant="outline"
             size="sm"
-            className="text-xs px-3 py-1"
+            className="md:hidden"
+            aria-label="Open menu"
           >
             <i className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}></i>
           </Button>
-        </div>
-      </nav>
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-end">
-          <div className="bg-background w-64 h-full shadow-lg border-l border-border flex flex-col">
-            <div className="container mx-auto px-4 py-4 space-y-3">
-              {menuItems.map((item) => (
-                <button
-                  key={item.path}
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    navigate(item.path);
-                  }}
-                  className="block w-full text-left text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-secondary flex items-center gap-2"
-                >
-                  <i className={`${item.icon} mr-2`}></i>
-                  {item.name}
-                </button>
-              ))}
-            </div>
+        </nav>
+        {/* Desktop: Menu Items Bar */}
+        <div className="w-full bg-gradient-to-r from-primary via-accent to-violet-400 border-t border-gray-200 shadow-sm hidden md:block">
+          <div className="container mx-auto px-2 sm:px-4 py-3 flex overflow-x-auto gap-2 md:gap-3 lg:gap-4 scrollbar-thin scrollbar-thumb-gray-200 justify-center">
+            {menuItems.map((item) => (
+              <span
+                key={item.path}
+                onClick={() => navigate(item.path)}
+                className={`cursor-pointer px-3 sm:px-4 py-2 font-semibold whitespace-nowrap transition shadow-none rounded-full
+                  ${location.pathname === item.path
+                    ? "bg-white text-primary"
+                    : "bg-white/80 text-primary hover:bg-white/90"}
+                `}
+                style={{
+                  fontWeight: 600,
+                  fontSize: "0.95rem",
+                  minWidth: "90px",
+                  maxWidth: "140px",
+                  border: "none",
+                  boxShadow: "none",
+                  outline: "none",
+                  borderRadius: "9999px",
+                  transition: "background 0.2s, color 0.2s",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "inline-block",
+                }}
+                title={item.name}
+              >
+                <span className="block truncate">{item.name}</span>
+              </span>
+            ))}
           </div>
+        </div>
+      </header>
+      {/* Mobile Sidebar Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex md:hidden">
+          <div className="bg-white w-64 h-full p-6 flex flex-col gap-4 shadow-lg">
+            <button
+              className="text-2xl font-bold text-primary mb-6"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                navigate("/user");
+              }}
+            >
+              ziksir
+            </button>
+            {menuItems.map((item) => (
+              <span
+                key={item.path}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate(item.path);
+                }}
+                className={`cursor-pointer px-4 py-2 font-semibold rounded-full text-left transition
+                  ${location.pathname === item.path
+                    ? "bg-primary text-white"
+                    : "bg-primary/10 text-primary hover:bg-primary/20"}
+                `}
+                style={{
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  minWidth: "120px",
+                  border: "none",
+                  boxShadow: "none",
+                  outline: "none",
+                  borderRadius: "9999px",
+                  marginBottom: "8px",
+                  transition: "background 0.2s, color 0.2s",
+                  display: "block",
+                  cursor: "pointer",
+                }}
+              >
+                {item.name}
+              </span>
+            ))}
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              size="lg"
+              className="border-red-600 text-red-600 font-semibold mt-auto"
+            >
+              <i className="fas fa-sign-out-alt mr-2"></i>
+              Logout
+            </Button>
+          </div>
+          <div className="flex-1" onClick={() => setMobileMenuOpen(false)} />
         </div>
       )}
-      {/* Sidebar for desktop */}
-      <aside className="hidden md:flex w-64 bg-white shadow flex-col">
-        <button
-          className="py-6 text-3xl font-bold text-black focus:outline-none"
-          onClick={() => {
-            navigate("/user");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-        >
-          ziksir
-        </button>
-        <nav className="flex-1 px-4">
-          <ul className="space-y-4">
-            {menuItems.map((item) => (
-              <li key={item.name}>
-                <Link
-                  to={item.path}
-                  className={`flex items-center space-x-2 p-2 rounded ${
-                    location.pathname === item.path
-                      ? "bg-blue-800 text-white"
-                      : "hover:bg-blue-100"
-                  }`}
-                >
-                  <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="bg-white shadow p-4 hidden md:flex justify-between items-center">
-          <div>
-            <h1 className="text-xl font-bold">Research Dashboard</h1>
-            <p className="text-gray-500 text-sm">
-              Manage your research activities and bookings
-            </p>
-          </div>
-          <div className="flex space-x-3 items-center">
-            <button
-              className="bg-white px-4 py-2 rounded hover:bg-blue-300 font-bold"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </div>
-        </header>
-
-        {/* Success Notification */}
+      <div className="min-h-screen bg-gray-50">
         {message.text && message.type === "success" && (
           <div className={`mx-6 mt-4 p-3 rounded-lg text-white bg-green-600`}>
             {message.text}
           </div>
         )}
-
-        {/* Dashboard Content */}
-        <main className="flex-1 p-3 sm:p-6">
+        <main className="flex-1 p-3 sm:p-6 max-w-7xl mx-auto">
           {isDashboard ? (
-            <div className="space-y-6">
+            <div className="space-y-8">
+              {/* Welcome & Stats */}
               <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                 <h2 className="flex-1 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-snug">
                   Welcome to Your Research Hub
                 </h2>
-
                 <Button
                   variant="outline"
                   onClick={fetchStats}
                   disabled={statsLoading}
                   aria-label="Refresh stats"
-                  className="shrink-0 border-blue-800 text-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/20 focus-visible:ring-2 focus-visible:ring-blue-600"
+                  className="shrink-0 border-primary hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   {statsLoading ? "Refreshing..." : "Refresh"}
                 </Button>
               </div>
-
-              {/* Stats Section */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[
                   {
@@ -365,7 +313,7 @@ export default function UserDashboard() {
                             {statsLoading ? "…" : stat.value}
                           </p>
                         </div>
-                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+                        <div className="w-12 h-12 bg-foreground rounded-lg flex items-center justify-center text-white">
                           <i className={`${stat.icon} text-xl`}></i>
                         </div>
                       </div>
@@ -373,281 +321,43 @@ export default function UserDashboard() {
                   </Card>
                 ))}
               </div>
-
-              {/* Consultancy & Prototyping */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Consultancy & Prototyping</CardTitle>
-                  <CardDescription>
-                    Get expert guidance, prototype support, and resources
-                    tailored to your research and innovation needs.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {/* Tabs */}
-                  <div className="flex space-x-4 mb-4">
-                    <Button
-                      onClick={() => setActiveTab("Consultancy")}
-                      className={`flex-1 ${
-                        activeTab === "Consultancy"
-                          ? "bg-blue-800 text-white"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      Consultancy
-                    </Button>
-                    <Button
-                      onClick={() => setActiveTab("Prototyping")}
-                      className={`flex-1 ${
-                        activeTab === "Prototyping"
-                          ? "bg-violet-800 text-white"
-                          : "bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      Prototyping
-                    </Button>
-                  </div>
-
-                  {/* Tab Content */}
-                  {activeTab === "Consultancy" && (
-                    <div>
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        Our consultancy services provide personalized guidance
-                        to strengthen your research outcomes:
-                      </p>
-                      <ul className="list-disc list-inside text-sm text-gray-700 mt-2 space-y-1">
-                        <li>
-                          Proposal review, experiment design, and methodology
-                          selection.
-                        </li>
-                        <li>
-                          Funding advice, grant writing, and compliance support.
-                        </li>
-                        <li>
-                          Publication guidance, peer-review preparation, and
-                          collaboration strategies.
-                        </li>
-                      </ul>
-                      <Button
-                        onClick={() => handleOpenForm("Consulting")}
-                        disabled={loading}
-                        className="mt-4 w-full bg-blue-800 hover:bg-blue-900 text-white"
-                      >
-                        {loading ? "Opening..." : "Request Consulting"}
-                      </Button>
-                    </div>
-                  )}
-
-                  {activeTab === "Prototyping" && (
-                    <div>
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        Transform your ideas into working prototypes with expert
-                        support:
-                      </p>
-                      <ul className="list-disc list-inside text-sm text-gray-700 mt-2 space-y-1">
-                        <li>Mechanical, Electrical, IoT device development.</li>
-                        <li>
-                          Software apps, platforms, and system integrations.
-                        </li>
-                        <li>
-                          Testing, scalability planning, and manufacturability
-                          guidance.
-                        </li>
-                      </ul>
-                      <Button
-                        onClick={() => handleOpenForm("Prototyping")}
-                        disabled={loading}
-                        className="mt-4 w-full bg-violet-800 hover:bg-violet-900 text-white"
-                      >
-                        {loading ? "Opening..." : "Request Prototyping"}
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              {/* Announcements */}
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-3">Latest Announcements</h3>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {announcements.map((a, i) => (
+                    <Card key={i} className="border-l-4 border-primary bg-white/90">
+                      <CardContent className="p-4">
+                        <div className="font-bold text-foreground mb-1">{a.title}</div>
+                        <div className="text-gray-700 mb-2">{a.desc}</div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-primary text-primary"
+                          onClick={() => navigate(a.link)}
+                        >
+                          {a.linkText}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+              {/* Tips & Help */}
+              <div>
+                <h3 className="text-lg font-semibold text-primary mb-3">Tips & Help</h3>
+                <ul className="list-disc pl-6 text-gray-700 space-y-2">
+                  {tips.map((tip, i) => (
+                    <li key={i}>{tip}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ) : (
             <Outlet />
           )}
         </main>
       </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-2 sm:p-4">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-lg sm:max-w-2xl p-4 sm:p-6 relative overflow-y-auto max-h-[90vh]">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
-            >
-              ✖
-            </button>
-            <h2 className="text-xl font-bold mb-4 text-blue-800">
-              {formType} Request Form
-            </h2>
-            {formError && (
-              <p className="text-red-500 text-sm mb-4">{formError}</p>
-            )}
-            <form onSubmit={handleSubmitForm} className="space-y-4">
-              {/* Shared Fields */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Organization / Institution"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                  value={formData.organization}
-                  onChange={(e) =>
-                    setFormData({ ...formData, organization: e.target.value })
-                  }
-                  required
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone Number"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                  value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              {/* Consultancy Form */}
-              {formType === "Consulting" && (
-                <>
-                  <input
-                    type="text"
-                    placeholder="Research Category / Domain"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    value={formData.category}
-                    onChange={(e) =>
-                      setFormData({ ...formData, category: e.target.value })
-                    }
-                    required
-                  />
-                  <textarea
-                    placeholder="Describe your research goals, challenges, or areas where you seek guidance..."
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    rows={5}
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
-                    required
-                  />
-                  <input
-                    type="text"
-                    placeholder="Estimated Timeline (e.g., 3 months)"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    value={formData.timeline}
-                    onChange={(e) =>
-                      setFormData({ ...formData, timeline: e.target.value })
-                    }
-                  />
-                  <input
-                    type="text"
-                    placeholder="Approx. Budget (if applicable)"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    value={formData.budget}
-                    onChange={(e) =>
-                      setFormData({ ...formData, budget: e.target.value })
-                    }
-                  />
-                </>
-              )}
-
-              {/* Prototyping Form */}
-              {formType === "Prototyping" && (
-                <>
-                  <input
-                    type="text"
-                    placeholder="Prototype Type (Mechanical, Electrical, Software, etc.)"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    value={formData.prototypeType}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        prototypeType: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                  <textarea
-                    placeholder="Materials / Components Needed"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    rows={2}
-                    value={formData.materials}
-                    onChange={(e) =>
-                      setFormData({ ...formData, materials: e.target.value })
-                    }
-                  />
-                  <textarea
-                    placeholder="Equipment / Tools Required"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    rows={2}
-                    value={formData.equipment}
-                    onChange={(e) =>
-                      setFormData({ ...formData, equipment: e.target.value })
-                    }
-                  />
-                  <textarea
-                    placeholder="Technical Requirements / Specifications"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    rows={3}
-                    value={formData.requirements}
-                    onChange={(e) =>
-                      setFormData({ ...formData, requirements: e.target.value })
-                    }
-                  />
-                  <textarea
-                    placeholder="Intended Use Case / Application"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    rows={3}
-                    value={formData.useCase}
-                    onChange={(e) =>
-                      setFormData({ ...formData, useCase: e.target.value })
-                    }
-                  />
-                  <input
-                    type="text"
-                    placeholder="Scalability Plans (Prototype → Production)"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    value={formData.scalability}
-                    onChange={(e) =>
-                      setFormData({ ...formData, scalability: e.target.value })
-                    }
-                  />
-                  <input
-                    type="text"
-                    placeholder="Intellectual Property / Patents (if any)"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
-                    value={formData.ip}
-                    onChange={(e) =>
-                      setFormData({ ...formData, ip: e.target.value })
-                    }
-                  />
-                  <input
-                    type="file"
-                    className="w-full border rounded-lg p-2"
-                    onChange={(e) =>
-                      setFormData({ ...formData, file: e.target.files[0] })
-                    }
-                  />
-                </>
-              )}
-
-              <Button
-                type="submit"
-                disabled={submitting}
-                className="w-full bg-blue-800 hover:bg-blue-900 text-white"
-              >
-                Submit {formType} Request
-              </Button>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
 }

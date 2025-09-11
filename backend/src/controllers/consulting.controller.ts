@@ -33,6 +33,15 @@ class ConsultingController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  async getAllConsultingRequests(req: Request, res: Response): Promise<void> {
+    try {
+      const requests = await consultingService.getAllConsultingRequests();
+      res.status(200).json(requests);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 export const consultingController = new ConsultingController();

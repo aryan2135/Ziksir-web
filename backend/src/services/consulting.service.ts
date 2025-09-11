@@ -9,6 +9,10 @@ class ConsultingService {
   async deleteConsultingRequest(id: string) {
     return await ConsultingRequest.findByIdAndDelete(id);
   }
+
+  async getAllConsultingRequests() {
+    return await ConsultingRequest.find().sort({ createdAt: -1 });
+  }
 }
 
 export const consultingService = new ConsultingService();

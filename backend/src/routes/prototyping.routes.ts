@@ -14,4 +14,10 @@ router.delete(
   prototypingController.deletePrototyping.bind(prototypingController)
 );
 
+// GET all prototyping requests (for admin)
+router.get(
+  "/allPrototyping",
+  prototypingController.getAllPrototyping.bind(prototypingController)
+);
+
 export default router;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 import {
   Card,
   CardHeader,
@@ -65,9 +66,19 @@ export default function RequestEquipment() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center p-3 sm:p-6 bg-white">
+      <Helmet>
+        <title>Request Equipment | Ziksir</title>
+        <meta name="description" content="Request new equipment for your research needs on Ziksir." />
+        <meta name="keywords" content="request, equipment, research, ziksir" />
+        <meta name="author" content="Ziksir" />
+        <meta property="og:title" content="Request Equipment | Ziksir" />
+        <meta property="og:description" content="Request new equipment for your research needs on Ziksir." />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       <div className="max-w-2xl w-full relative z-10">
         {/* Page Heading */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center text-black drop-shadow-lg">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center drop-shadow-lg">
           Request Equipment
         </h1>
 
@@ -150,14 +161,14 @@ export default function RequestEquipment() {
                 {/* Submit Button */}
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-violet-400 hover:from-purple-600 hover:via-pink-600 hover:to-violet-500 text-white shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 rounded-xl"
+                  className="w-full"
                   disabled={loading}
                 >
                   {loading ? "Submitting..." : "Submit Request"}
                 </Button>
-              </form>
+                </form>
 
-              {/* Message Display */}
+                {/* Message Display */}
               {message && (
                 <p
                   className={`mt-6 text-center text-sm font-medium ${

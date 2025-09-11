@@ -21,6 +21,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "@/api/axios";
+import { Helmet } from "react-helmet";
 
 export default function BookSlots() {
   const navigate = useNavigate();
@@ -235,6 +236,25 @@ export default function BookSlots() {
 
   return (
     <div className="bg-background p-3 sm:p-4 md:p-6">
+      <Helmet>
+        <title>Book Slots | Ziksir</title>
+        <meta
+          name="description"
+          content="Book equipment slots for your research on Ziksir."
+        />
+        <meta
+          name="keywords"
+          content="book slots, equipment, research, ziksir"
+        />
+        <meta name="author" content="Ziksir" />
+        <meta property="og:title" content="Book Slots | Ziksir" />
+        <meta
+          property="og:description"
+          content="Book equipment slots for your research on Ziksir."
+        />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
         <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
           Book Slots
@@ -373,177 +393,198 @@ export default function BookSlots() {
               </CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              <Input
-                placeholder="Full Name *"
-                value={bookingForm.name}
-                onChange={(e) =>
-                  handleBookingFormChange("name", e.target.value)
-                }
-                required
-                className="text-xs sm:text-sm"
-              />
-              <Input
-                placeholder="Organization Address *"
-                value={bookingForm.organizationAddress}
-                onChange={(e) =>
-                  handleBookingFormChange("organizationAddress", e.target.value)
-                }
-                required
-                className="text-xs sm:text-sm sm:col-span-2 lg:col-span-1"
-              />
-              <Select
-                value={bookingForm.state}
-                onValueChange={(v) => handleBookingFormChange("state", v)}
-              >
-                <SelectTrigger className="text-xs sm:text-sm">
-                  <SelectValue placeholder="State *" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[
-                    "Andhra Pradesh",
-                    "Arunachal Pradesh",
-                    "Assam",
-                    "Bihar",
-                    "Chhattisgarh",
-                    "Goa",
-                    "Gujarat",
-                    "Haryana",
-                    "Himachal Pradesh",
-                    "Jharkhand",
-                    "Karnataka",
-                    "Kerala",
-                    "Madhya Pradesh",
-                    "Maharashtra",
-                    "Manipur",
-                    "Meghalaya",
-                    "Mizoram",
-                    "Nagaland",
-                    "Odisha",
-                    "Punjab",
-                    "Rajasthan",
-                    "Sikkim",
-                    "Tamil Nadu",
-                    "Telangana",
-                    "Tripura",
-                    "Uttar Pradesh",
-                    "Uttarakhand",
-                    "West Bengal",
-                    "Andaman and Nicobar Islands",
-                    "Chandigarh",
-                    "Dadra and Nagar Haveli and Daman and Diu",
-                    "Delhi",
-                    "Jammu and Kashmir",
-                    "Ladakh",
-                    "Lakshadweep",
-                    "Puducherry",
-                  ].map((state) => (
-                    <SelectItem key={state} value={state}>
-                      {state}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                value={bookingForm.country}
-                onValueChange={(v) => handleBookingFormChange("country", v)}
-              >
-                <SelectTrigger className="text-xs sm:text-sm">
-                  <SelectValue placeholder="Country *" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[
-                    "India",
-                    "United States",
-                    "United Kingdom",
-                    "Australia",
-                    "Canada",
-                    "Germany",
-                    "France",
-                    "Singapore",
-                    "Japan",
-                    "China",
-                    "Nepal",
-                    "Bangladesh",
-                    "Sri Lanka",
-                  ].map((country) => (
-                    <SelectItem key={country} value={country}>
-                      {country}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                value={bookingForm.gstin}
-                onValueChange={(v) => handleBookingFormChange("gstin", v)}
-              >
-                <SelectTrigger className="text-xs sm:text-sm">
-                  <SelectValue placeholder="Customer/Party GSTIN?" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="yes">Yes</SelectItem>
-                  <SelectItem value="no">No</SelectItem>
-                </SelectContent>
-              </Select>
-              <Input
-                placeholder="GSTIN No"
-                value={bookingForm.gstinNo}
-                onChange={(e) =>
-                  handleBookingFormChange("gstinNo", e.target.value)
-                }
-                className="text-xs sm:text-sm"
-              />
-              <Input
-                placeholder="PAN No"
-                value={bookingForm.panNo}
-                onChange={(e) =>
-                  handleBookingFormChange("panNo", e.target.value)
-                }
-                className="text-xs sm:text-sm"
-              />
-              <Input
-                placeholder="Contact No *"
-                value={bookingForm.contactNo}
-                onChange={(e) =>
-                  handleBookingFormChange("contactNo", e.target.value)
-                }
-                required
-                className="text-xs sm:text-sm"
-              />
-              <Input
-                type="email"
-                placeholder="Email ID *"
-                value={bookingForm.emailId}
-                onChange={(e) =>
-                  handleBookingFormChange("emailId", e.target.value)
-                }
-                required
-                className="text-xs sm:text-sm"
-              />
-              <Input
-                placeholder="Pincode *"
-                value={bookingForm.pincode}
-                onChange={(e) =>
-                  handleBookingFormChange("pincode", e.target.value)
-                }
-                required
-                className="text-xs sm:text-sm"
-              />
-              <Input
-                placeholder="Reference No"
-                value={bookingForm.referenceNo}
-                onChange={(e) =>
-                  handleBookingFormChange("referenceNo", e.target.value)
-                }
-                className="text-xs sm:text-sm"
-              />
-              <Input
-                placeholder="Remarks"
-                value={bookingForm.remarks}
-                onChange={(e) =>
-                  handleBookingFormChange("remarks", e.target.value)
-                }
-                className="text-xs sm:text-sm sm:col-span-2 lg:col-span-1"
-              />
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  Full Name *
+                </label>
+                <Input
+                  placeholder="Enter full name"
+                  value={bookingForm.name}
+                  onChange={(e) =>
+                    handleBookingFormChange("name", e.target.value)
+                  }
+                  required
+                  className="text-xs sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  Organization Address *
+                </label>
+                <Input
+                  placeholder="Enter organization address"
+                  value={bookingForm.organizationAddress}
+                  onChange={(e) =>
+                    handleBookingFormChange("organizationAddress", e.target.value)
+                  }
+                  required
+                  className="text-xs sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  State *
+                </label>
+                <Select
+                  value={bookingForm.state}
+                  onValueChange={(v) => handleBookingFormChange("state", v)}
+                >
+                  <SelectTrigger className="text-xs sm:text-sm">
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      "Andhra Pradesh",
+                      "Arunachal Pradesh",
+                      "Assam",
+                      "Bihar",
+                      "Chhattisgarh",
+                      "Goa",
+                      "Gujarat",
+                      "Haryana",
+                      "Himachal Pradesh",
+                      "Jharkhand",
+                      "Karnataka",
+                      "Kerala",
+                      "Madhya Pradesh",
+                      "Maharashtra",
+                      "Manipur",
+                      "Meghalaya",
+                      "Mizoram",
+                      "Nagaland",
+                      "Odisha",
+                      "Punjab",
+                      "Rajasthan",
+                      "Sikkim",
+                      "Tamil Nadu",
+                      "Telangana",
+                      "Tripura",
+                      "Uttar Pradesh",
+                      "Uttarakhand",
+                      "West Bengal",
+                      "Andaman and Nicobar Islands",
+                      "Chandigarh",
+                      "Dadra and Nagar Haveli and Daman and Diu",
+                      "Delhi",
+                      "Jammu and Kashmir",
+                      "Ladakh",
+                      "Lakshadweep",
+                      "Puducherry",
+                    ].map((state) => (
+                      <SelectItem key={state} value={state}>
+                        {state}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  Country *
+                </label>
+                <Select
+                  value={bookingForm.country}
+                  onValueChange={(v) => handleBookingFormChange("country", v)}
+                >
+                  <SelectTrigger className="text-xs sm:text-sm">
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      "India",
+                      "United States",
+                      "United Kingdom",
+                      "Australia",
+                      "Canada",
+                      "Germany",
+                      "France",
+                      "Singapore",
+                      "Japan",
+                      "China",
+                      "Nepal",
+                      "Bangladesh",
+                      "Sri Lanka",
+                    ].map((country) => (
+                      <SelectItem key={country} value={country}>
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  Customer/Party GSTIN?
+                </label>
+                <Select
+                  value={bookingForm.gstin}
+                  onValueChange={(v) => handleBookingFormChange("gstin", v)}
+                >
+                  <SelectTrigger className="text-xs sm:text-sm">
+                    <SelectValue placeholder="Select GSTIN" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="yes">Yes</SelectItem>
+                    <SelectItem value="no">No</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  GSTIN No
+                </label>
+                <Input
+                  placeholder="Enter GSTIN No"
+                  value={bookingForm.gstinNo}
+                  onChange={(e) =>
+                    handleBookingFormChange("gstinNo", e.target.value)
+                  }
+                  className="text-xs sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  Contact No *
+                </label>
+                <Input
+                  placeholder="Enter contact number"
+                  value={bookingForm.contactNo}
+                  onChange={(e) =>
+                    handleBookingFormChange("contactNo", e.target.value)
+                  }
+                  required
+                  className="text-xs sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  Email ID *
+                </label>
+                <Input
+                  type="email"
+                  placeholder="Enter email address"
+                  value={bookingForm.emailId}
+                  onChange={(e) =>
+                    handleBookingFormChange("emailId", e.target.value)
+                  }
+                  required
+                  className="text-xs sm:text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  Pincode *
+                </label>
+                <Input
+                  placeholder="Enter pincode"
+                  value={bookingForm.pincode}
+                  onChange={(e) =>
+                    handleBookingFormChange("pincode", e.target.value)
+                  }
+                  required
+                  className="text-xs sm:text-sm"
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -554,54 +595,74 @@ export default function BookSlots() {
               </CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              <Select
-                value={bookingForm.organizationCategory}
-                onValueChange={(v) =>
-                  handleBookingFormChange("organizationCategory", v)
-                }
-              >
-                <SelectTrigger className="text-xs sm:text-sm">
-                  <SelectValue placeholder="Organization Category *" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Academic">Academic</SelectItem>
-                  <SelectItem value="Industry">Industry</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select
-                value={bookingForm.noOfSamples}
-                onValueChange={(v) => handleBookingFormChange("noOfSamples", v)}
-              >
-                <SelectTrigger className="text-xs sm:text-sm">
-                  <SelectValue placeholder="No. of Samples *" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <SelectItem key={n} value={String(n)}>
-                      {n}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  Organization Category *
+                </label>
+                <Select
+                  value={bookingForm.organizationCategory}
+                  onValueChange={(v) =>
+                    handleBookingFormChange("organizationCategory", v)
+                  }
+                >
+                  <SelectTrigger className="text-xs sm:text-sm">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Academic">Academic</SelectItem>
+                    <SelectItem value="Industry">Industry</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-xs sm:text-sm font-medium mb-2 block">
+                  No. of Samples *
+                </label>
+                <Select
+                  value={bookingForm.noOfSamples}
+                  onValueChange={(v) => handleBookingFormChange("noOfSamples", v)}
+                >
+                  <SelectTrigger className="text-xs sm:text-sm">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <SelectItem key={n} value={String(n)}>
+                        {n}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="sm:col-span-2 lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
-                <Textarea
-                  placeholder="Sample Description *"
-                  value={bookingForm.sampleDescription}
-                  onChange={(e) =>
-                    handleBookingFormChange("sampleDescription", e.target.value)
-                  }
-                  required
-                  className="text-xs sm:text-sm min-h-[80px] sm:min-h-[100px]"
-                />
-                <Textarea
-                  placeholder="Analysis Required *"
-                  value={bookingForm.analysisRequired}
-                  onChange={(e) =>
-                    handleBookingFormChange("analysisRequired", e.target.value)
-                  }
-                  required
-                  className="text-xs sm:text-sm min-h-[80px] sm:min-h-[100px]"
-                />
+                <div>
+                  <label className="text-xs sm:text-sm font-medium mb-2 block">
+                    Sample Description *
+                  </label>
+                  <Textarea
+                    placeholder="Describe your sample"
+                    value={bookingForm.sampleDescription}
+                    onChange={(e) =>
+                      handleBookingFormChange("sampleDescription", e.target.value)
+                    }
+                    required
+                    className="text-xs sm:text-sm min-h-[80px] sm:min-h-[100px]"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs sm:text-sm font-medium mb-2 block">
+                    Analysis Required *
+                  </label>
+                  <Textarea
+                    placeholder="Describe required analysis"
+                    value={bookingForm.analysisRequired}
+                    onChange={(e) =>
+                      handleBookingFormChange("analysisRequired", e.target.value)
+                    }
+                    required
+                    className="text-xs sm:text-sm min-h-[80px] sm:min-h-[100px]"
+                  />
+                </div>
               </div>
             </CardContent>
           </Card>
