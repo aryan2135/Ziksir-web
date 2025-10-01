@@ -13,4 +13,7 @@ export class PrototypingService {
   async getAllPrototyping() {
     return await PrototypingModel.find().sort({ createdAt: -1 });
   }
+  async getUserPrototyping(email: string) {
+    return await PrototypingModel.find({ email }).sort({ createdAt: -1 });
+  }
 }

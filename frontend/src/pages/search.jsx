@@ -97,7 +97,9 @@ const SearchPage = () => {
               size="sm"
               className="text-xs px-3 py-1"
             >
-              <i className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}></i>
+              <i
+                className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}
+              ></i>
             </Button>
           </div>
         </nav>
@@ -143,7 +145,7 @@ const SearchPage = () => {
               >
                 <div className="relative">
                   <img
-                    src={eq.imageUrl}
+                    src={eq.img_location}
                     alt={eq.name}
                     className="w-full h-48 object-cover rounded-t-2xl group-hover:scale-105 transition-transform"
                   />

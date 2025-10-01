@@ -9,6 +9,13 @@ const ConsultingRequestSchema: Schema<ConsultingRequest> = new Schema(
     timeline: { type: String, required: true },
     budget: { type: Number, required: false },
     description: { type: String, required: true },
+    email: { type: String, required: true },
+    userName: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["pending", "in-progress", "completed", "rejected"],
+      default: "pending",
+    },
   },
   { timestamps: true }
 );

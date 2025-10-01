@@ -55,4 +55,15 @@ export class PrototypingController {
         .json({ message: "Error fetching prototyping data", error: err });
     }
   }
+  async getUserPrototyping(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+      const requests = await prototypingService.getUserPrototyping(email);
+      res.status(200).json(requests);
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Error fetching prototyping data", error: err });
+    }
+  }
 }

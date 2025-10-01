@@ -42,6 +42,35 @@ class ConsultingController {
       res.status(500).json({ error: error.message });
     }
   }
+  async updateConsultingRequest(req: Request, res: Response): Promise<void> {
+    try {
+      const updatedRequest = await consultingService.updateConsultingRequest(
+        req.params.id,
+        req.body
+      );
+      console.log(req.params.id, req.body);
+      if (!updatedRequest) {
+        res.status(404).json({ message: "Consulting request not found" });
+        return;
+      }
+      res.status(200).json({
+        message: "Consulting request updated successfully",
+        data: updatedRequest,
+      });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+  async getUserConsultingRequests(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+      const requests = await consultingService.getUserConsultingRequests(email);
+      res.status(200).json(requests);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
 
 export const consultingController = new ConsultingController();

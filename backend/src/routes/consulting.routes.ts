@@ -21,4 +21,13 @@ router.get(
   consultingController.getAllConsultingRequests.bind(consultingController)
 );
 
+router.patch(
+  "/updateConsulting/:id",
+  consultingController.updateConsultingRequest.bind(consultingController)
+);
+router.post(
+  "/userConsulting",
+  consultingController.getUserConsultingRequests.bind(consultingController)
+);
+
 export default router;

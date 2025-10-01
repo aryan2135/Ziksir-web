@@ -25,17 +25,28 @@ import {
 } from "@/components/ui/select";
 import axios from "@/api/axios";
 
-const PLACEHOLDER_IMG =
-  "https://via.placeholder.com/80x80.png?text=No+Image";
+const PLACEHOLDER_IMG = "https://via.placeholder.com/80x80.png?text=No+Image";
 
 const getEquipmentImage = (equipment) => {
-  if (equipment.images && Array.isArray(equipment.images) && equipment.images[0]?.url) {
+  if (
+    equipment.image_location &&
+    Array.isArray(equipment.images) &&
+    equipment.images[0]?.url
+  ) {
     return equipment.images[0].url;
   }
-  if (equipment.image && typeof equipment.image === "string" && equipment.image.trim()) {
+  if (
+    equipment.image &&
+    typeof equipment.image === "string" &&
+    equipment.image.trim()
+  ) {
     return equipment.image;
   }
-  if (equipment.imageUrl && typeof equipment.imageUrl === "string" && equipment.imageUrl.trim()) {
+  if (
+    equipment.imageUrl &&
+    typeof equipment.imageUrl === "string" &&
+    equipment.imageUrl.trim()
+  ) {
     return equipment.imageUrl;
   }
   return PLACEHOLDER_IMG;
@@ -77,7 +88,10 @@ const Equipment = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "quantity" || name === "available" ? parseInt(value) || 0 : value,
+      [name]:
+        name === "quantity" || name === "available"
+          ? parseInt(value) || 0
+          : value,
     }));
   };
 
@@ -134,15 +148,19 @@ const Equipment = () => {
   );
 
   const statusClasses = {
-    available: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-    unavailable: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+    available:
+      "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+    unavailable:
+      "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
     maintenance: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
   };
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto py-8">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-        <h2 className="text-3xl font-bold text-primary">Equipment Management</h2>
+        <h2 className="text-3xl font-bold text-primary">
+          Equipment Management
+        </h2>
         <Dialog>
           <DialogTrigger asChild>
             <Button
@@ -162,27 +180,29 @@ const Equipment = () => {
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              {["name", "type", "equipmentLocation", "imageUrl"].map((field) => (
-                <div key={field}>
-                  <Label>
-                    {field === "equipmentLocation"
-                      ? "Location"
-                      : field === "imageUrl"
-                      ? "Image URL"
-                      : field.charAt(0).toUpperCase() + field.slice(1)}
-                  </Label>
-                  <Input
-                    name={field}
-                    value={formData[field]}
-                    onChange={handleInputChange}
-                    placeholder={
-                      field === "imageUrl"
-                        ? "https://example.com/image.jpg"
-                        : undefined
-                    }
-                  />
-                </div>
-              ))}
+              {["name", "type", "equipmentLocation", "imageUrl"].map(
+                (field) => (
+                  <div key={field}>
+                    <Label>
+                      {field === "equipmentLocation"
+                        ? "Location"
+                        : field === "imageUrl"
+                        ? "Image URL"
+                        : field.charAt(0).toUpperCase() + field.slice(1)}
+                    </Label>
+                    <Input
+                      name={field}
+                      value={formData[field]}
+                      onChange={handleInputChange}
+                      placeholder={
+                        field === "imageUrl"
+                          ? "https://example.com/image.jpg"
+                          : undefined
+                      }
+                    />
+                  </div>
+                )
+              )}
               <div className="flex gap-4">
                 <div>
                   <Label>Quantity</Label>
@@ -209,7 +229,9 @@ const Equipment = () => {
                 <Label>Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value) => setFormData({ ...formData, status: value })}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, status: value })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select Status" />
@@ -221,7 +243,10 @@ const Equipment = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <Button className="w-full bg-primary text-white" onClick={handleAddOrEdit}>
+              <Button
+                className="w-full bg-primary text-white"
+                onClick={handleAddOrEdit}
+              >
                 {dialogMode === "add" ? "Add Equipment" : "Update Equipment"}
               </Button>
             </div>
@@ -241,7 +266,9 @@ const Equipment = () => {
       <Card>
         <CardHeader>
           <CardTitle>Equipment Inventory</CardTitle>
-          <CardDescription>Manage your research equipment and facilities</CardDescription>
+          <CardDescription>
+            Manage your research equipment and facilities
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -260,8 +287,9 @@ const Equipment = () => {
                     className="flex flex-col sm:flex-row items-center sm:items-start p-5 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 gap-4"
                   >
                     {/* Equipment Image */}
+
                     <img
-                      src={getEquipmentImage(equipment)}
+                      src={equipment.img_location}
                       alt={equipment.name}
                       className="w-20 h-20 object-cover rounded-lg border bg-gray-100"
                       onError={(e) => {
@@ -273,21 +301,32 @@ const Equipment = () => {
                     <div className="flex-1 w-full">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                          <h4 className="font-semibold text-foreground text-lg">{equipment.name}</h4>
+                          <h4 className="font-semibold text-foreground text-lg">
+                            {equipment.name}
+                          </h4>
                           <p className="text-sm text-muted-foreground">
                             {equipment.type} • {equipment.equipmentLocation}
                           </p>
                         </div>
-                        <span className={`mt-2 sm:mt-0 px-4 py-1 rounded-full text-sm font-semibold ${statusClasses[effectiveStatus]}`}>
+                        <span
+                          className={`mt-2 sm:mt-0 px-4 py-1 rounded-full text-sm font-semibold ${statusClasses[effectiveStatus]}`}
+                        >
                           {effectiveStatus}
                         </span>
                       </div>
                       <div className="mt-3 flex flex-wrap gap-6 text-sm text-muted-foreground">
-                        <div><strong>Quantity:</strong> {equipment.quantity}</div>
-                        <div><strong>Available:</strong> {equipment.available}</div>
+                        <div>
+                          <strong>Quantity:</strong> {equipment.quantity}
+                        </div>
+                        <div>
+                          <strong>Available:</strong> {equipment.available}
+                        </div>
                       </div>
                       <div className="mt-4 flex items-center gap-3">
-                        <Dialog open={editDialogOpen && selectedId === equipment._id} onOpenChange={setEditDialogOpen}>
+                        <Dialog
+                          open={editDialogOpen && selectedId === equipment._id}
+                          onOpenChange={setEditDialogOpen}
+                        >
                           <DialogTrigger asChild>
                             <Button
                               variant="outline"
@@ -310,14 +349,20 @@ const Equipment = () => {
                               <DialogTitle>Edit Equipment</DialogTitle>
                             </DialogHeader>
                             <div className="space-y-4">
-                              {["name", "type", "equipmentLocation", "imageUrl"].map((field) => (
+                              {[
+                                "name",
+                                "type",
+                                "equipmentLocation",
+                                "imageUrl",
+                              ].map((field) => (
                                 <div key={field}>
                                   <Label>
                                     {field === "equipmentLocation"
                                       ? "Location"
                                       : field === "imageUrl"
                                       ? "Image URL"
-                                      : field.charAt(0).toUpperCase() + field.slice(1)}
+                                      : field.charAt(0).toUpperCase() +
+                                        field.slice(1)}
                                   </Label>
                                   <Input
                                     name={field}
@@ -355,19 +400,30 @@ const Equipment = () => {
                                 <Label>Status</Label>
                                 <Select
                                   value={formData.status}
-                                  onValueChange={(value) => setFormData({ ...formData, status: value })}
+                                  onValueChange={(value) =>
+                                    setFormData({ ...formData, status: value })
+                                  }
                                 >
                                   <SelectTrigger>
                                     <SelectValue placeholder="Select Status" />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="available">available</SelectItem>
-                                    <SelectItem value="unavailable">unavailable</SelectItem>
-                                    <SelectItem value="maintenance">maintenance</SelectItem>
+                                    <SelectItem value="available">
+                                      available
+                                    </SelectItem>
+                                    <SelectItem value="unavailable">
+                                      unavailable
+                                    </SelectItem>
+                                    <SelectItem value="maintenance">
+                                      maintenance
+                                    </SelectItem>
                                   </SelectContent>
                                 </Select>
                               </div>
-                              <Button className="w-full bg-primary text-white" onClick={handleAddOrEdit}>
+                              <Button
+                                className="w-full bg-primary text-white"
+                                onClick={handleAddOrEdit}
+                              >
                                 Update Equipment
                               </Button>
                             </div>

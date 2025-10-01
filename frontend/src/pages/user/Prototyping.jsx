@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "@/api/axios";
 import { Helmet } from "react-helmet";
-
+import userProfileStore from "@/store/userProfileStore";
 const PROTOTYPING_FEATURES = [
   {
     icon: "fas fa-cogs",
@@ -40,13 +40,16 @@ function getCurrentUserEmail() {
   try {
     const user = JSON.parse(localStorage.getItem("currentUser")) || {};
     const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
-    return profile.email || user.email || "";
+    const userName = profile.name || "";
+    return { email: profile.email || user.email || "", userName };
   } catch {
-    return "";
+    return {};
   }
 }
 
 const Prototyping = () => {
+  const { userData } = userProfileStore();
+
   const [formData, setFormData] = useState({
     phone: "",
     organization: "",
@@ -69,15 +72,16 @@ const Prototyping = () => {
   const fetchMyRequests = async () => {
     setLoadingRequests(true);
     try {
-      const res = await axios.get(
-        import.meta.env.VITE_API_URI + "/api/prototyping/allPrototyping"
+      const res = await axios.post(
+        import.meta.env.VITE_API_URI + "/api/prototyping/userPrototyping",
+        { email: userData?.email }
       );
-      const userEmail = getCurrentUserEmail().toLowerCase();
+      const userEmail = userData?.email;
       setMyRequests(
         (res.data || []).filter(
           (req) =>
-            (req.user?.email?.toLowerCase?.() === userEmail) ||
-            (req.email?.toLowerCase?.() === userEmail)
+            req.user?.email?.toLowerCase?.() === userEmail ||
+            req.email?.toLowerCase?.() === userEmail
         )
       );
     } catch {
@@ -98,6 +102,8 @@ const Prototyping = () => {
 
     try {
       const data = new FormData();
+      formData.email = userData?.email;
+      formData.userName = userData?.name;
       for (let key in formData) {
         if (key === "file") {
           if (formData.file) data.append("file", formData.file);
@@ -148,7 +154,10 @@ const Prototyping = () => {
           name="description"
           content="Submit your prototyping request and get expert support from Ziksir."
         />
-        <meta name="keywords" content="prototyping, research, ziksir, request" />
+        <meta
+          name="keywords"
+          content="prototyping, research, ziksir, request"
+        />
         <meta name="author" content="Ziksir" />
         <meta property="og:title" content="Prototyping | Ziksir" />
         <meta
@@ -178,16 +187,10 @@ const Prototyping = () => {
                 className="flex flex-col items-center text-center bg-gradient-to-br from-blue-50 to-violet-50 rounded-xl p-5 shadow hover:shadow-md transition"
               >
                 <div className="w-12 h-12 bg-violet-100 rounded-full flex items-center justify-center mb-3">
-                  <i
-                    className={`${feature.icon} text-2xl text-violet-800`}
-                  ></i>
+                  <i className={`${feature.icon} text-2xl text-violet-800`}></i>
                 </div>
-                <h3 className="font-bold text-black mb-1">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {feature.desc}
-                </p>
+                <h3 className="font-bold text-black mb-1">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -219,7 +222,7 @@ const Prototyping = () => {
                 <input
                   type="text"
                   placeholder="Organization / Institution"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                   value={formData.organization}
                   onChange={(e) =>
                     setFormData({ ...formData, organization: e.target.value })
@@ -229,7 +232,7 @@ const Prototyping = () => {
                 <input
                   type="tel"
                   placeholder="Phone Number"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
@@ -240,7 +243,7 @@ const Prototyping = () => {
               <input
                 type="text"
                 placeholder="Prototype Type (Mechanical, Electrical, Software, etc.)"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                 value={formData.prototypeType}
                 onChange={(e) =>
                   setFormData({ ...formData, prototypeType: e.target.value })
@@ -249,7 +252,7 @@ const Prototyping = () => {
               />
               <textarea
                 placeholder="Materials / Components Needed"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                 rows={2}
                 value={formData.materials}
                 onChange={(e) =>
@@ -258,7 +261,7 @@ const Prototyping = () => {
               />
               <textarea
                 placeholder="Equipment / Tools Required"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                 rows={2}
                 value={formData.equipment}
                 onChange={(e) =>
@@ -267,7 +270,7 @@ const Prototyping = () => {
               />
               <textarea
                 placeholder="Technical Requirements / Specifications"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                 rows={3}
                 value={formData.requirements}
                 onChange={(e) =>
@@ -276,7 +279,7 @@ const Prototyping = () => {
               />
               <textarea
                 placeholder="Intended Use Case / Application"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                 rows={3}
                 value={formData.useCase}
                 onChange={(e) =>
@@ -286,7 +289,7 @@ const Prototyping = () => {
               <input
                 type="text"
                 placeholder="Scalability Plans (Prototype → Production)"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                 value={formData.scalability}
                 onChange={(e) =>
                   setFormData({ ...formData, scalability: e.target.value })
@@ -295,7 +298,7 @@ const Prototyping = () => {
               <input
                 type="text"
                 placeholder="Intellectual Property / Patents (if any)"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400"
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
                 value={formData.ip}
                 onChange={(e) =>
                   setFormData({ ...formData, ip: e.target.value })

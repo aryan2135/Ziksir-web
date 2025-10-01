@@ -6,4 +6,7 @@ export interface ConsultingRequest extends Document {
   timeline: string;
   budget?: number;
   description: string;
+  email: string;
+  userName: string;
+  status?: "pending" | "in-progress" | "completed" | "rejected"; // default is "pending"
 }

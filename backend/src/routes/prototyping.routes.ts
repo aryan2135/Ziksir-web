@@ -20,4 +20,8 @@ router.get(
   prototypingController.getAllPrototyping.bind(prototypingController)
 );
 
+router.post(
+  "/userPrototyping",
+  prototypingController.getUserPrototyping.bind(prototypingController)
+);
 export default router;

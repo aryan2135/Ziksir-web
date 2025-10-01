@@ -2,12 +2,14 @@
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState, ReactNode } from "react";
+import userProfileStore from "@/store/userProfileStore";
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const { userProfile, setUserProfile } = userProfileStore();
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
@@ -19,6 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
           { withCredentials: true }
         );
         setIsAuth(true);
+        setUserProfile(client.data.user);
         localStorage.setItem(
           "currentUser",
           JSON.stringify({
