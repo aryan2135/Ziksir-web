@@ -86,6 +86,7 @@ const ziksir = () => {
     message: "",
   });
 
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | success | error
   const [loading, setLoading] = useState(false);
 
@@ -120,6 +121,9 @@ const ziksir = () => {
         <meta property="og:title" content="Ziksir | World class services & equipment on demand" />
         <meta property="og:description" content="Book research equipment, consultancy, and prototyping services easily with Ziksir." />
         <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://media.licdn.com/dms/image/v2/D4D0BAQGozYe1MZRpxg/company-logo_400_400/B4DZmwZGIcJUAY-/0/1759600994003/ziksir_logo?e=1762387200&v=beta&t=57ZRL-YlbWZrXP5ikx9lChDyxPCmiQrRp120_27HTHQ" />
+  <meta property="og:image:alt" content="Ziksir Logo" />
+  <meta property="og:url" content="https://ziksir.in" />
       </Helmet>
 
       {/* Fixed Header */}
@@ -375,56 +379,81 @@ const ziksir = () => {
               Discover how Ziksir transforms your research experience.
             </p>
           </div>
-          {/* Attractive Feature Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
-              <i className="fas fa-rocket text-4xl text-accent mb-4"></i>
-              <h3 className="font-bold text-xl mb-2 text-black">Instant Access</h3>
-              <p className="text-muted-foreground mb-4">
-                Get immediate access to thousands of instruments and services from top institutions.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
-                onClick={() => navigate("/search")}
-              >
-                Explore Equipments
-              </Button>
-            </div>
-            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
-              <i className="fas fa-comments text-4xl text-accent mb-4"></i>
-              <h3 className="font-bold text-xl mb-2 text-black">Expert Support</h3>
-              <p className="text-muted-foreground mb-4">
-                Connect with IIT professors and certified experts for consultancy and prototyping.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
-                onClick={() => navigate("/user/consultancy")}
-              >
-                Get Consultancy
-              </Button>
-            </div>
-            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
-              <i className="fas fa-calendar-alt text-4xl text-accent mb-4"></i>
-              <h3 className="font-bold text-xl mb-2 text-black">Flexible Booking</h3>
-              <p className="text-muted-foreground mb-4">
-                Book slots, request equipment, and manage your bookings with ease and transparency.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
-                onClick={() => navigate("/user/book-slots")}
-              >
-                Book Now
-              </Button>
-            </div>
-          </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+                  <i className="fas fa-rocket text-4xl text-accent mb-4"></i>
+                  <h3 className="font-bold text-xl mb-2 text-black">Instant Access</h3>
+                  <p className="text-muted-foreground mb-4">
+                  Get immediate access to thousands of instruments and services from top institutions.
+                  </p>
+                  <Button
+                  variant="outline"
+                  size="sm"
+                  className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                  onClick={() => navigate("/search")}
+                  >
+                  Explore Equipments
+                  </Button>
+                </div>
+                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+                  <i className="fas fa-comments text-4xl text-accent mb-4"></i>
+                  <h3 className="font-bold text-xl mb-2 text-black">Expert Support</h3>
+                  <p className="text-muted-foreground mb-4">
+                  Connect with IIT professors and certified experts for consultancy and prototyping.
+                  </p>
+                  <Button
+                  variant="outline"
+                  size="sm"
+                  className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                  onClick={() => {
+                    const section = document.getElementById("contact");
+                    if (section) {
+                    section.scrollIntoView({ behavior: "smooth" });
+                    }
+                    }}
+                    >
+                    Get Consultancy
+                    </Button>
+                    </div>
+                    <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+                    <i className="fas fa-calendar-alt text-4xl text-accent mb-4"></i>
+                    <h3 className="font-bold text-xl mb-2 text-black">Flexible Booking</h3>
+                    <p className="text-muted-foreground mb-4">
+                    Book slots, request equipment, and manage your bookings with ease and transparency.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                      onClick={() => setShowLoginDialog(true)}
+                    >
+                      Book Now
+                    </Button>
+                    </div>
+                    </div>
 
-          {/* NEW: Research Industries & Startups Info Section */}
+                    {/* Login Required Dialog */}
+                    <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
+                    <DialogContent className="max-w-xs sm:max-w-md">
+                      <DialogHeader>
+                      <DialogTitle>Login Required</DialogTitle>
+                      </DialogHeader>
+                      <div className="py-2 text-muted-foreground">
+                      You need to login to book slots or request equipment.
+                      </div>
+                      <Button
+                      className="w-full mt-2"
+                      onClick={() => {
+                        setShowLoginDialog(false);
+                        window.location.href = "/auth";
+                      }}
+                      >
+                      Login Now
+                      </Button>
+                    </DialogContent>
+                    </Dialog>
+
+                    {/* NEW: Research Industries & Startups Info Section */}
           <div className="mt-16 bg-white rounded-2xl shadow-lg border border-blue-100 p-8 flex flex-col md:flex-row items-center md:items-start gap-8">
             <div className="flex-1">
               <h3 className="text-2xl font-bold mb-4">
@@ -998,7 +1027,7 @@ const ziksir = () => {
                   <i className="fab fa-instagram text-2xl"></i>
                 </a>
                 <a
-                  href="https://www.linkedin.com/company/yourcompany"
+                  href="https://www.linkedin.com/company/ziksir/posts/?feedView=all"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-accent hover:text-foreground transition"
