@@ -46,7 +46,9 @@ const ziksir = () => {
   useEffect(() => {
     const fetchEquipments = async () => {
       try {
-        const res = await axios.get(import.meta.env.VITE_API_URI + "/api/equipment");
+        const res = await axios.get(
+          import.meta.env.VITE_API_URI + "/api/equipment"
+        );
         setEquipments(res.data || []);
       } catch (err) {
         console.error("Error fetching equipments:", err);
@@ -100,7 +102,10 @@ const ziksir = () => {
     setStatus("idle");
 
     try {
-      await axios.post(import.meta.env.VITE_API_URI + "/api/messages", formData);
+      await axios.post(
+        import.meta.env.VITE_API_URI + "/api/messages",
+        formData
+      );
       setStatus("success");
       setFormData({ name: "", email: "", institution: "", message: "" }); // reset form
     } catch (error) {
@@ -115,17 +120,31 @@ const ziksir = () => {
     <div className="min-h-screen bg-background font-poppins">
       <Helmet>
         <title>Ziksir | World class services & equipment on demand</title>
-        <meta name="description" content="World class services & equipment on demand. Book research equipment, consultancy, and prototyping services easily with Ziksir." />
-        <meta name="keywords" content="equipment, research, booking, ziksir, consultancy, prototyping, services" />
+        <meta
+          name="description"
+          content="World class services & equipment on demand. Book research equipment, consultancy, and prototyping services easily with Ziksir."
+        />
+        <meta
+          name="keywords"
+          content="equipment, research, booking, ziksir, consultancy, prototyping, services"
+        />
         <meta name="author" content="Ziksir" />
-        <meta property="og:title" content="Ziksir | World class services & equipment on demand" />
-        <meta property="og:description" content="Book research equipment, consultancy, and prototyping services easily with Ziksir." />
+        <meta
+          property="og:title"
+          content="Ziksir | World class services & equipment on demand"
+        />
+        <meta
+          property="og:description"
+          content="Book research equipment, consultancy, and prototyping services easily with Ziksir."
+        />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://media.licdn.com/dms/image/v2/D4D0BAQGozYe1MZRpxg/company-logo_400_400/B4DZmwZGIcJUAY-/0/1759600994003/ziksir_logo?e=1762387200&v=beta&t=57ZRL-YlbWZrXP5ikx9lChDyxPCmiQrRp120_27HTHQ" />
-  <meta property="og:image:alt" content="Ziksir Logo" />
-  <meta property="og:url" content="https://ziksir.in" />
+        <meta
+          property="og:image"
+          content="https://media.licdn.com/dms/image/v2/D4D0BAQGozYe1MZRpxg/company-logo_400_400/B4DZmwZGIcJUAY-/0/1759600994003/ziksir_logo?e=1762387200&v=beta&t=57ZRL-YlbWZrXP5ikx9lChDyxPCmiQrRp120_27HTHQ"
+        />
+        <meta property="og:image:alt" content="Ziksir Logo" />
+        <meta property="og:url" content="https://ziksir.in" />
       </Helmet>
-
       {/* Fixed Header */}
       <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -239,7 +258,9 @@ const ziksir = () => {
               size="sm"
               className="text-xs px-3 py-1"
             >
-              <i className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}></i>
+              <i
+                className={`fas ${mobileMenuOpen ? "fa-times" : "fa-bars"}`}
+              ></i>
             </Button>
           </div>
         </nav>
@@ -268,8 +289,6 @@ const ziksir = () => {
           </div>
         )}
       </header>
-
-
       {/* Hero Section */}
       <section className="pt-20 sm:pt-24 pb-8 sm:pb-10 px-4">
         <div className="container mx-auto text-center">
@@ -278,12 +297,12 @@ const ziksir = () => {
               World class services & facilities on demand
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 sm:mb-8 font-open-sans px-2">
-              Access thousands of instruments and services from renowned scientific organizations.
+              Access thousands of instruments and services from renowned
+              scientific organizations.
             </p>
           </div>
         </div>
       </section>
-
       {/* Institution Logos Section */}
       <section className="bg-gray-900 text-white py-8 sm:py-12 lg:py-16 xl:py-20 px-4">
         <div className="text-center">
@@ -367,9 +386,11 @@ const ziksir = () => {
           </div>
         </div>
       </section>
-
       {/* Features Section */}
-      <section id="features" className="py-12 sm:py-16 px-4 bg-gradient-to-br from-blue-50 via-white to-violet-100">
+      <section
+        id="features"
+        className="py-12 sm:py-16 px-4 bg-gradient-to-br from-blue-50 via-white to-violet-100"
+      >
         <div className="container mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-foreground px-2">
@@ -379,95 +400,114 @@ const ziksir = () => {
               Discover how Ziksir transforms your research experience.
             </p>
           </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
-                  <i className="fas fa-rocket text-4xl text-accent mb-4"></i>
-                  <h3 className="font-bold text-xl mb-2 text-black">Instant Access</h3>
-                  <p className="text-muted-foreground mb-4">
-                  Get immediate access to thousands of instruments and services from top institutions.
-                  </p>
-                  <Button
-                  variant="outline"
-                  size="sm"
-                  className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
-                  onClick={() => navigate("/search")}
-                  >
-                  Explore Equipments
-                  </Button>
-                </div>
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
-                  <i className="fas fa-comments text-4xl text-accent mb-4"></i>
-                  <h3 className="font-bold text-xl mb-2 text-black">Expert Support</h3>
-                  <p className="text-muted-foreground mb-4">
-                  Connect with IIT professors and certified experts for consultancy and prototyping.
-                  </p>
-                  <Button
-                  variant="outline"
-                  size="sm"
-                  className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
-                  onClick={() => {
-                    const section = document.getElementById("contact");
-                    if (section) {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+              <i className="fas fa-rocket text-4xl text-accent mb-4"></i>
+              <h3 className="font-bold text-xl mb-2 text-black">
+                Instant Access
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Get immediate access to thousands of instruments and services
+                from top institutions.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                onClick={() => navigate("/search")}
+              >
+                Explore Equipments
+              </Button>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+              <i className="fas fa-comments text-4xl text-accent mb-4"></i>
+              <h3 className="font-bold text-xl mb-2 text-black">
+                Expert Support
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Connect with IIT professors and certified experts for
+                consultancy and prototyping.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                onClick={() => {
+                  const section = document.getElementById("contact");
+                  if (section) {
                     section.scrollIntoView({ behavior: "smooth" });
-                    }
-                    }}
-                    >
-                    Get Consultancy
-                    </Button>
-                    </div>
-                    <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
-                    <i className="fas fa-calendar-alt text-4xl text-accent mb-4"></i>
-                    <h3 className="font-bold text-xl mb-2 text-black">Flexible Booking</h3>
-                    <p className="text-muted-foreground mb-4">
-                    Book slots, request equipment, and manage your bookings with ease and transparency.
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
-                      onClick={() => setShowLoginDialog(true)}
-                    >
-                      Book Now
-                    </Button>
-                    </div>
-                    </div>
+                  }
+                }}
+              >
+                Get Consultancy
+              </Button>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all border border-blue-100 p-8 flex flex-col items-center text-center">
+              <i className="fas fa-calendar-alt text-4xl text-accent mb-4"></i>
+              <h3 className="font-bold text-xl mb-2 text-black">
+                Flexible Booking
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Book slots, request equipment, and manage your bookings with
+                ease and transparency.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="font-semibold border-blue-700 text-blue-700 hover:bg-blue-50"
+                onClick={() => setShowLoginDialog(true)}
+              >
+                Book Now
+              </Button>
+            </div>
+          </div>
 
-                    {/* Login Required Dialog */}
-                    <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
-                    <DialogContent className="max-w-xs sm:max-w-md">
-                      <DialogHeader>
-                      <DialogTitle>Login Required</DialogTitle>
-                      </DialogHeader>
-                      <div className="py-2 text-muted-foreground">
-                      You need to login to book slots or request equipment.
-                      </div>
-                      <Button
-                      className="w-full mt-2"
-                      onClick={() => {
-                        setShowLoginDialog(false);
-                        window.location.href = "/auth";
-                      }}
-                      >
-                      Login Now
-                      </Button>
-                    </DialogContent>
-                    </Dialog>
+          {/* Login Required Dialog */}
+          <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
+            <DialogContent className="max-w-xs sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Login Required</DialogTitle>
+              </DialogHeader>
+              <div className="py-2 text-muted-foreground">
+                You need to login to book slots or request equipment.
+              </div>
+              <Button
+                className="w-full mt-2"
+                onClick={() => {
+                  setShowLoginDialog(false);
+                  window.location.href = "/auth";
+                }}
+              >
+                Login Now
+              </Button>
+            </DialogContent>
+          </Dialog>
 
-                    {/* NEW: Research Industries & Startups Info Section */}
+          {/* NEW: Research Industries & Startups Info Section */}
           <div className="mt-16 bg-white rounded-2xl shadow-lg border border-blue-100 p-8 flex flex-col md:flex-row items-center md:items-start gap-8">
             <div className="flex-1">
               <h3 className="text-2xl font-bold mb-4">
                 For Research Industries & Startups
               </h3>
               <p className="text-muted-foreground mb-4 text-base">
-                Ziksir empowers research-driven industries and innovative startups by providing seamless access to world-class scientific infrastructure, expert consultancy, and rapid prototyping services.
-                <br /><br />
-                Whether you need to validate your ideas, scale up production, or collaborate with top institutions, Ziksir is your gateway to success.
-                <br /><br />
+                Ziksir empowers research-driven industries and innovative
+                startups by providing seamless access to world-class scientific
+                infrastructure, expert consultancy, and rapid prototyping
+                services.
+                <br />
+                <br />
+                Whether you need to validate your ideas, scale up production, or
+                collaborate with top institutions, Ziksir is your gateway to
+                success.
+                <br />
+                <br />
                 <span className="font-semibold text-black">What we offer:</span>
                 <ul className="list-disc ml-6 mt-2 text-muted-foreground">
                   <li>On-demand booking of advanced equipment and labs</li>
-                  <li>Direct collaboration with IIT professors and certified experts</li>
+                  <li>
+                    Direct collaboration with IIT professors and certified
+                    experts
+                  </li>
                   <li>Custom prototyping and product development support</li>
                   <li>Flexible plans for startups, SMEs, and enterprises</li>
                   <li>Analytics and reporting to optimize your R&D</li>
@@ -492,7 +532,6 @@ const ziksir = () => {
           </div>
         </div>
       </section>
-
       {/*Testimonials Section - Client Logos & Feedback */}
       <section className="py-12 sm:py-16 px-4 bg-gradient-to-br from-blue-50 via-white to-blue-100">
         <div className="container mx-auto">
@@ -505,39 +544,58 @@ const ziksir = () => {
             {/* Maribus Solar */}
             <div className="bg-[#e3f0fa] rounded-2xl shadow-lg p-6 flex flex-col relative">
               <div className="flex items-center mb-4">
-                <span className="text-2xl font-bold text-blue-900 mr-3">Maribus Solar</span>
+                <span className="text-2xl font-bold text-blue-900 mr-3">
+                  Maribus Solar
+                </span>
                 <img
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAATCAMAAAC0hZ1zAAAA3lBMVEX////u9Pe85vWb3vaP2/a05Pbk8fb8/Pyl4PVz3f953v9/3//3+fqB2/ya39St47iM3PuS4ODB4IHS52XP52rP6/eA3e/O5myw36LG4XvQ53PM53R+4f/Y6/PK7Yr//wDu7gDd3QCsyHFryeu9u7re3t7R0dHY19bp6emHvOnBoRrfvAbv0Bvnyhy1x+ePuPiZtubhvl3/yQCWtu2iuuXM1+OpscDAy9eep7h8n9d7mMefs9J5pOtvm+ZkleaDl7s8ZqA2UZQvXJqvu9FKbaR+pOKIpMRPgK7F0uzY3+2LdE8rAAAA2klEQVR4AaXNQ4JDURBA0fq2jXZs287+N9Sv2kZyprcAZ6NohmU4/qskiJIsK4osMernpkm6oZNKOvUxmpbtuI5tYdWE983zXTcIAtf1cZX7sBg6AXJCGVfff5Si+FGEUXr3lZLs5JGd4t0LMo8AqdLl1fUNur1LCT6TzeVz2cLjarFYKleIavFBNpvLkZx9jLV6o9lqtZqNNurw3V6vP+h3n54OR/X2eDiZTIkZP18sF6t+fw2PupvtFgO2Duz2my4Frw6z2VOrAazH8B7VmKHhEb52PB4F+Id7IhMgcyIsOzIAAAAASUVORK5CYII=" 
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAATCAMAAAC0hZ1zAAAA3lBMVEX////u9Pe85vWb3vaP2/a05Pbk8fb8/Pyl4PVz3f953v9/3//3+fqB2/ya39St47iM3PuS4ODB4IHS52XP52rP6/eA3e/O5myw36LG4XvQ53PM53R+4f/Y6/PK7Yr//wDu7gDd3QCsyHFryeu9u7re3t7R0dHY19bp6emHvOnBoRrfvAbv0Bvnyhy1x+ePuPiZtubhvl3/yQCWtu2iuuXM1+OpscDAy9eep7h8n9d7mMefs9J5pOtvm+ZkleaDl7s8ZqA2UZQvXJqvu9FKbaR+pOKIpMRPgK7F0uzY3+2LdE8rAAAA2klEQVR4AaXNQ4JDURBA0fq2jXZs287+N9Sv2kZyprcAZ6NohmU4/qskiJIsK4osMernpkm6oZNKOvUxmpbtuI5tYdWE983zXTcIAtf1cZX7sBg6AXJCGVfff5Si+FGEUXr3lZLs5JGd4t0LMo8AqdLl1fUNur1LCT6TzeVz2cLjarFYKleIavFBNpvLkZx9jLV6o9lqtZqNNurw3V6vP+h3n54OR/X2eDiZTIkZP18sF6t+fw2PupvtFgO2Duz2my4Frw6z2VOrAazH8B7VmKHhEb52PB4F+Id7IhMgcyIsOzIAAAAASUVORK5CYII="
                   alt="Maribus Solar"
                   className="w-10 h-10 rounded-full border-2 border-blue-300 bg-white object-cover"
                 />
               </div>
               <div className="flex-1 flex flex-col justify-between">
-                <div className="text-5xl text-blue-400 mb-2 leading-none">“</div>
+                <div className="text-5xl text-blue-400 mb-2 leading-none">
+                  “
+                </div>
                 <p className="text-blue-900 font-medium text-base sm:text-lg mb-4">
-                  Ziksir made R&amp;D equipment access easy – zero compliance and no massive upfront costs.<br />
-                  Ziksir cut down our approval setup time by 2 months and saved 5 lakhs of rupees.
+                  Ziksir made R&amp;D equipment access easy – zero compliance
+                  and no massive upfront costs.
+                  <br />
+                  Ziksir cut down our approval setup time by 2 months and saved
+                  5 lakhs of rupees.
                 </p>
-                <div className="text-5xl text-blue-400 self-end leading-none">”</div>
+                <div className="text-5xl text-blue-400 self-end leading-none">
+                  ”
+                </div>
               </div>
             </div>
             {/* Revoltaero Systems Pvt Ltd */}
             <div className="bg-[#e3f0fa] rounded-2xl shadow-lg p-6 flex flex-col relative">
               <div className="flex items-center mb-4">
-                <span className="text-2xl font-bold text-blue-900 mr-3">Revoltaero Systems Pvt Ltd</span>
+                <span className="text-2xl font-bold text-blue-900 mr-3">
+                  Revoltaero Systems Pvt Ltd
+                </span>
                 <img
-                  src="https://i.imgur.com/5Qw2y5R.png" 
+                  src="https://i.imgur.com/5Qw2y5R.png"
                   alt="Revoltaero"
                   className="w-10 h-10 rounded-full border-2 border-blue-300 bg-white object-cover"
                 />
               </div>
               <div className="flex-1 flex flex-col justify-between">
-                <div className="text-5xl text-blue-400 mb-2 leading-none">“</div>
+                <div className="text-5xl text-blue-400 mb-2 leading-none">
+                  “
+                </div>
                 <p className="text-blue-900 font-medium text-base sm:text-lg mb-4">
-                  We could easily access high-quality research facilities through Ziksir. It saved nearly ₹8 lakhs and gave us the freedom to focus on innovation.<br />
-                  The ease of access cut down our expected research time by 4 months.
+                  We could easily access high-quality research facilities
+                  through Ziksir. It saved nearly ₹8 lakhs and gave us the
+                  freedom to focus on innovation.
+                  <br />
+                  The ease of access cut down our expected research time by 4
+                  months.
                 </p>
-                <div className="text-5xl text-blue-400 self-end leading-none">”</div>
+                <div className="text-5xl text-blue-400 self-end leading-none">
+                  ”
+                </div>
               </div>
             </div>
           </div>
@@ -577,9 +635,14 @@ const ziksir = () => {
                   icon: "fas fa-microscope",
                 },
               ].map((step, index) => (
-                <div key={index} className="flex flex-col items-center text-center h-full justify-center">
+                <div
+                  key={index}
+                  className="flex flex-col items-center text-center h-full justify-center"
+                >
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-accent rounded-full flex items-center justify-center mb-4 sm:mb-6">
-                    <i className={`${step.icon} text-2xl sm:text-3xl text-accent-foreground`}></i>
+                    <i
+                      className={`${step.icon} text-2xl sm:text-3xl text-accent-foreground`}
+                    ></i>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-white">
                     {step.title}
@@ -593,7 +656,6 @@ const ziksir = () => {
           </div>
         </SlideInSection>
       </section>
-
       {/* Testimonials Section */}
       <section className="py-12 sm:py-16 px-4">
         <SlideInSection>
@@ -681,133 +743,136 @@ const ziksir = () => {
           </div>
         </SlideInSection>
       </section>
-
       {/* Pricing Section */}
       <section id="pricing" className="py-12 sm:py-16 bg-gray-900">
         <SlideInSection>
-          <div className="container mx-auto">
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-300 px-2">
-                Choose Your Plan
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-400 font-open-sans px-2">
-                Flexible pricing for research teams of all sizes
-              </p>
-            </div>
+          {/*
+  <div className="container mx-auto">
+    <div className="text-center mb-12 sm:mb-16">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-300 px-2">
+        Choose Your Plan
+      </h2>
+      <p className="text-lg sm:text-xl text-gray-400 font-open-sans px-2">
+        Flexible pricing for research teams of all sizes
+      </p>
+    </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4">
-              {[
-                {
-                  name: "Researcher",
-                  price: "₹999",
-                  period: "/month",
-                  description:
-                    "Perfect for individual researchers and small teams",
-                  features: [
-                    "Access to equipment database",
-                    "Basic booking functionality",
-                    "Email support",
-                    "Usage analytics",
-                    "Mobile app access",
-                  ],
-                  icon: "fas fa-user",
-                  popular: false,
-                },
-                {
-                  name: "Institution",
-                  price: "₹1999",
-                  period: "/month",
-                  description:
-                    "Ideal for departments and research institutions",
-                  features: [
-                    "Everything in Researcher",
-                    "Advanced booking management",
-                    "Team collaboration tools",
-                    "Priority support",
-                    "Custom integrations",
-                    "Advanced analytics",
-                  ],
-                  icon: "fas fa-university",
-                  popular: true,
-                },
-                {
-                  name: "Enterprise",
-                  price: "Custom",
-                  period: "",
-                  description: "For large organizations with complex needs",
-                  features: [
-                    "Everything in Institution",
-                    "White-label solution",
-                    "Dedicated account manager",
-                    "24/7 phone support",
-                    "Custom development",
-                    "SLA guarantees",
-                  ],
-                  icon: "fas fa-building",
-                  popular: false,
-                },
-              ].map((plan, index) => (
-                <Card
-                  key={index}
-                  className={`relative shadow hover:shadow-xl hover:scale-105 transition-all duration-300 h-full ${plan.popular
-                      ? "shadow-lg hover:shadow-2xl hover:scale-110 ring-2 ring-accent scale-105"
-                      : ""
-                    }`}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4">
+      {[
+        {
+          name: "Researcher",
+          price: "₹999",
+          period: "/month",
+          description:
+            "Perfect for individual researchers and small teams",
+          features: [
+            "Access to equipment database",
+            "Basic booking functionality",
+            "Email support",
+            "Usage analytics",
+            "Mobile app access",
+          ],
+          icon: "fas fa-user",
+          popular: false,
+        },
+        {
+          name: "Institution",
+          price: "₹1999",
+          period: "/month",
+          description:
+            "Ideal for departments and research institutions",
+          features: [
+            "Everything in Researcher",
+            "Advanced booking management",
+            "Team collaboration tools",
+            "Priority support",
+            "Custom integrations",
+            "Advanced analytics",
+          ],
+          icon: "fas fa-university",
+          popular: true,
+        },
+        {
+          name: "Enterprise",
+          price: "Custom",
+          period: "",
+          description: "For large organizations with complex needs",
+          features: [
+            "Everything in Institution",
+            "White-label solution",
+            "Dedicated account manager",
+            "24/7 phone support",
+            "Custom development",
+            "SLA guarantees",
+          ],
+          icon: "fas fa-building",
+          popular: false,
+        },
+      ].map((plan, index) => (
+        <Card
+          key={index}
+          className={`relative shadow hover:shadow-xl hover:scale-105 transition-all duration-300 h-full ${
+            plan.popular
+              ? "shadow-lg hover:shadow-2xl hover:scale-110 ring-2 ring-accent scale-105"
+              : ""
+          }`}
+        >
+          {plan.popular && (
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+              <span className="bg-accent text-accent-foreground px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
+                Most Popular
+              </span>
+            </div>
+          )}
+          <CardHeader className="text-center pb-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+              <i
+                className={`${plan.icon} text-lg sm:text-xl md:text-2xl text-accent-foreground`}
+              ></i>
+            </div>
+            <CardTitle className="text-xl sm:text-2xl">
+              {plan.name}
+            </CardTitle>
+            <div className="flex items-baseline justify-center">
+              <span className="text-3xl sm:text-4xl font-bold text-foreground">
+                {plan.price}
+              </span>
+              <span className="text-muted-foreground ml-1 text-sm sm:text-base">
+                {plan.period}
+              </span>
+            </div>
+            <CardDescription className="font-open-sans text-sm sm:text-base">
+              {plan.description}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 sm:space-y-3 mb-6">
+              {plan.features.map((feature, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-center font-open-sans text-sm sm:text-base"
                 >
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-accent text-accent-foreground px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
-                        Most Popular
-                      </span>
-                    </div>
-                  )}
-                  <CardHeader className="text-center pb-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
-                      <i
-                        className={`${plan.icon} text-lg sm:text-xl md:text-2xl text-accent-foreground`}
-                      ></i>
-                    </div>
-                    <CardTitle className="text-xl sm:text-2xl">{plan.name}</CardTitle>
-                    <div className="flex items-baseline justify-center">
-                      <span className="text-3xl sm:text-4xl font-bold text-foreground">
-                        {plan.price}
-                      </span>
-                      <span className="text-muted-foreground ml-1 text-sm sm:text-base">
-                        {plan.period}
-                      </span>
-                    </div>
-                    <CardDescription className="font-open-sans text-sm sm:text-base">
-                      {plan.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 sm:space-y-3 mb-6">
-                      {plan.features.map((feature, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-center font-open-sans text-sm sm:text-base"
-                        >
-                          <i className="fas fa-check text-accent mr-3 text-sm"></i>
-                          <span className="text-foreground">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Button
-                      className="w-full text-sm sm:text-base"
-                      variant={plan.popular ? "default" : "outline"}
-                    >
-                      {plan.name === "Enterprise"
-                        ? "Contact Sales"
-                        : "Get Started"}
-                    </Button>
-                  </CardContent>
-                </Card>
+                  <i className="fas fa-check text-accent mr-3 text-sm"></i>
+                  <span className="text-foreground">{feature}</span>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+            <Button
+              className="w-full text-sm sm:text-base"
+              variant={plan.popular ? "default" : "outline"}
+            >
+              {plan.name === "Enterprise"
+                ? "Contact Sales"
+                : "Get Started"}
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+*/}
         </SlideInSection>
-      </section>
-
+      </section>{" "}
       {/* Contact Section */}
       <section id="contact" className="py-9 sm:py-10 px-4">
         <SlideInSection>
@@ -833,21 +898,36 @@ const ziksir = () => {
                   <div className="space-y-8">
                     {/* Intro */}
                     <p className="text-sm sm:text-base text-muted-foreground leading-relaxed ">
-                      Transform your vision into reality with our expert consultancy and prototyping services.
-                      Whether you’re a startup testing ideas or an enterprise innovating new solutions,
-                      we provide tailored support at every stage.
+                      Transform your vision into reality with our expert
+                      consultancy and prototyping services. Whether you’re a
+                      startup testing ideas or an enterprise innovating new
+                      solutions, we provide tailored support at every stage.
                     </p>
 
                     {/* Feature grid */}
                     <div className="grid sm:grid-cols-2 gap-6">
                       {[
-                        { title: "Idea Validation", desc: "Expert feedback to refine and strengthen your concepts." },
-                        { title: "Rapid Prototyping", desc: "Quickly build functional prototypes to test feasibility." },
-                        { title: "Expert-Led Certification", desc: "Credentials endorsed by IIT professors to add credibility." },
-                        { title: "Scalable Solutions", desc: "A roadmap to turn prototypes into production-ready systems." }
+                        {
+                          title: "Idea Validation",
+                          desc: "Expert feedback to refine and strengthen your concepts.",
+                        },
+                        {
+                          title: "Rapid Prototyping",
+                          desc: "Quickly build functional prototypes to test feasibility.",
+                        },
+                        {
+                          title: "Expert-Led Certification",
+                          desc: "Credentials endorsed by IIT professors to add credibility.",
+                        },
+                        {
+                          title: "Scalable Solutions",
+                          desc: "A roadmap to turn prototypes into production-ready systems.",
+                        },
                       ].map((item, index) => (
                         <div key={index} className="flex items-start space-x-3">
-                          <span className="text-accent text-lg font-bold mt-1">✔</span>
+                          <span className="text-accent text-lg font-bold mt-1">
+                            ✔
+                          </span>
                           <p className="leading-snug">
                             <strong>{item.title}:</strong> {item.desc}
                           </p>
@@ -857,11 +937,16 @@ const ziksir = () => {
 
                     {/* Outro */}
                     <p className="text-sm sm:text-base text-muted-foreground ">
-                      Our team combines technical expertise with creative problem-solving to ensure your project not only works but thrives in real-world use cases.
+                      Our team combines technical expertise with creative
+                      problem-solving to ensure your project not only works but
+                      thrives in real-world use cases.
                     </p>
 
                     {/* CTA */}
-                    <button onClick={() => (window.location.href = "/auth")} className="w-full sm:w-auto px-6 py-3 bg-accent text-accent-foreground font-medium rounded-2xl shadow-md hover:shadow-lg transition">
+                    <button
+                      onClick={() => (window.location.href = "/auth")}
+                      className="w-full sm:w-auto px-6 py-3 bg-accent text-accent-foreground font-medium rounded-2xl shadow-md hover:shadow-lg transition"
+                    >
                       Get Started
                     </button>
                   </div>
@@ -873,7 +958,9 @@ const ziksir = () => {
                 {/* Contact Form */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg sm:text-xl">Send us a message</CardTitle>
+                    <CardTitle className="text-lg sm:text-xl">
+                      Send us a message
+                    </CardTitle>
                     <CardDescription className="text-sm sm:text-base">
                       We'll get back to you within 24 hours
                     </CardDescription>
@@ -881,7 +968,9 @@ const ziksir = () => {
                   <CardContent>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                       <div>
-                        <label className="block text-sm font-medium mb-2">Name</label>
+                        <label className="block text-sm font-medium mb-2">
+                          Name
+                        </label>
                         <input
                           type="text"
                           name="name"
@@ -893,7 +982,9 @@ const ziksir = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-2">Email</label>
+                        <label className="block text-sm font-medium mb-2">
+                          Email
+                        </label>
                         <input
                           type="email"
                           name="email"
@@ -905,7 +996,9 @@ const ziksir = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-2">Institution</label>
+                        <label className="block text-sm font-medium mb-2">
+                          Institution
+                        </label>
                         <input
                           type="text"
                           name="institution"
@@ -916,7 +1009,9 @@ const ziksir = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-2">Message</label>
+                        <label className="block text-sm font-medium mb-2">
+                          Message
+                        </label>
                         <textarea
                           rows="4"
                           name="message"
@@ -927,7 +1022,11 @@ const ziksir = () => {
                           required
                         ></textarea>
                       </div>
-                      <Button type="submit" className="w-full text-sm sm:text-base" disabled={loading}>
+                      <Button
+                        type="submit"
+                        className="w-full text-sm sm:text-base"
+                        disabled={loading}
+                      >
                         <i className="fas fa-paper-plane mr-2"></i>
                         {loading ? "Sending..." : "Send Message"}
                       </Button>
@@ -938,7 +1037,8 @@ const ziksir = () => {
                       <Alert className="mt-4 border-green-500 text-green-700">
                         <AlertTitle>Success</AlertTitle>
                         <AlertDescription>
-                          Message sent successfully! We'll get back to you within 24 hours.
+                          Message sent successfully! We'll get back to you
+                          within 24 hours.
                         </AlertDescription>
                       </Alert>
                     )}
@@ -956,7 +1056,9 @@ const ziksir = () => {
                 {/* Other Ways to Reach Us */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg sm:text-xl">Other Ways to Reach Us</CardTitle>
+                    <CardTitle className="text-lg sm:text-xl">
+                      Other Ways to Reach Us
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
@@ -965,7 +1067,9 @@ const ziksir = () => {
                           <i className="fas fa-envelope text-accent-foreground text-sm"></i>
                         </div>
                         <div className="min-w-0">
-                          <div className="font-semibold text-sm sm:text-base">Email</div>
+                          <div className="font-semibold text-sm sm:text-base">
+                            Email
+                          </div>
                           <div className="text-muted-foreground text-xs sm:text-sm break-words">
                             suyashkankane@kgpian.iitkgp.ac.in
                           </div>
@@ -976,7 +1080,9 @@ const ziksir = () => {
                           <i className="fas fa-phone text-accent-foreground text-sm"></i>
                         </div>
                         <div>
-                          <div className="font-semibold text-sm sm:text-base">Phone</div>
+                          <div className="font-semibold text-sm sm:text-base">
+                            Phone
+                          </div>
                           <div className="text-muted-foreground text-xs sm:text-sm">
                             +91 917 964 3101
                           </div>
@@ -987,7 +1093,9 @@ const ziksir = () => {
                           <i className="fas fa-map-marker-alt text-accent-foreground text-sm"></i>
                         </div>
                         <div>
-                          <div className="font-semibold text-sm sm:text-base">Office</div>
+                          <div className="font-semibold text-sm sm:text-base">
+                            Office
+                          </div>
                           <div className="text-muted-foreground text-xs sm:text-sm">
                             IIT Kharagpur
                           </div>
@@ -1001,8 +1109,6 @@ const ziksir = () => {
           </div>
         </SlideInSection>
       </section>
-
-
       {/* Footer */}
       <footer className="bg-navy py-8 sm:py-12 px-4">
         <div className="container mx-auto">
@@ -1047,7 +1153,9 @@ const ziksir = () => {
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">Product</h4>
+              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">
+                Product
+              </h4>
               <ul className="space-y-2 text-muted-foreground font-open-sans text-xs sm:text-sm">
                 <li>
                   <a href="#" className="hover:text-accent transition-colors">
@@ -1072,7 +1180,9 @@ const ziksir = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">Company</h4>
+              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">
+                Company
+              </h4>
               <ul className="space-y-2 text-muted-foreground font-open-sans text-xs sm:text-sm">
                 <li>
                   <a href="#" className="hover:text-accent transition-colors">
@@ -1097,7 +1207,9 @@ const ziksir = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">Support</h4>
+              <h4 className="font-semibold mb-4 text-secondary text-sm sm:text-base">
+                Support
+              </h4>
               <ul className="space-y-2 text-muted-foreground font-open-sans text-xs sm:text-sm">
                 <li>
                   <a href="#" className="hover:text-accent transition-colors">
@@ -1127,7 +1239,6 @@ const ziksir = () => {
           </div>
         </div>
       </footer>
-
       {/* Back to Top Button */}
       <button
         onClick={scrollToTop}
