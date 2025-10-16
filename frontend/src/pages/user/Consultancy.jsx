@@ -47,7 +47,7 @@ const Consultancy = () => {
   const [myRequests, setMyRequests] = useState([]);
   const [loadingRequests, setLoadingRequests] = useState(false);
 
-  const { userData } = userProfileStore();
+  const { userData, setUserProfile } = userProfileStore();
 
   const fetchMyRequests = async (phone, organization) => {
     setLoadingRequests(true);
@@ -103,10 +103,16 @@ const Consultancy = () => {
     setSubmitting(true);
     setMessage({ type: "", text: "" });
     setFormError("");
+
+    const payload = {
+      ...formData,
+      email: userData?.email || "",
+      userName: userData?.name || "",
+    };
     try {
       await axios.post(
         import.meta.env.VITE_API_URI + "/api/consulting/addConsulting",
-        { ...formData }
+        { ...payload }
       );
       setMessage({
         type: "success",
@@ -119,6 +125,8 @@ const Consultancy = () => {
         description: "",
         timeline: "",
         budget: "",
+        email: userData?.email || "",
+        userName: userData?.name || "",
       }));
       // Refetch requests
       fetchMyRequests(formData.phone, formData.organization);

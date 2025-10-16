@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { userProfile, setUserProfile } = userProfileStore();
+  const { userData, setUserProfile } = userProfileStore();
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuth, setIsAuth] = useState<boolean>(false);
 

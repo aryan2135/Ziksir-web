@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import axios from "@/api/axios";
 import { Helmet } from "react-helmet";
 import userProfileStore from "@/store/userProfileStore";
+
 const PROTOTYPING_FEATURES = [
   {
     icon: "fas fa-cogs",
@@ -36,17 +37,6 @@ const PROTOTYPING_FEATURES = [
   },
 ];
 
-function getCurrentUserEmail() {
-  try {
-    const user = JSON.parse(localStorage.getItem("currentUser")) || {};
-    const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
-    const userName = profile.name || "";
-    return { email: profile.email || user.email || "", userName };
-  } catch {
-    return {};
-  }
-}
-
 const Prototyping = () => {
   const { userData } = userProfileStore();
 
@@ -62,21 +52,23 @@ const Prototyping = () => {
     ip: "",
     file: null,
   });
+
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [formError, setFormError] = useState("");
   const [myRequests, setMyRequests] = useState([]);
   const [loadingRequests, setLoadingRequests] = useState(false);
 
-  // Fetch user's prototyping requests by email
+  // ✅ Fetch user's prototyping requests safely
   const fetchMyRequests = async () => {
+    if (!userData?.email) return;
     setLoadingRequests(true);
     try {
       const res = await axios.post(
         import.meta.env.VITE_API_URI + "/api/prototyping/userPrototyping",
         { email: userData?.email }
       );
-      const userEmail = userData?.email;
+      const userEmail = userData?.email?.toLowerCase();
       setMyRequests(
         (res.data || []).filter(
           (req) =>
@@ -84,16 +76,19 @@ const Prototyping = () => {
             req.email?.toLowerCase?.() === userEmail
         )
       );
-    } catch {
+    } catch (err) {
+      console.error("❌ Fetch error:", err.response?.data || err.message);
       setMyRequests([]);
+    } finally {
+      setLoadingRequests(false);
     }
-    setLoadingRequests(false);
   };
 
   useEffect(() => {
-    fetchMyRequests();
-  }, [message]);
+    if (userData?.email) fetchMyRequests();
+  }, [userData, message]);
 
+  // ✅ Safe form submission
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -101,27 +96,38 @@ const Prototyping = () => {
     setFormError("");
 
     try {
+      if (!userData?.email) {
+        setFormError("User not authenticated. Please log in again.");
+        setSubmitting(false);
+        return;
+      }
+
       const data = new FormData();
-      formData.email = userData?.email;
-      formData.userName = userData?.name;
-      for (let key in formData) {
+      const payload = {
+        ...formData,
+        email: userData?.email,
+        userName: userData?.name,
+      };
+
+      for (let key in payload) {
         if (key === "file") {
-          if (formData.file) data.append("file", formData.file);
+          if (payload.file) data.append("file", payload.file);
         } else {
           if (
-            formData[key] !== undefined &&
-            formData[key] !== null &&
-            formData[key] !== ""
+            payload[key] !== undefined &&
+            payload[key] !== null &&
+            payload[key] !== ""
           ) {
-            data.append(key, formData[key]);
+            data.append(key, payload[key]);
           }
         }
       }
+
       await axios.post(
         import.meta.env.VITE_API_URI + "/api/prototyping/addPrototype",
-        data,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        data
       );
+
       setFormData({
         phone: "",
         organization: "",
@@ -134,13 +140,22 @@ const Prototyping = () => {
         ip: "",
         file: null,
       });
+
       setMessage({
         type: "success",
         text: "Prototyping request submitted successfully!",
       });
+
       fetchMyRequests();
     } catch (error) {
-      setFormError("Failed to submit prototyping request. Try again.");
+      console.error(
+        "❌ Submission Error:",
+        error.response?.data || error.message
+      );
+      setFormError(
+        error.response?.data?.message ||
+          "Failed to submit prototyping request. Try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -166,8 +181,9 @@ const Prototyping = () => {
         />
         <meta property="og:type" content="website" />
       </Helmet>
+
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 items-start">
-        {/* Prototyping Info Section */}
+        {/* Info Section */}
         <div className="flex-1 bg-white rounded-2xl shadow-lg border border-violet-100 p-8 mb-8 md:mb-0">
           <div className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-violet-800 mb-3">
@@ -203,12 +219,13 @@ const Prototyping = () => {
           </div>
         </div>
 
-        {/* Prototyping Form Section */}
+        {/* Form Section */}
         <div className="flex-1 max-w-md w-full">
           <div className="bg-white rounded-lg shadow-lg border border-violet-100 p-6 mb-6">
             <h2 className="text-2xl font-bold mb-4 text-violet-800 text-center">
               Prototyping Request Form
             </h2>
+
             {formError && (
               <p className="text-red-500 text-sm mb-4">{formError}</p>
             )}
@@ -217,6 +234,7 @@ const Prototyping = () => {
                 {message.text}
               </div>
             )}
+
             <form onSubmit={handleSubmitForm} className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <input
@@ -240,6 +258,7 @@ const Prototyping = () => {
                   required
                 />
               </div>
+
               <input
                 type="text"
                 placeholder="Prototype Type (Mechanical, Electrical, Software, etc.)"
@@ -250,6 +269,7 @@ const Prototyping = () => {
                 }
                 required
               />
+
               <textarea
                 placeholder="Materials / Components Needed"
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
@@ -259,6 +279,7 @@ const Prototyping = () => {
                   setFormData({ ...formData, materials: e.target.value })
                 }
               />
+
               <textarea
                 placeholder="Equipment / Tools Required"
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
@@ -268,6 +289,7 @@ const Prototyping = () => {
                   setFormData({ ...formData, equipment: e.target.value })
                 }
               />
+
               <textarea
                 placeholder="Technical Requirements / Specifications"
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
@@ -277,6 +299,7 @@ const Prototyping = () => {
                   setFormData({ ...formData, requirements: e.target.value })
                 }
               />
+
               <textarea
                 placeholder="Intended Use Case / Application"
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
@@ -286,6 +309,7 @@ const Prototyping = () => {
                   setFormData({ ...formData, useCase: e.target.value })
                 }
               />
+
               <input
                 type="text"
                 placeholder="Scalability Plans (Prototype → Production)"
@@ -295,6 +319,7 @@ const Prototyping = () => {
                   setFormData({ ...formData, scalability: e.target.value })
                 }
               />
+
               <input
                 type="text"
                 placeholder="Intellectual Property / Patents (if any)"
@@ -304,6 +329,7 @@ const Prototyping = () => {
                   setFormData({ ...formData, ip: e.target.value })
                 }
               />
+
               <input
                 type="file"
                 className="w-full border rounded-lg p-2"
@@ -311,6 +337,7 @@ const Prototyping = () => {
                   setFormData({ ...formData, file: e.target.files[0] })
                 }
               />
+
               <Button
                 type="submit"
                 disabled={submitting}
@@ -321,7 +348,7 @@ const Prototyping = () => {
             </form>
           </div>
 
-          {/* --- Prototyping Requests & Status Card --- */}
+          {/* --- Requests Card --- */}
           <div className="bg-white rounded-xl shadow-lg border border-violet-100 p-6">
             <h3 className="text-xl font-bold mb-4 text-violet-800 text-center">
               Your Prototyping Requests & Status
