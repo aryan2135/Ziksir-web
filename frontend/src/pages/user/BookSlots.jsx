@@ -178,6 +178,7 @@ export default function BookSlots() {
       const bookingPayload = {
         userId,
         equipmentId: bookingForm.equipmentId,
+        equipmentName: equipmentList.find(eq => eq._id === bookingForm.equipmentId)?.name,
         slotDate: bookingForm.slotDate?.toISOString(),
         bookingDate: new Date().toISOString(),
         status: "pending",
@@ -189,7 +190,9 @@ export default function BookSlots() {
         Category: bookingForm.organizationCategory,
         sample: bookingForm.noOfSamples,
         totalCharge: bookingForm.totalCharge,
-
+        email: bookingForm.emailId,
+        organization: bookingForm.organizationAddress,
+        name: bookingForm.name,
         // 🔥 Added as you asked:
         phone: bookingForm.contactNo,
       };
