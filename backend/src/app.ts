@@ -84,4 +84,21 @@ app.get("/health", (req, res) => {
 // Serve static files from uploads directory
 app.use("/uploads", express.static(path.resolve(process.cwd(), "uploads")));
 
+// import { sendEmail } from "./utils/emails/sendEmail";
+
+// app.get("/api/test-email", async (req, res) => {
+//   try {
+//     const info = await sendEmail(
+//       "aryandongre53@gmail.com",
+//       "Ziksir Email Test",
+//       "<h2>It works! ✅</h2>"
+//     );
+//     res.json({ success: true, info });
+//   } catch (error) {
+//     console.error(error);
+//     const message = error instanceof Error ? error.message : String(error);
+//     res.status(500).json({ success: false, error: message });
+//   }
+// });
+
 export default app;

@@ -47,7 +47,7 @@ const Consultancy = () => {
   const [myRequests, setMyRequests] = useState([]);
   const [loadingRequests, setLoadingRequests] = useState(false);
 
-  const { userData, setUserProfile } = userProfileStore();
+  const { userData } = userProfileStore();
 
   const fetchMyRequests = async (phone, organization) => {
     setLoadingRequests(true);
@@ -82,7 +82,6 @@ const Consultancy = () => {
         phone: savedPhone,
         organization: savedOrg,
         email: email,
-        userName: userName,
       }));
       fetchMyRequests(savedPhone, savedOrg);
     }
@@ -103,16 +102,13 @@ const Consultancy = () => {
     setSubmitting(true);
     setMessage({ type: "", text: "" });
     setFormError("");
-
-    const payload = {
-      ...formData,
-      email: userData?.email || "",
-      userName: userData?.name || "",
-    };
     try {
+      // Ensure no userName leaks from the form
+      const { userName, name, ...cleanForm } = formData;
+      const payload = { ...cleanForm, email: userData?.email };
       await axios.post(
         import.meta.env.VITE_API_URI + "/api/consulting/addConsulting",
-        { ...payload }
+        payload
       );
       setMessage({
         type: "success",
@@ -125,8 +121,6 @@ const Consultancy = () => {
         description: "",
         timeline: "",
         budget: "",
-        email: userData?.email || "",
-        userName: userData?.name || "",
       }));
       // Refetch requests
       fetchMyRequests(formData.phone, formData.organization);
@@ -215,7 +209,10 @@ const Consultancy = () => {
                   className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
                   value={formData.organization}
                   onChange={(e) =>
-                    setFormData({ ...formData, organization: e.target.value })
+                    setFormData({
+                      ...formData,
+                      organization: e.target.value,
+                    })
                   }
                   required
                 />

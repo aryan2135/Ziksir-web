@@ -6,7 +6,7 @@ const router = Router();
 // Add new consulting request
 router.post(
   "/addConsulting",
-  consultingController.createConsultingRequest.bind(consultingController)
+  consultingController.addConsulting.bind(consultingController)
 );
 
 // Delete consulting request
@@ -29,5 +29,4 @@ router.post(
   "/userConsulting",
   consultingController.getUserConsultingRequests.bind(consultingController)
 );
-
 export default router;

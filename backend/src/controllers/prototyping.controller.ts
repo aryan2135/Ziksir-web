@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrototypingService } from "../services/prototyping.service";
+import { notifyRequestSubmitted } from "../utils/emails/notifyEmailrequests";
 
 const prototypingService = new PrototypingService();
 
@@ -16,11 +17,29 @@ export class PrototypingController {
       const prototypeData = {
         ...req.body,
         file: fileUrl,
+        name: (req as any).user?.fullName || req.body.userName,
+        email: (req as any).user?.email || req.body.email,
       };
 
-      const data = await prototypingService.addPrototyping(prototypeData);
-      res.status(201).json({ message: "Prototyping data added", data });
-    } catch (err) {
+      const created = await prototypingService.addPrototyping(prototypeData);
+
+      await notifyRequestSubmitted({
+        type: "prototyping",
+        user: {
+          name: (req as any).user?.fullName || req.body.userName,
+          email: (req as any).user?.email || req.body.email,
+        },
+        payload: {
+          organization: req.body.organization,
+          phone: req.body.phone,
+          prototypeType: req.body.prototypeType,
+          requirements: req.body.requirements,
+        },
+        id: (created as any)?._id?.toString?.(),
+      });
+
+      res.status(201).json(created);
+    } catch (err: any) {
       console.error(err);
       res
         .status(500)

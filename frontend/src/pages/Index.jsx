@@ -744,9 +744,10 @@ const ziksir = () => {
         </SlideInSection>
       </section>
       {/* Pricing Section */}
+      {/*
       <section id="pricing" className="py-12 sm:py-16 bg-gray-900">
         <SlideInSection>
-          {/*
+          
   <div className="container mx-auto">
     <div className="text-center mb-12 sm:mb-16">
       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-300 px-2">
@@ -870,9 +871,8 @@ const ziksir = () => {
       ))}
     </div>
   </div>
-*/}
         </SlideInSection>
-      </section>{" "}
+      </section> */}
       {/* Contact Section */}
       <section id="contact" className="py-9 sm:py-10 px-4">
         <SlideInSection>

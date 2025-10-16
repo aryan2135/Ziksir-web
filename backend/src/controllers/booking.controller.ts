@@ -1,10 +1,29 @@
 import { Request, Response } from "express";
 import { bookingService } from "../services/booking.service";
+import { notifyRequestSubmitted } from "../utils/emails/notifyEmailrequests";
 
 class BookingController {
   async createBooking(req: Request, res: Response): Promise<void> {
     try {
-      const booking = await bookingService.createBooking(req.body);
+      const booking = await bookingService.createBooking({
+        ...req.body,
+      });
+
+      await notifyRequestSubmitted({
+        type: "booking",
+        user: {
+          name: (req as any).user?.fullName || req.body.name,
+          email: (req as any).user?.email || req.body.email,
+        },
+        payload: {
+          organization: req.body.organization,
+          phone: req.body.phone,
+          equipmentName: req.body.equipmentName,
+          slotDate: req.body.slotDate,
+        },
+        id: (booking as any)?._id?.toString?.(),
+      });
+
       res.status(201).json(booking);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
