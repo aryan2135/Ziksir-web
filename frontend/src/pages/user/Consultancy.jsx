@@ -102,13 +102,16 @@ const Consultancy = () => {
     setSubmitting(true);
     setMessage({ type: "", text: "" });
     setFormError("");
+
+    const payload = {
+      ...formData,
+      email: userData?.email || "",
+      userName: userData?.name || "",
+    };
     try {
-      // Ensure no userName leaks from the form
-      const { userName, name, ...cleanForm } = formData;
-      const payload = { ...cleanForm, email: userData?.email };
       await axios.post(
         import.meta.env.VITE_API_URI + "/api/consulting/addConsulting",
-        payload
+        { ...payload }
       );
       setMessage({
         type: "success",
@@ -121,6 +124,8 @@ const Consultancy = () => {
         description: "",
         timeline: "",
         budget: "",
+        email: userData?.email || "",
+        userName: userData?.name || "",
       }));
       // Refetch requests
       fetchMyRequests(formData.phone, formData.organization);
